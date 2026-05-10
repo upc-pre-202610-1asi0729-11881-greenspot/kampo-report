@@ -788,13 +788,13 @@ En este caso, se elaboraron dos User Personas correspondientes a los segmentos i
 
 USER PERSONA 01- Ingeniero agrónomo asesor
 <p align="center">
-  <img src="docs/assets/img/Capítulo%202docs//Carlos MenLogos-Competidores/>
+  <img src="docs/assets/img/Capítulo%202docs/Carlos MenLogos-Competidores/>
   <br/>
 </p>
 
 USER PERSONA 02 - Agroindustria mediana y grande
 <p align="center">
-  <img src="docs/assets/img/Capítulo%202docs//Luis RamosLogos-Competidores<br/>
+  <img src="docs/assets/img/Capítulo%202docs/Luis RamosLogos-Competidores/>
 </p>
 
 ##### 2.3.2. User Task Matrix
@@ -926,6 +926,18 @@ Dentro de Kampo, nuestro contexto, se han definido los siguientes términos clav
 
 ## Capítulo III: Requirements Specification
 ## 3.1. User Stories
+
+<div>
+    <table>
+<thead>
+    <th>Epic/Story ID</th>
+    <th>Titulo</th>
+    <th>Descripcion</th>
+    <th>Criterios de Aceptacion</th>
+    <th>Relacionado con (Epic ID)</th>
+</thead>
+</table>
+</div>
 
 
 | Epic / Story ID | Título | Descripción | Criterios de Aceptación | Relacionado con (Epic ID) |
@@ -1831,28 +1843,28 @@ mediante Trello, cuyo acceso público se encuentra en:
 |---|---|
 
 | US ID | US Título | Task ID | Task Título | Descripción | Estimación (hrs) | Asignado a | Estado |
-|---|---|---|---|---|---|---|---|
-| DOC01 | Startup Profile | T01 | Redactar descripción de GreenSpot | Escribir la descripción de la startup, misión y contexto de KAMPO | 1 | [Integrante 1] | Done |
-| DOC01 | Startup Profile | T02 | Completar perfiles del equipo | Rellenar datos de cada integrante: nombre, código, carrera y resumen de habilidades | 1 | [Integrante 2] | Done |
-| DOC02 | Antecedentes y Problemática | T03 | Investigar fuentes y estadísticas | Recopilar datos del INEI, MIDAGRI, BCRP y otras fuentes sobre agricultura peruana | 2 | [Integrante 1] | Done |
-| DOC02 | Antecedentes y Problemática | T04 | Redactar análisis 5W+2H | Elaborar cada dimensión del framework (Who, What, Where, When, Why, How, How Much) con sustento estadístico | 2 | [Integrante 2] | Done |
-| DOC02 | Antecedentes y Problemática | T05 | Redactar conclusión de problemática | Escribir el párrafo de cierre que conecta el problema con KAMPO como solución | 1 | [Integrante 1] | Done |
-| DOC03 | Lean UX Problem Statements | T06 | Redactar los 3 problem statements | Formular cada statement con dominio, segmento, pain point, gap y pregunta HMW | 2 | [Integrante 2] | Done |
-| DOC04 | Lean UX Assumptions | T07 | Definir Business Outcomes | Redactar los supuestos de resultado de negocio (retención, crecimiento, escalabilidad) | 1 | [Integrante 1] | Done |
-| DOC04 | Lean UX Assumptions | T08 | Definir User Outcomes | Redactar los supuestos del usuario (quién es, dónde encaja el producto, qué resuelve) | 1 | [Integrante 2] | Done |
-| DOC05 | Lean UX Hypothesis Statements | T09 | Redactar hipótesis 1 (riego) | Formular hipótesis sobre reducción de desperdicio hídrico con alertas de sensores | 1 | [Integrante 1] | Done |
-| DOC05 | Lean UX Hypothesis Statements | T10 | Redactar hipótesis 2 (finanzas) | Formular hipótesis sobre adopción del módulo financiero por usuarios activos | 1 | [Integrante 2] | Done |
-| DOC06 | Lean UX Canvas | T11 | Elaborar los 8 bloques del canvas | Completar Business Problem, Outcomes, Users, Benefits, Solutions, Hypotheses, Learn y Experiment | 2 | [Integrante 1] | Done |
-| DOC07 | Segmentos Objetivo | T12 | Redactar segmento 1 (agrónomos) | Describir perfil demográfico, características y propuesta de valor para ingenieros agrónomos | 1 | [Integrante 2] | Done |
-| DOC07 | Segmentos Objetivo | T13 | Redactar segmento 2 (agroindustria) | Describir perfil demográfico, características y propuesta de valor para agroindustria mediana y grande | 1 | [Integrante 1] | Done |
-| DOC08 | Diseño de Entrevistas | T14 | Elaborar guía de entrevista segmento 1 | Redactar preguntas demográficas, de problema y de validación para ingenieros agrónomos | 1 | [Integrante 2] | Done |
-| DOC08 | Diseño de Entrevistas | T15 | Elaborar guía de entrevista segmento 2 | Redactar preguntas demográficas, de problema y de validación para agroindustria | 1 | [Integrante 1] | Done |
-| DOC09 | User Stories y Epics | T16 | Redactar Epics EP01–EP05 con US | Elaborar User Stories US01–US16 con criterios de aceptación en Gherkin | 3 | [Integrante 2] | Done |
-| DOC09 | User Stories y Epics | T17 | Redactar Epics EP06–EP10 con US y TS | Elaborar User Stories US17–US25 y Technical Stories TS01–TS02 en Gherkin | 2 | [Integrante 1] | Done |
-| DOC10 | Software Configuration Management | T18 | Redactar entorno de desarrollo | Listar y describir todas las herramientas por tipo de actividad (dev, deploy, diseño, etc.) | 1 | [Integrante 2] | Done |
-| DOC10 | Software Configuration Management | T19 | Redactar Source Code Management | Definir GitFlow, convenciones de ramas, Semantic Versioning y Conventional Commits | 1 | [Integrante 1] | Done |
-| DOC10 | Software Configuration Management | T20 | Redactar Source Code Style Guide | Especificar guías de estilo para HTML, CSS, TypeScript, Angular, Java y Gherkin | 1 | [Integrante 2] | Done |
-| DOC10 | Software Configuration Management | T21 | Redactar Software Deployment Configuration | Documentar pasos de despliegue para Landing (GitHub Pages), Frontend (Vercel) y Backend (Railway) | 1 | [Integrante 1] | Done |
+|---|---|---|---|---|---|-|---|
+| DOC01 | Startup Profile | T01 | Redactar descripción de GreenSpot | Escribir la descripción de la startup, misión y contexto de KAMPO | 1 | Hurtado Balcazar, Rommel| Done |
+| DOC01 | Startup Profile | T02 | Completar perfiles del equipo | Rellenar datos de cada integrante: nombre, código, carrera y resumen de habilidades | 1 | Tuesta Girón, Kiara Lucia| Done |
+| DOC02 | Antecedentes y Problemática | T03 | Investigar fuentes y estadísticas | Recopilar datos del INEI, MIDAGRI, BCRP y otras fuentes sobre agricultura peruana | 2 | Hurtado Balcazar, Rommel| Done |
+| DOC02 | Antecedentes y Problemática | T04 | Redactar análisis 5W+2H | Elaborar cada dimensión del framework (Who, What, Where, When, Why, How, How Much) con sustento estadístico | 2 | Ramos Fuentes Rivera, Adriana Nicole| Done |
+| DOC02 | Antecedentes y Problemática | T05 | Redactar conclusión de problemática | Escribir el párrafo de cierre que conecta el problema con KAMPO como solución | 1 |Tuesta Girón, Kiara Lucia | Done |
+| DOC03 | Lean UX Problem Statements | T06 | Redactar los 3 problem statements | Formular cada statement con dominio, segmento, pain point, gap y pregunta HMW | 2 | Ramos Fuentes Rivera, Adriana Nicole| Done |
+| DOC04 | Lean UX Assumptions | T07 | Definir Business Outcomes | Redactar los supuestos de resultado de negocio (retención, crecimiento, escalabilidad) | 1 | Hurtado Balcazar, Rommel| Done |
+| DOC04 | Lean UX Assumptions | T08 | Definir User Outcomes | Redactar los supuestos del usuario (quién es, dónde encaja el producto, qué resuelve) | 1 | Acuache Lucas, Mathias Joaquin| Done |
+| DOC05 | Lean UX Hypothesis Statements | T09 | Redactar hipótesis 1 (riego) | Formular hipótesis sobre reducción de desperdicio hídrico con alertas de sensores | 1 |Acuache Lucas, Mathias Joaquin| Done |
+| DOC05 | Lean UX Hypothesis Statements | T10 | Redactar hipótesis 2 (finanzas) | Formular hipótesis sobre adopción del módulo financiero por usuarios activos | 1 | Ramos Fuentes Rivera, Adriana Nicole| Done |
+| DOC06 | Lean UX Canvas | T11 | Elaborar los 8 bloques del canvas | Completar Business Problem, Outcomes, Users, Benefits, Solutions, Hypotheses, Learn y Experiment | 2 | Ramos Fuentes Rivera, Adriana Nicole| Done |
+| DOC07 | Segmentos Objetivo | T12 | Redactar segmento 1 (agrónomos) | Describir perfil demográfico, características y propuesta de valor para ingenieros agrónomos | 1 |Tuesta Girón, Kiara Lucia | Done |
+| DOC07 | Segmentos Objetivo | T13 | Redactar segmento 2 (agroindustria) | Describir perfil demográfico, características y propuesta de valor para agroindustria mediana y grande | 1 | Tuesta Girón, Kiara Lucia| Done |
+| DOC08 | Diseño de Entrevistas | T14 | Elaborar guía de entrevista segmento 1 | Redactar preguntas demográficas, de problema y de validación para ingenieros agrónomos | 1 | Tuesta Girón, Kiara Lucia| Done |
+| DOC08 | Diseño de Entrevistas | T15 | Elaborar guía de entrevista segmento 2 | Redactar preguntas demográficas, de problema y de validación para agroindustria | 1 |Arroyo Gonzales, Emily Juliette | Done |
+| DOC09 | User Stories y Epics | T16 | Redactar Epics EP01–EP05 con US | Elaborar User Stories US01–US16 con criterios de aceptación en Gherkin | 3 |Tuesta Girón, Kiara Lucia | Done |
+| DOC09 | User Stories y Epics | T17 | Redactar Epics EP06–EP10 con US y TS | Elaborar User Stories US17–US25 y Technical Stories TS01–TS02 en Gherkin | 2 | Arroyo Gonzales, Emily Juliette| Done |
+| DOC10 | Software Configuration Management | T18 | Redactar entorno de desarrollo | Listar y describir todas las herramientas por tipo de actividad (dev, deploy, diseño, etc.) | 1 | Acuache Lucas, Mathias Joaquin| Done |
+| DOC10 | Software Configuration Management | T19 | Redactar Source Code Management | Definir GitFlow, convenciones de ramas, Semantic Versioning y Conventional Commits | 1 | Acuache Lucas, Mathias Joaquin| Done |
+| DOC10 | Software Configuration Management | T20 | Redactar Source Code Style Guide | Especificar guías de estilo para HTML, CSS, TypeScript, Angular, Java y Gherkin | 1 | Arroyo Gonzales, Emily Juliette| Done |
+| DOC10 | Software Configuration Management | T21 | Redactar Software Deployment Configuration | Documentar pasos de despliegue para Landing (GitHub Pages), Frontend (Vercel) y Backend (Railway) | 1 | Arroyo Gonzales, Emily Juliette| Done |
 
 
 ###### 5.2.1.4. Development Evidence for Sprint Review
