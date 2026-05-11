@@ -788,13 +788,13 @@ En este caso, se elaboraron dos User Personas correspondientes a los segmentos i
 
 USER PERSONA 01- Ingeniero agrónomo asesor
 <p align="center">
-  <img src="docs/assets/img/Capítulo%202docs/Carlos MenLogos-Competidores/>
+  <img src="docs/assets/img/Capítulo%202/Carlos%20Mendoza.png"/>
   <br/>
 </p>
 
 USER PERSONA 02 - Agroindustria mediana y grande
 <p align="center">
-  <img src="docs/assets/img/Capítulo%202docs/Luis RamosLogos-Competidores/>
+  <img src="docs/assets/img/Capítulo%202/Luis%Ramos.png/>
 </p>
 
 ##### 2.3.2. User Task Matrix
@@ -820,10 +820,7 @@ Las tareas con mayor frecuencia e importancia para ambos segmentos son consolida
 
 ##### 2.3.3. User Journey Mapping
 SEGMENTO 01
-<p align="center">
-  <img src="docs/assets/img/Capítulo%202/SEGMENTO 1.png" width="500"/>
-  <br/>
-</p>
+<p aling="center"><img src="docs/assets/img/Capítulo%202/SEGMENTO 1.png" width="500"/><br/></p>
 
 SEGMENTO 02
 <p align="center">
@@ -1337,17 +1334,25 @@ Para validar la experiencia de usuario (UX), se desarrolló un prototipo funcion
 </div>
 <br>
 
+![Step1](docs/assets/img/event-storming/big_picture_event_storming_step1.png)
+
 **Step 2: Timelines**
 <div align="justify">
     En el segundo paso, el equipo ordeno los eventos de dominio según el orden que ocurren en el dominio empresarial.
 </div>
 <br>
 
+![Step2.1](docs/assets/img/event-storming/big_picture_event_storming_step2_1.png)
+![Step2.2](docs/assets/img/event-storming/big_picture_event_storming_step2_2.png)
+
 **Step 3: Pain Points**
 <div align="justify">
     En el tercer paso, el equipo colocó dudas sobre el dominio o documentación faltante en algunas partes del flujo que ya había sido ordenado anteriormente.
 </div>
 <br>
+
+![Step3.1](docs/assets/img/event-storming/big_picture_event_storming_step3_1.png)
+![Step3.2](docs/assets/img/event-storming/big_picture_event_storming_step3_2.png)
 
 **Step 4: Pivotal Points**
 <div align="justify">
@@ -1385,10 +1390,13 @@ Para validar la experiencia de usuario (UX), se desarrolló un prototipo funcion
 </div>
 <br>
 
+
 **Step 10: Bounded Contexts**
 <div align="justify">
     En el último paso, es buscar agregados que estén relacionados entre sí mediante policies para luego identificar bounded contexts y finalmente enmarco los eventos de dominio que fueron implementados.
 </div>
+
+![Bounded-Context](docs/assets/img/event-storming/BoundedContext.png)
 
 ##### 4.6.2. Software Architecture Context Diagram
 <div align="justify">
