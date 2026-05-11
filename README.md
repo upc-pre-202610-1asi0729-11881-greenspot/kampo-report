@@ -888,6 +888,10 @@ USER PERSONA 02
 
 ![big_picture_event_storming_step3_2](docs/assets/img/event-storming/big_picture_event_storming_step3_2.png)
 
+
+**Paso 10: Bounded Context**
+![Bounded-Context](docs/assets/img/event-storming/BoundedContext.png)
+
 ## 2.5. Ubiquitous Language
 <div align="justify">
     Empleamos el Ubiquitous Language como un conjunto de términos y conceptos compartidos que nos permiten establecer una comunicación clara y consistente entre todos los miembros del equipo. Además, se construye a partir del dominio del negocio y busca eliminar ambigüedades en la interpretación de los procesos y entidades involucradas.
@@ -1334,25 +1338,17 @@ Para validar la experiencia de usuario (UX), se desarrolló un prototipo funcion
 </div>
 <br>
 
-![Step1](docs/assets/img/event-storming/big_picture_event_storming_step1.png)
-
 **Step 2: Timelines**
 <div align="justify">
     En el segundo paso, el equipo ordeno los eventos de dominio según el orden que ocurren en el dominio empresarial.
 </div>
 <br>
 
-![Step2.1](docs/assets/img/event-storming/big_picture_event_storming_step2_1.png)
-![Step2.2](docs/assets/img/event-storming/big_picture_event_storming_step2_2.png)
-
 **Step 3: Pain Points**
 <div align="justify">
     En el tercer paso, el equipo colocó dudas sobre el dominio o documentación faltante en algunas partes del flujo que ya había sido ordenado anteriormente.
 </div>
 <br>
-
-![Step3.1](docs/assets/img/event-storming/big_picture_event_storming_step3_1.png)
-![Step3.2](docs/assets/img/event-storming/big_picture_event_storming_step3_2.png)
 
 **Step 4: Pivotal Points**
 <div align="justify">
@@ -1395,8 +1391,6 @@ Para validar la experiencia de usuario (UX), se desarrolló un prototipo funcion
 <div align="justify">
     En el último paso, es buscar agregados que estén relacionados entre sí mediante policies para luego identificar bounded contexts y finalmente enmarco los eventos de dominio que fueron implementados.
 </div>
-
-![Bounded-Context](docs/assets/img/event-storming/BoundedContext.png)
 
 ##### 4.6.2. Software Architecture Context Diagram
 <div align="justify">
