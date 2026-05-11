@@ -1,5 +1,6 @@
 @startuml
 !include  https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+LAYOUT_LEFT_RIGHT()
 AddContainerTag("v1.1", $bgColor="#d73027")
 AddContainerTag("v1.2", $bgColor="#155DFC")
 
@@ -26,6 +27,4 @@ Container(weatherApi,"Weather API", Software System,"Provides weather data such 
 Container(IotSensors,"IoT Sensors", Software System,"Send real-time field data such as soil humidity, temperature and pH",$tags=v1.2)
 Rel(restfull,weatherApi,"Fetches weather data",Https/json,$tags="Asincronico")
 Rel(restfull,IotSensors,"Receives sensor data",Https/json,$tags="Asincronico")
-
-
 @enduml

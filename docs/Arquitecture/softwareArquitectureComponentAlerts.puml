@@ -1,0 +1,71 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+LAYOUT_TOP_DOWN()
+HIDE_STEREOTYPE()
+
+title Component Diagram – Alert Management Bounded Context
+
+Container_Ext(spa, "Web Application", "Angular", "Calls alert management endpoints")
+Container_Ext(monitoringBC, "Monitoring IoT BC", "Internal", "Publishes ReadingRegistered events")
+Container_Ext(fieldOpBC, "Field Operation BC", "Internal", "Publishes VisitCompleted and ObservationRegistered events")
+ContainerDb_Ext(db, "Database", "MySQL", "Persistent storage")
+
+Container_Boundary(alertBC, "Alert Management – Bounded Context") {
+
+    Component(ruleController,    "AlertRuleController",       "REST Controller",     "Handles /rules endpoints: create, configure, list")
+    Component(alertController,   "AlertController",           "REST Controller",     "Handles /alerts endpoints: list, mark as read")
+
+    Component(createRuleUC,      "CreateAlertRuleUseCase",    "Application Service", "Validates and persists a new alert rule with its conditions")
+    Component(configureRuleUC,   "ConfigureAlertRuleUseCase", "Application Service", "Updates thresholds and conditions of an existing rule")
+    Component(evaluateCondUC,    "EvaluateConditionUseCase",  "Application Service", "Evaluates incoming event data against active rules")
+    Component(sendAlertUC,       "SendAlertUseCase",          "Application Service", "Creates and dispatches alert when condition is met")
+    Component(markReadUC,        "MarkAlertAsReadUseCase",    "Application Service", "Marks a dispatched alert as read by the user")
+
+    Component(ruleDomainSvc,     "AlertRuleDomainService",    "Domain Service",      "Business rules: condition matching logic and rule activation")
+    Component(alertDomainSvc,    "AlertDomainService",        "Domain Service",      "Business rules: alert severity, deduplication and cooldown")
+
+    Component(ruleRepo,          "AlertRuleRepository",       "Repository",          "CRUD for AlertRule aggregate")
+    Component(conditionRepo,     "ConditionRepository",       "Repository",          "CRUD for Condition value objects within rules")
+    Component(alertRepo,         "AlertRepository",           "Repository",          "CRUD for Alert aggregate")
+
+    Component(eventConsumer,     "AlertEventConsumer",        "Event Consumer",      "Listens to ReadingRegistered and ObservationRegistered events")
+    Component(notificationPub,   "NotificationPublisher",     "Event Publisher",     "Publishes AlertSent event to Subscription or notification service")
+}
+
+Rel(spa, ruleController,  "GET|POST|PUT /rules",   "HTTPS/JSON")
+Rel(spa, alertController, "GET|PUT /alerts",        "HTTPS/JSON")
+
+Rel(monitoringBC, eventConsumer, "ReadingRegistered event",       "Internal")
+Rel(fieldOpBC,    eventConsumer, "ObservationRegistered event",   "Internal")
+
+Rel(ruleController,  createRuleUC,   "Calls")
+Rel(ruleController,  configureRuleUC,"Calls")
+Rel(alertController, markReadUC,     "Calls")
+
+Rel(eventConsumer,   evaluateCondUC, "Triggers evaluation")
+
+Rel(createRuleUC,    ruleDomainSvc,  "Validates rule structure")
+Rel(createRuleUC,    ruleRepo,       "Persists rule")
+Rel(createRuleUC,    conditionRepo,  "Persists conditions")
+Rel(configureRuleUC, ruleDomainSvc,  "Validates updated thresholds")
+Rel(configureRuleUC, ruleRepo,       "Updates rule")
+Rel(configureRuleUC, conditionRepo,  "Updates conditions")
+
+Rel(evaluateCondUC,  ruleDomainSvc,  "Matches event data against rules")
+Rel(evaluateCondUC,  ruleRepo,       "Queries active rules")
+Rel(evaluateCondUC,  conditionRepo,  "Queries conditions")
+Rel(evaluateCondUC,  sendAlertUC,    "Calls if condition met")
+
+Rel(sendAlertUC,     alertDomainSvc, "Applies deduplication and severity")
+Rel(sendAlertUC,     alertRepo,      "Persists alert")
+Rel(sendAlertUC,     notificationPub,"Publishes AlertSent event")
+
+Rel(markReadUC,      alertDomainSvc, "Validates alert belongs to user")
+Rel(markReadUC,      alertRepo,      "Updates alert status")
+
+Rel(ruleRepo,        db, "Reads/Writes", "JDBC")
+Rel(conditionRepo,   db, "Reads/Writes", "JDBC")
+Rel(alertRepo,       db, "Reads/Writes", "JDBC")
+
+@enduml

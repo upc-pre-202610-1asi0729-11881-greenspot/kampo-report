@@ -1397,16 +1397,26 @@ Para validar la experiencia de usuario (UX), se desarrolló un prototipo funcion
     Kampo es una plataforma digital diseñada para optimizar la gestión agrícola, se tiene dos segmentos objetivos principales, el ingeniero agrónomo quien utiliza la plataforma para gestionar parcelas, asignar tareas y generar reportes, mientras que el agricultor  de agroindustria mediana o grande se enfoca en ejecutar las labores asignadas y registrar datos fenológicos y ambientales. Además la aplicación intercambia datos con servicios externos para obtener información climática en tiempo real.
 </div>
 
-![Context-Diagram](docs/assets/img/SystemContext-001.png)
+![Context-Diagram](docs/Arquitecture/img/ContextDiagram.png)
 
 
 ##### 4.6.3. Software Architecture Container Diagrams
 
-![Container-Diagram](docs/assets/img/Container-001.png)
+![Container-Diagram](docs/Arquitecture/img/ContainerDiagram.png)
 
 ##### 4.6.4. Software Architecture Components Diagrams
 
-![Container-Diagram](docs/assets/img/Component-001.png)
+![Container-Diagram](docs/Arquitecture/img/ComponentDiagram.png)
+
+**Alerts Component Diagram**
+![Alerts-Component-Diagram](docs/Arquitecture/img/ComponentDiagramAlerts.png)
+
+**Field Component Diagram**
+![Field-Component-Diagram](docs/Arquitecture/img/ComponentDiagramField.png)
+
+**IoT Component Diagram**
+![IoT-Component-Diagram](docs/Arquitecture/img/ComponentDiagramIOT.png)
+
 
 ## 4.7. Software Object-Oriented Design
 ##### 4.7.1. Class Diagrams

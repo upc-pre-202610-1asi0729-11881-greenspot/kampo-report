@@ -1,5 +1,7 @@
 @startuml
 !include  https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+LAYOUT_LEFT_RIGHT()
+AddRelTag("Asincronico",$lineStyle=DashedLine())
 title System Context diagram for KAMPO
 
 Person(agronomist, "Agronomist Engineer", "User who provides technical crop advice")
@@ -10,10 +12,10 @@ System(kampo, "KAMPO", "SaaS platform for crop monitoring, input control and pro
 System_Ext(weatherApi, "Weather API", "Provides weather data such as temperature, humidity and forecasts")
 System_Ext(iotSensors, "IoT Sensors", "Send real-time field data such as soil humidity, temperature and pH")
 
-Rel(agronomist, kampo, "Uses platform to monitor crops and make decisions")
-Rel(agroindustry, kampo, "Uses platform to manage production and traceability")
-Rel(kampo, weatherApi, "Consumes weather data for decision making")
-Rel_Back(kampo, iotSensors, "Receives sensor data")
-Rel(iotSensors, kampo, "Sends real-time field data")
+Rel(agronomist, kampo, "Uses platform to monitor crops and make decisions",$tags="Asincronico")
+Rel(agroindustry, kampo, "Uses platform to manage production and traceability",$tags="Asincronico")
+Rel(kampo, weatherApi, "Consumes weather data for decision making",$tags="Asincronico")
+Rel_Back(kampo, iotSensors, "Receives sensor data",$tags="Asincronico")
+Rel(iotSensors, kampo, "Sends real-time field data",$tags="Asincronico")
 
 @enduml

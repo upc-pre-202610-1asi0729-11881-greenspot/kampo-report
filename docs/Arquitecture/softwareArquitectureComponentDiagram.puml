@@ -1,0 +1,60 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+LAYOUT_TOP_DOWN()
+HIDE_STEREOTYPE()
+
+title Component Diagram – RESTful API (KAMPO)
+
+Container_Ext(spa, "Web Application", "Angular", "Sends HTTP requests to the API")
+Container_Ext(weatherApi, "Weather API", "External", "Provides weather data")
+Container_Ext(iotSensors, "IoT Sensors", "External", "Pushes real-time field data")
+ContainerDb_Ext(db, "Database", "MySQL", "Persistent storage")
+
+Container_Boundary(api, "RESTful API") {
+
+    Component(profileAccess,    "Profile & Access",         "Component", "User auth, roles and permissions")
+    Component(orgManagement,    "Organization Management",  "Component", "Manages organizations, fundos, fields and crops")
+    Component(seasonMgmt,       "Season Management",        "Component", "Controls crop seasons and rules")
+    Component(fieldOperation,   "Field Operation",          "Component", "Field visits, observations and evidence")
+    Component(monitoringIoT,    "Monitoring IoT",           "Component", "Sensor registration and real-time readings")
+    Component(alertMgmt,        "Alert Management",         "Component", "Rules, conditions and alert notifications")
+    Component(inventoryMgmt,    "Inventory Management",     "Component", "Stock, suppliers and input orders")
+    Component(employeeMgmt,     "Employee Management",      "Component", "Employee registration and management")
+    Component(financialMgmt,    "Financial Management",     "Component", "Income, expenses and profitability")
+    Component(reportMgmt,       "Report",                   "Component", "Financial and IoT report generation")
+    Component(subscriptionMgmt, "Subscription",             "Component", "Plan management and billing")
+}
+
+Rel(spa, profileAccess,    "Auth / user management",    "HTTPS/JSON")
+Rel(spa, orgManagement,    "Org & field management",    "HTTPS/JSON")
+Rel(spa, seasonMgmt,       "Season operations",         "HTTPS/JSON")
+Rel(spa, fieldOperation,   "Field visits & evidence",   "HTTPS/JSON")
+Rel(spa, monitoringIoT,    "Sensor dashboard",          "HTTPS/JSON")
+Rel(spa, alertMgmt,        "Alert configuration",       "HTTPS/JSON")
+Rel(spa, inventoryMgmt,    "Inventory operations",      "HTTPS/JSON")
+Rel(spa, employeeMgmt,     "Employee operations",       "HTTPS/JSON")
+Rel(spa, financialMgmt,    "Financial operations",      "HTTPS/JSON")
+Rel(spa, reportMgmt,       "Request reports",           "HTTPS/JSON")
+Rel(spa, subscriptionMgmt, "Manage subscription",       "HTTPS/JSON")
+
+Rel(iotSensors, monitoringIoT, "Pushes sensor readings", "HTTPS/JSON")
+Rel(monitoringIoT, weatherApi, "Fetches weather data",   "HTTPS/JSON")
+
+Rel(monitoringIoT, alertMgmt,  "Triggers alert evaluation", "Internal")
+Rel(seasonMgmt,    fieldOperation, "Season context",        "Internal")
+Rel(orgManagement, fieldOperation, "Field context",         "Internal")
+
+Rel(profileAccess,    db, "Reads/Writes", "JDBC")
+Rel(orgManagement,    db, "Reads/Writes", "JDBC")
+Rel(seasonMgmt,       db, "Reads/Writes", "JDBC")
+Rel(fieldOperation,   db, "Reads/Writes", "JDBC")
+Rel(monitoringIoT,    db, "Reads/Writes", "JDBC")
+Rel(alertMgmt,        db, "Reads/Writes", "JDBC")
+Rel(inventoryMgmt,    db, "Reads/Writes", "JDBC")
+Rel(employeeMgmt,     db, "Reads/Writes", "JDBC")
+Rel(financialMgmt,    db, "Reads/Writes", "JDBC")
+Rel(reportMgmt,       db, "Reads",        "JDBC")
+Rel(subscriptionMgmt, db, "Reads/Writes", "JDBC")
+
+@enduml
