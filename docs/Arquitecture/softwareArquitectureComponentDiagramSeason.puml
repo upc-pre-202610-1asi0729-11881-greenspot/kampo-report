@@ -1,0 +1,84 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+LAYOUT_TOP_DOWN()
+HIDE_STEREOTYPE()
+
+title Component Diagram – Season Management Bounded Context
+
+Container_Ext(spa, "Web Application", "Angular", "Calls season management endpoints")
+Container_Ext(orgBC, "Organization Management BC", "Internal", "Provides field and crop context for season creation")
+Container_Ext(fieldOpBC, "Field Operation BC", "Internal", "Listens to SeasonStarted events")
+Container_Ext(financialBC, "Financial Management BC", "Internal", "Listens to SeasonEnded for profitability closure")
+ContainerDb_Ext(db, "Database", "MySQL", "Persistent storage")
+
+Container_Boundary(seasonBC, "Season Management – Bounded Context") {
+
+    Component(seasonController,     "SeasonController",            "REST Controller",     "Handles /seasons endpoints: create, update, end, list")
+    Component(seasonRuleController, "SeasonRuleController",        "REST Controller",     "Handles /season-rules endpoints: assign, list, update")
+    Component(cropSeasonController, "CropSeasonController",        "REST Controller",     "Handles /crop-seasons endpoints: assign crop to season")
+
+    Component(createSeasonUC,       "CreateSeasonUseCase",         "Application Service", "Validates field and crop context and creates a new season")
+    Component(updateSeasonUC,       "UpdateSeasonUseCase",         "Application Service", "Updates season dates and metadata")
+    Component(endSeasonUC,          "EndSeasonUseCase",            "Application Service", "Closes an active season and triggers closure events")
+    Component(assignCropSeasonUC,   "AssignCropToSeasonUseCase",   "Application Service", "Links a crop to an active season with expected yield")
+    Component(assignSeasonRuleUC,   "AssignSeasonRuleUseCase",     "Application Service", "Assigns monitoring and alert rules to a season")
+    Component(getSeasonStatusUC,    "GetSeasonStatusUseCase",      "Application Service", "Retrieves current season status and progress summary")
+
+    Component(seasonDomainSvc,      "SeasonDomainService",         "Domain Service",      "Business rules: season date validation, overlap constraints and status transitions")
+    Component(cropSeasonDomainSvc,  "CropSeasonDomainService",     "Domain Service",      "Business rules: crop yield expectations and harvest validation")
+    Component(seasonRuleDomainSvc,  "SeasonRuleDomainService",     "Domain Service",      "Business rules: rule compatibility with season type and crop")
+
+    Component(seasonRepo,           "SeasonRepository",            "Repository",          "CRUD for Season aggregate")
+    Component(cropSeasonRepo,       "CropSeasonRepository",        "Repository",          "CRUD for CropSeason association aggregate")
+    Component(seasonRuleRepo,       "SeasonRuleRepository",        "Repository",          "CRUD for SeasonRule aggregate")
+
+    Component(seasonEventPub,       "SeasonEventPublisher",        "Event Publisher",     "Publishes SeasonStarted, SeasonEnded and CropAssigned events")
+}
+
+Rel(spa, seasonController,     "GET|POST|PUT /seasons",       "HTTPS/JSON")
+Rel(spa, seasonRuleController, "GET|POST|PUT /season-rules",  "HTTPS/JSON")
+Rel(spa, cropSeasonController, "GET|POST /crop-seasons",      "HTTPS/JSON")
+
+Rel(seasonController,     createSeasonUC,     "Calls")
+Rel(seasonController,     updateSeasonUC,     "Calls")
+Rel(seasonController,     endSeasonUC,        "Calls")
+Rel(seasonController,     getSeasonStatusUC,  "Calls")
+Rel(seasonRuleController, assignSeasonRuleUC, "Calls")
+Rel(cropSeasonController, assignCropSeasonUC, "Calls")
+
+Rel(createSeasonUC,     seasonDomainSvc,      "Validates date range and overlaps")
+Rel(createSeasonUC,     orgBC,                "Validates field and crop context", "Internal call")
+Rel(createSeasonUC,     seasonRepo,           "Persists season")
+Rel(createSeasonUC,     seasonEventPub,       "Publishes SeasonStarted event")
+
+Rel(updateSeasonUC,     seasonDomainSvc,      "Validates date update constraints")
+Rel(updateSeasonUC,     seasonRepo,           "Updates season data")
+
+Rel(endSeasonUC,        seasonDomainSvc,      "Validates season can be closed")
+Rel(endSeasonUC,        seasonRepo,           "Updates season status to ended")
+Rel(endSeasonUC,        cropSeasonRepo,       "Queries assigned crops for closure")
+Rel(endSeasonUC,        seasonEventPub,       "Publishes SeasonEnded event")
+
+Rel(assignCropSeasonUC, cropSeasonDomainSvc,  "Validates crop yield expectations")
+Rel(assignCropSeasonUC, seasonRepo,           "Queries active season")
+Rel(assignCropSeasonUC, orgBC,                "Validates crop belongs to field", "Internal call")
+Rel(assignCropSeasonUC, cropSeasonRepo,       "Persists crop-season association")
+Rel(assignCropSeasonUC, seasonEventPub,       "Publishes CropAssigned event")
+
+Rel(assignSeasonRuleUC, seasonRuleDomainSvc,  "Validates rule compatibility")
+Rel(assignSeasonRuleUC, seasonRepo,           "Queries season context")
+Rel(assignSeasonRuleUC, seasonRuleRepo,       "Persists season rule")
+
+Rel(getSeasonStatusUC,  seasonRepo,           "Queries season data")
+Rel(getSeasonStatusUC,  cropSeasonRepo,       "Queries assigned crops")
+Rel(getSeasonStatusUC,  seasonRuleRepo,       "Queries assigned rules")
+
+Rel(seasonRepo,     db, "Reads/Writes", "JDBC")
+Rel(cropSeasonRepo, db, "Reads/Writes", "JDBC")
+Rel(seasonRuleRepo, db, "Reads/Writes", "JDBC")
+
+Rel(seasonEventPub, fieldOpBC,    "SeasonStarted event",  "Internal")
+Rel(seasonEventPub, financialBC,  "SeasonEnded event",    "Internal")
+
+@enduml
