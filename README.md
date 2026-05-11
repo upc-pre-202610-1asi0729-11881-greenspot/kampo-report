@@ -1408,15 +1408,38 @@ Para validar la experiencia de usuario (UX), se desarrolló un prototipo funcion
 
 ![Container-Diagram](docs/Arquitecture/img/ComponentDiagram.png)
 
-**Alerts Component Diagram**
+**Alerts Component Diagram - Alerts Bounded Context**
 ![Alerts-Component-Diagram](docs/Arquitecture/img/ComponentDiagramAlerts.png)
 
-**Field Component Diagram**
+**Field Operation Component Diagram - Field Operation Bounded Context**
 ![Field-Component-Diagram](docs/Arquitecture/img/ComponentDiagramField.png)
 
-**IoT Component Diagram**
+**IoT Component Diagram - Monitoring IoT Bounded Context**
 ![IoT-Component-Diagram](docs/Arquitecture/img/ComponentDiagramIOT.png)
 
+**Employee Management Component Diagram - Employee Management Bounded Context**
+![Employee-Component-Diagram](docs/Arquitecture/img/ComponentDiagramEmployee.png)
+
+**Finantial Management Component Diagram - Finantial Management Bounded Context** 
+![Finantial-Component-Diagram](docs/Arquitecture/img/ComponentDiagramFinancial.png)
+
+**Inventory Management Component Diagram - Inventory Management Bounded Context**
+![Inventory-Component-Diagram](docs/Arquitecture/img/ComponentDiagramInventory.png)
+
+**Organization Management Component Diagram - Organization Management Bounded Context**
+![Organization-Component-Diagram](docs/Arquitecture/img/ComponentDiagramOrganization.png)
+
+**Profile & Access Component Diagram - Profile & Access Bounded Context**
+![Profile-Component-Diagram](docs/Arquitecture/img/ComponentDiagramProfile.png)
+
+**Report Component Diagram - Report Bounded Context**
+![Report-Component-Diagram](docs/Arquitecture/img/ComponentDiagramReport.png)
+
+**Season Management Component Diagram - Season Bounded Context**
+![Season-Component-Diagram](docs/Arquitecture/img/ComponentDiagramSeason.png)
+
+**Subscription Component Diagram - Subscription Bounded Context**
+![Subscription-Component-Diagram](docs/Arquitecture/img/ComponentDiagramSubscription.png)
 
 ## 4.7. Software Object-Oriented Design
 ##### 4.7.1. Class Diagrams
