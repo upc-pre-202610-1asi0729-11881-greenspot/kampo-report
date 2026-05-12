@@ -1,0 +1,116 @@
+@startuml
+
+left to right direction
+
+title Class Diagram - Report Management (Backend - Spring Boot)
+
+package "domain" {
+
+  package "services" {
+    interface ReportDomainService {
+      +validateReportRequest(report: Report): void
+      +recognizeReport(report: Report): Report
+    }
+  }
+
+  package "commands" {
+    class RequestReportCommand {
+      -type: ReportType
+      -period: ReportPeriod
+      -date: LocalDate
+    }
+
+    class GenerateFinancialReportCommand {
+      -period: ReportPeriod
+      -date: LocalDate
+    }
+
+    class GenerateIoTReportCommand {
+      -period: ReportPeriod
+      -date: LocalDate
+    }
+
+    class GenerateRecommendationCommand {
+      -period: ReportPeriod
+      -date: LocalDate
+    }
+
+    RequestReportCommand -[hidden]right- GenerateFinancialReportCommand
+    GenerateFinancialReportCommand -[hidden]right- GenerateIoTReportCommand
+    GenerateIoTReportCommand -[hidden]right- GenerateRecommendationCommand
+  }
+
+  package "model" {
+
+    package "aggregate" {
+      class Report {
+        -id: ReportId
+        -type: ReportType
+        -status: ReportStatus
+        -period: ReportPeriod
+        -createdAt: LocalDateTime
+
+        +create(command: RequestReportCommand): Report
+        +markAsGenerated(): void
+        +validate(): void
+        +getId(): ReportId
+        +getType(): ReportType
+        +getStatus(): ReportStatus
+        +getPeriod(): ReportPeriod
+      }
+    }
+
+    package "valueobject" {
+      class ReportId {
+        -value: Long
+        +of(value: Long): ReportId
+        +getValue(): Long
+      }
+
+      class GeneratedDate {
+        -value: LocalDate
+        +of(value: LocalDate): GeneratedDate
+        +getValue(): LocalDate
+      }
+
+      ReportId -[hidden]right- GeneratedDate
+    }
+
+    package "enums" {
+      enum ReportType {
+        FINANCIAL
+        IOT
+        RECOMMENDATION
+      }
+
+      enum ReportPeriod {
+        DAILY
+        WEEKLY
+        MONTHLY
+      }
+
+      enum ReportStatus {
+        REQUESTED
+        GENERATED
+      }
+
+      ReportType -[hidden]right- ReportPeriod
+      ReportPeriod -[hidden]right- ReportStatus
+    }
+  }
+}
+
+ReportDomainService -right-> Report
+
+RequestReportCommand ..> Report
+GenerateFinancialReportCommand ..> Report
+GenerateIoTReportCommand ..> Report
+GenerateRecommendationCommand ..> Report
+
+Report -right-> ReportId
+Report -right-> GeneratedDate
+Report -down-> ReportType
+Report -down-> ReportPeriod
+Report -down-> ReportStatus
+
+@enduml

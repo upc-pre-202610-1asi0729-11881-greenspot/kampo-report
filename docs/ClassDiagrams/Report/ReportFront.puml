@@ -1,0 +1,159 @@
+@startuml
+left to right direction
+title Class Diagram - Report (Frontend)
+
+package "application" {
+  class ReportStore <<Store>> {
+    -reports: Report[]
+    -selectedReport: Report
+    -selectedType: ReportType
+    -isLoading: boolean
+
+    +getReports(): void
+    +getSelectedReport(): Report
+    +getSelectedType(): ReportType
+    +requestReport(type: ReportType): void
+    +generateFinancialReport(): void
+    +generateIoTReport(): void
+    +generateRecommendation(): void
+    +selectReport(id: number): void
+    +selectType(type: ReportType): void
+  }
+}
+
+package "presentation" {
+  package "views" {
+    class ReportViewComponent <<Component>> {
+      -reports: Report[]
+      -selectedReport: Report
+      -selectedType: ReportType
+      -isLoading: boolean
+
+      +ngOnInit(): void
+      +onRequestReport(): void
+      +onGenerateFinancialReport(): void
+      +onGenerateIoTReport(): void
+      +onGenerateRecommendation(): void
+      +onSelectReport(id: number): void
+    }
+
+    class ReportTypeSelectorComponent <<Component>> {
+      -selectedType: ReportType
+      -types: ReportType[]
+
+      +ngOnInit(): void
+      +onSelectType(type: ReportType): void
+    }
+
+    class ReportListComponent <<Component>> {
+      -reports: Report[]
+      -isLoading: boolean
+
+      +ngOnInit(): void
+      +onSelectReport(id: number): void
+    }
+
+    class ReportDetailComponent <<Component>> {
+      -report: Report
+      -isLoading: boolean
+
+      +ngOnInit(): void
+      +showReportStatus(): string
+    }
+
+    class ReportActionsComponent <<Component>> {
+      -selectedType: ReportType
+
+      +onRequestReport(): void
+      +onGenerateFinancialReport(): void
+      +onGenerateIoTReport(): void
+      +onGenerateRecommendation(): void
+    }
+  }
+}
+
+package "infrastructure" {
+  class ReportApi {
+    -reportsEndpoint: string
+    -requestEndpoint: string
+    -financialReportEndpoint: string
+    -iotReportEndpoint: string
+    -recommendationEndpoint: string
+
+    +getReports(): Observable<Report[]>
+    +requestReport(type: ReportType): Observable<Report>
+    +generateFinancialReport(): Observable<Report>
+    +generateIoTReport(): Observable<Report>
+    +generateRecommendation(): Observable<Report>
+  }
+
+  class ReportAssembler {
+    +toEntityFromResponse(response: ReportResponse): Report
+    +toResourceFromEntity(entity: Report): ReportResource
+  }
+
+  class ReportResponse {
+    -id: number
+    -type: string
+    -status: string
+    -createdAt: Date
+  }
+
+  class ReportResource {
+    -id: number
+    -type: string
+    -status: string
+    -createdAt: Date
+  }
+}
+
+package "domain" {
+  package "model" {
+    package "entities" {
+      class Report <<Entity>> {
+        -id: number
+        -type: ReportType
+        -status: ReportStatus
+        -createdAt: Date
+
+        +getId(): number
+        +getType(): ReportType
+        +getStatus(): ReportStatus
+        +getCreatedAt(): Date
+        +setStatus(status: ReportStatus): void
+      }
+    }
+
+    package "enums" {
+      enum ReportType {
+        FINANCIAL
+        IOT
+        RECOMMENDATION
+      }
+
+      enum ReportStatus {
+        REQUESTED
+        GENERATED
+      }
+    }
+  }
+}
+
+ReportStore -down-> ReportApi : delegates to
+ReportStore -right-> Report
+
+ReportApi ..down..> ReportAssembler : uses for conversion
+ReportAssembler ..down..> ReportResponse
+ReportAssembler ..down..> ReportResource
+ReportAssembler ..right..> Report
+
+ReportViewComponent ..down..> ReportStore : uses
+ReportTypeSelectorComponent ..down..> ReportStore : uses
+ReportListComponent ..down..> ReportStore : uses
+ReportDetailComponent ..down..> ReportStore : uses
+ReportActionsComponent ..down..> ReportStore : uses
+
+Report --> ReportType
+Report --> ReportStatus
+
+@enduml
