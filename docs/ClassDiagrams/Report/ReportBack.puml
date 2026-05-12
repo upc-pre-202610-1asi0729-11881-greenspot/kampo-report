@@ -2,7 +2,7 @@
 
 left to right direction
 
-title Class Diagram - Report Management (Backend - Spring Boot)
+title Class Diagram - Report (Backend)
 
 package "domain" {
 

@@ -1,0 +1,169 @@
+@startuml
+
+left to right direction
+
+title Class Diagram - Subscription (Backend)
+
+package "domain" {
+
+  package "services" {
+
+    interface SubscriptionDomainService {
+      +validateSubscription(subscription: Subscription): void
+      +renewSubscription(subscription: Subscription): Subscription
+      +cancelSubscription(subscription: Subscription): void
+    }
+
+  }
+
+  package "model" {
+
+    package "aggregate" {
+
+      together {
+
+        class Subscription {
+          -id: SubscriptionId
+          -plan: SubscriptionPlan
+          -status: SubscriptionStatus
+          -payment: Payment
+          -startedAt: LocalDateTime
+          -renewedAt: LocalDateTime
+          -cancelledAt: LocalDateTime
+
+          +create(command: PurchaseSubscriptionCommand): Subscription
+          +renew(command: RenewSubscriptionCommand): void
+          +cancel(command: CancelSubscriptionCommand): void
+          +isActive(): boolean
+          +getId(): SubscriptionId
+          +getPlan(): SubscriptionPlan
+          +getStatus(): SubscriptionStatus
+          +getPayment(): Payment
+        }
+
+        class Payment {
+          -id: PaymentId
+          -amount: Money
+          -method: PaymentMethod
+          -status: PaymentStatus
+
+          +create(amount: Money, method: PaymentMethod): Payment
+          +markAsPaid(): void
+          +markAsFailed(): void
+          +getId(): PaymentId
+          +getAmount(): Money
+          +getMethod(): PaymentMethod
+          +getStatus(): PaymentStatus
+        }
+
+      }
+
+    }
+
+    package "valueobject" {
+
+      together {
+
+        class SubscriptionId {
+          -value: Long
+          +of(value: Long): SubscriptionId
+          +getValue(): Long
+        }
+
+        class PaymentId {
+          -value: Long
+          +of(value: Long): PaymentId
+          +getValue(): Long
+        }
+
+        class Money {
+          -amount: BigDecimal
+          -currency: String
+          +of(amount: BigDecimal): Money
+          +isPositive(): boolean
+          +getAmount(): BigDecimal
+        }
+
+      }
+
+    }
+
+    package "enums" {
+
+      together {
+
+        enum SubscriptionPlan {
+          MONTHLY
+          QUARTERLY
+          ANNUAL
+        }
+
+        enum SubscriptionStatus {
+          STARTED
+          RENEWED
+          CANCELLED
+        }
+
+        enum PaymentMethod {
+          CARD
+          TRANSFER
+          DIGITAL_WALLET
+        }
+
+        enum PaymentStatus {
+          PENDING
+          PAID
+          FAILED
+        }
+
+      }
+
+    }
+
+  }
+
+  package "commands" {
+
+    together {
+
+      class PurchaseSubscriptionCommand {
+        -plan: SubscriptionPlan
+        -paymentMethod: PaymentMethod
+        -amount: Money
+      }
+
+      class RenewSubscriptionCommand {
+        -subscriptionId: SubscriptionId
+        -paymentMethod: PaymentMethod
+      }
+
+      class CancelSubscriptionCommand {
+        -subscriptionId: SubscriptionId
+        -reason: String
+      }
+
+    }
+
+  }
+
+}
+
+Subscription --> Payment
+
+Subscription --> SubscriptionId
+Payment --> PaymentId
+Payment --> Money
+
+Subscription --> SubscriptionPlan
+Subscription --> SubscriptionStatus
+
+Payment --> PaymentMethod
+Payment --> PaymentStatus
+
+PurchaseSubscriptionCommand ..> Subscription
+RenewSubscriptionCommand ..> Subscription
+CancelSubscriptionCommand ..> Subscription
+
+SubscriptionDomainService ..> Subscription
+
+@enduml

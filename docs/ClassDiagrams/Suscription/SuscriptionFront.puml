@@ -1,0 +1,139 @@
+@startuml
+
+left to right direction
+
+title Class Diagram - Subscription (Frontend)
+
+package "application" {
+  class SubscriptionStore <<Store>> {
+    -subscriptions: Subscription[]
+    -selectedSubscription: Subscription
+    -isLoading: boolean
+
+    +getSubscriptions(): void
+    +getSelectedSubscription(): Subscription
+    +purchaseSubscription(plan: SubscriptionPlan, paymentMethod: PaymentMethod): void
+    +renewSubscription(subscriptionId: number, paymentMethod: PaymentMethod): void
+    +cancelSubscription(subscriptionId: number): void
+    +selectSubscription(subscriptionId: number): void
+  }
+}
+
+package "presentation" {
+  package "views" {
+    class SubscriptionViewComponent <<Component>> {
+      -subscriptions: Subscription[]
+      -selectedSubscription: Subscription
+      -isLoading: boolean
+
+      +ngOnInit(): void
+      +onPurchaseSubscription(): void
+      +onRenewSubscription(): void
+      +onCancelSubscription(): void
+      +onSelectSubscription(subscriptionId: number): void
+    }
+
+    class SubscriptionCardComponent <<Component>> {
+      -subscription: Subscription
+
+      +ngOnInit(): void
+      +showStatus(): string
+    }
+
+    class SubscriptionActionsComponent <<Component>> {
+      -selectedSubscription: Subscription
+
+      +onPurchaseSubscription(): void
+      +onRenewSubscription(): void
+      +onCancelSubscription(): void
+    }
+  }
+}
+
+package "infrastructure" {
+  class SubscriptionApi {
+    -subscriptionsEndpoint: string
+    -purchaseEndpoint: string
+    -renewEndpoint: string
+    -cancelEndpoint: string
+
+    +getSubscriptions(): Observable<Subscription[]>
+    +purchaseSubscription(plan: SubscriptionPlan, paymentMethod: PaymentMethod): Observable<Subscription>
+    +renewSubscription(subscriptionId: number, paymentMethod: PaymentMethod): Observable<Subscription>
+    +cancelSubscription(subscriptionId: number): Observable<Subscription>
+  }
+
+  class SubscriptionAssembler {
+    +toEntityFromResponse(response: SubscriptionResponse): Subscription
+    +toResourceFromEntity(entity: Subscription): SubscriptionResource
+  }
+
+  class SubscriptionResponse {
+    -id: number
+    -plan: string
+    -status: string
+    -startedAt: Date
+  }
+
+  class SubscriptionResource {
+    -id: number
+    -plan: string
+    -paymentMethod: string
+  }
+}
+
+package "domain" {
+  package "model" {
+    package "entities" {
+      class Subscription <<Entity>> {
+        -id: number
+        -plan: SubscriptionPlan
+        -status: SubscriptionStatus
+        -startedAt: Date
+
+        +getId(): number
+        +getPlan(): SubscriptionPlan
+        +getStatus(): SubscriptionStatus
+        +getStartedAt(): Date
+      }
+    }
+
+    package "enums" {
+      enum SubscriptionPlan {
+        MONTHLY
+        QUARTERLY
+        ANNUAL
+      }
+
+      enum SubscriptionStatus {
+        STARTED
+        RENEWED
+        CANCELLED
+      }
+
+      enum PaymentMethod {
+        CARD
+        TRANSFER
+        DIGITAL_WALLET
+      }
+    }
+  }
+}
+
+SubscriptionStore -down-> SubscriptionApi : delegates to
+SubscriptionStore -right-> Subscription
+
+SubscriptionApi ..down..> SubscriptionAssembler : uses for conversion
+SubscriptionAssembler ..right..> SubscriptionResponse
+SubscriptionAssembler ..right..> SubscriptionResource
+SubscriptionAssembler ..right..> Subscription
+
+SubscriptionViewComponent ..down..> SubscriptionStore : uses
+SubscriptionCardComponent ..down..> SubscriptionStore : uses
+SubscriptionActionsComponent ..down..> SubscriptionStore : uses
+
+Subscription --> SubscriptionPlan
+Subscription --> SubscriptionStatus
+SubscriptionResource --> PaymentMethod
+
+@enduml
