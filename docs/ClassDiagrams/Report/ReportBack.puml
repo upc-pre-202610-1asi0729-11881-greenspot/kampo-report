@@ -2,42 +2,16 @@
 
 left to right direction
 
-title Class Diagram - Report (Backend)
+title Class Diagram - Report Management (Backend - Spring Boot)
 
 package "domain" {
 
   package "services" {
     interface ReportDomainService {
-      +validateReportRequest(report: Report): void
-      +recognizeReport(report: Report): Report
+      +validateReport(report: Report): void
+      +generateReport(report: Report): Report
+      +validateRecommendation(recommendation: Recommendation): void
     }
-  }
-
-  package "commands" {
-    class RequestReportCommand {
-      -type: ReportType
-      -period: ReportPeriod
-      -date: LocalDate
-    }
-
-    class GenerateFinancialReportCommand {
-      -period: ReportPeriod
-      -date: LocalDate
-    }
-
-    class GenerateIoTReportCommand {
-      -period: ReportPeriod
-      -date: LocalDate
-    }
-
-    class GenerateRecommendationCommand {
-      -period: ReportPeriod
-      -date: LocalDate
-    }
-
-    RequestReportCommand -[hidden]right- GenerateFinancialReportCommand
-    GenerateFinancialReportCommand -[hidden]right- GenerateIoTReportCommand
-    GenerateIoTReportCommand -[hidden]right- GenerateRecommendationCommand
   }
 
   package "model" {
@@ -46,17 +20,52 @@ package "domain" {
       class Report {
         -id: ReportId
         -type: ReportType
-        -status: ReportStatus
-        -period: ReportPeriod
-        -createdAt: LocalDateTime
+        -fileUrl: FileUrl
+        -userId: UserId
+        -seasonId: SeasonId
 
-        +create(command: RequestReportCommand): Report
-        +markAsGenerated(): void
-        +validate(): void
+        +create(command: GenerateReportCommand): Report
+        +attachFile(fileUrl: FileUrl): void
         +getId(): ReportId
         +getType(): ReportType
-        +getStatus(): ReportStatus
-        +getPeriod(): ReportPeriod
+        +getFileUrl(): FileUrl
+        +getUserId(): UserId
+        +getSeasonId(): SeasonId
+      }
+
+      class Recommendation {
+        -id: RecommendationId
+        -priority: PriorityLevel
+        -status: RecommendationStatus
+        -createdAt: LocalDateTime
+        -implementedAt: LocalDateTime
+        -reportId: ReportId
+
+        +create(command: GenerateRecommendationCommand): Recommendation
+        +markAsImplemented(command: ImplementRecommendationCommand): void
+        +getId(): RecommendationId
+        +getPriority(): PriorityLevel
+        +getStatus(): RecommendationStatus
+        +getReportId(): ReportId
+      }
+    }
+
+    package "enums" {
+      enum ReportType {
+        FINANCIAL
+        IOT
+        RECOMMENDATION
+      }
+
+      enum PriorityLevel {
+        LOW
+        MEDIUM
+        HIGH
+      }
+
+      enum RecommendationStatus {
+        PENDING
+        IMPLEMENTED
       }
     }
 
@@ -67,50 +76,68 @@ package "domain" {
         +getValue(): Long
       }
 
-      class GeneratedDate {
-        -value: LocalDate
-        +of(value: LocalDate): GeneratedDate
-        +getValue(): LocalDate
+      class RecommendationId {
+        -value: Long
+        +of(value: Long): RecommendationId
+        +getValue(): Long
       }
 
-      ReportId -[hidden]right- GeneratedDate
+      class UserId {
+        -value: Long
+        +of(value: Long): UserId
+        +getValue(): Long
+      }
+
+      class SeasonId {
+        -value: Long
+        +of(value: Long): SeasonId
+        +getValue(): Long
+      }
+
+      class FileUrl {
+        -value: String
+        +of(value: String): FileUrl
+        +getValue(): String
+      }
+    }
+  }
+
+  package "commands" {
+    class GenerateReportCommand {
+      -type: ReportType
+      -userId: UserId
+      -seasonId: SeasonId
     }
 
-    package "enums" {
-      enum ReportType {
-        FINANCIAL
-        IOT
-        RECOMMENDATION
-      }
+    class GenerateRecommendationCommand {
+      -reportId: ReportId
+      -priority: PriorityLevel
+    }
 
-      enum ReportPeriod {
-        DAILY
-        WEEKLY
-        MONTHLY
-      }
-
-      enum ReportStatus {
-        REQUESTED
-        GENERATED
-      }
-
-      ReportType -[hidden]right- ReportPeriod
-      ReportPeriod -[hidden]right- ReportStatus
+    class ImplementRecommendationCommand {
+      -recommendationId: RecommendationId
     }
   }
 }
 
-ReportDomainService -right-> Report
+ReportDomainService --> Report
+ReportDomainService --> Recommendation
 
-RequestReportCommand ..> Report
-GenerateFinancialReportCommand ..> Report
-GenerateIoTReportCommand ..> Report
-GenerateRecommendationCommand ..> Report
+Report --> ReportId
+Report --> ReportType
+Report --> FileUrl
+Report --> UserId
+Report --> SeasonId
 
-Report -right-> ReportId
-Report -right-> GeneratedDate
-Report -down-> ReportType
-Report -down-> ReportPeriod
-Report -down-> ReportStatus
+Recommendation --> RecommendationId
+Recommendation --> PriorityLevel
+Recommendation --> RecommendationStatus
+Recommendation --> ReportId
+
+Report --> Recommendation
+
+GenerateReportCommand --> Report
+GenerateRecommendationCommand --> Recommendation
+ImplementRecommendationCommand --> Recommendation
 
 @enduml
