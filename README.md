@@ -479,6 +479,10 @@ USER PERSONA 02
 ##### 4.6.4. Software Architecture Components Diagrams
 ## 4.7. Software Object-Oriented Design
 ##### 4.7.1. Class Diagrams
+<p align="center">
+  <img src="docs/assets/img/class-diagram/class-diagram.png" width="500"/>
+  <br/>
+</p>
 ## 4.8. Database Design
 ##### 4.8.1. Database Diagrams
 
