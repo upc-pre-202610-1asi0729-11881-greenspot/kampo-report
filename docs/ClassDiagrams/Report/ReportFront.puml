@@ -2,10 +2,9 @@
 
 left to right direction
 
-title Class Diagram - Report Management (Frontend - Angular DDD)
+title Class Diagram - Report  (Frontend)
 
 package "application" {
-
   class ReportStore <<Store>> {
     -reports: Report[]
     -recommendations: Recommendation[]
@@ -19,11 +18,50 @@ package "application" {
     +implementRecommendation(recommendationId: number): void
     +selectReport(id: number): void
   }
+}
 
+package "presentation" {
+  package "views" {
+    class ReportViewComponent <<Component>> {
+      -reports: Report[]
+      -recommendations: Recommendation[]
+      -selectedReportId: number
+      -isLoading: boolean
+
+      +ngOnInit(): void
+      +onGenerateReport(): void
+      +onSelectReport(id: number): void
+      +onGenerateRecommendation(): void
+      +onImplementRecommendation(id: number): void
+    }
+
+    class ReportListComponent <<Component>> {
+      -reports: Report[]
+      -isLoading: boolean
+
+      +ngOnInit(): void
+      +onSelect(id: number): void
+    }
+
+    class RecommendationListComponent <<Component>> {
+      -recommendations: Recommendation[]
+      -isLoading: boolean
+
+      +ngOnInit(): void
+      +onImplement(id: number): void
+    }
+
+    class ReportFileComponent <<Component>> {
+      -report: Report
+      -isLoading: boolean
+
+      +ngOnInit(): void
+      +openFile(): void
+    }
+  }
 }
 
 package "infrastructure" {
-
   class ReportApi {
     -reportsEndpoint: string
     -recommendationsEndpoint: string
@@ -72,129 +110,77 @@ package "infrastructure" {
     -reportsId: number
     -priority: string
   }
-
-}
-
-package "presentation" {
-
-  package "views" {
-
-    class ReportViewComponent <<Component>> {
-      -reports: Report[]
-      -recommendations: Recommendation[]
-      -selectedReportId: number
-      -isLoading: boolean
-
-      +ngOnInit(): void
-      +onGenerateReport(): void
-      +onSelectReport(id: number): void
-      +onGenerateRecommendation(): void
-      +onImplementRecommendation(id: number): void
-    }
-
-    class ReportListComponent <<Component>> {
-      -reports: Report[]
-      -isLoading: boolean
-
-      +ngOnInit(): void
-      +onSelect(id: number): void
-    }
-
-    class RecommendationListComponent <<Component>> {
-      -recommendations: Recommendation[]
-      -isLoading: boolean
-
-      +ngOnInit(): void
-      +onImplement(id: number): void
-    }
-
-    class ReportFileComponent <<Component>> {
-      -report: Report
-      -isLoading: boolean
-
-      +ngOnInit(): void
-      +openFile(): void
-    }
-
-  }
-
 }
 
 package "domain" {
-
   package "model" {
+    class Report <<Entity>> {
+      -id: number
+      -type: ReportType
+      -fileUrl: string
+      -usersId: number
+      -seasonsId: number
 
-    package "entities" {
-
-      class Report <<Entity>> {
-        -id: number
-        -type: ReportType
-        -fileUrl: string
-        -usersId: number
-        -seasonsId: number
-
-        +getId(): number
-        +getType(): ReportType
-        +getFileUrl(): string
-        +getUsersId(): number
-        +getSeasonsId(): number
-      }
-
-      class Recommendation <<Entity>> {
-        -id: number
-        -priority: PriorityLevel
-        -status: RecommendationStatus
-        -createdAt: Date
-        -implementedAt: Date
-        -reportsId: number
-
-        +getId(): number
-        +getPriority(): PriorityLevel
-        +getStatus(): RecommendationStatus
-        +getReportsId(): number
-      }
-
+      +getId(): number
+      +getType(): ReportType
+      +getFileUrl(): string
+      +getUsersId(): number
+      +getSeasonsId(): number
     }
 
-    package "enums" {
+    class Recommendation <<Entity>> {
+      -id: number
+      -priority: PriorityLevel
+      -status: RecommendationStatus
+      -createdAt: Date
+      -implementedAt: Date
+      -reportsId: number
 
-      enum ReportType {
-        FINANCIAL
-        IOT
-        RECOMMENDATION
-      }
-
-      enum PriorityLevel {
-        LOW
-        MEDIUM
-        HIGH
-      }
-
-      enum RecommendationStatus {
-        PENDING
-        IMPLEMENTED
-      }
-
+      +getId(): number
+      +getPriority(): PriorityLevel
+      +getStatus(): RecommendationStatus
+      +getReportsId(): number
     }
 
+    enum ReportType {
+      FINANCIAL
+      IOT
+      RECOMMENDATION
+    }
+
+    enum PriorityLevel {
+      LOW
+      MEDIUM
+      HIGH
+    }
+
+    enum RecommendationStatus {
+      PENDING
+      IMPLEMENTED
+    }
   }
-
 }
 
 ReportStore -down-> ReportApi : delegates to
-ReportStore -right-> Report
-ReportStore -right-> Recommendation
-
-ReportApi ..down..> ReportAssembler : uses for conversion
-ReportApi ..down..> RecommendationAssembler : uses for conversion
-
-ReportAssembler ..right..> Report
-RecommendationAssembler ..right..> Recommendation
 
 ReportViewComponent ..down..> ReportStore : uses
 ReportListComponent ..down..> ReportStore : uses
 RecommendationListComponent ..down..> ReportStore : uses
 ReportFileComponent ..down..> ReportStore : uses
+
+ReportApi ..down..> ReportAssembler : uses for conversion
+ReportApi ..down..> RecommendationAssembler : uses for conversion
+
+ReportAssembler ..down..> ReportResponse
+ReportAssembler ..down..> ReportResource
+ReportAssembler ..right..> Report
+
+RecommendationAssembler ..down..> RecommendationResponse
+RecommendationAssembler ..down..> RecommendationResource
+RecommendationAssembler ..right..> Recommendation
+
+ReportStore ..right..> Report
+ReportStore ..right..> Recommendation
 
 Report --> ReportType
 Recommendation --> PriorityLevel

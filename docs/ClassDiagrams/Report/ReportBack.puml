@@ -2,7 +2,7 @@
 
 left to right direction
 
-title Class Diagram - Report Management (Backend - Spring Boot)
+title Class Diagram - Report (Backend)
 
 package "domain" {
 
@@ -17,20 +17,21 @@ package "domain" {
   package "model" {
 
     package "aggregate" {
+
       class Report {
         -id: ReportId
         -type: ReportType
         -fileUrl: FileUrl
-        -userId: UserId
-        -seasonId: SeasonId
+        -usersId: UserId
+        -seasonsId: SeasonId
 
         +create(command: GenerateReportCommand): Report
         +attachFile(fileUrl: FileUrl): void
         +getId(): ReportId
         +getType(): ReportType
         +getFileUrl(): FileUrl
-        +getUserId(): UserId
-        +getSeasonId(): SeasonId
+        +getUsersId(): UserId
+        +getSeasonsId(): SeasonId
       }
 
       class Recommendation {
@@ -39,18 +40,20 @@ package "domain" {
         -status: RecommendationStatus
         -createdAt: LocalDateTime
         -implementedAt: LocalDateTime
-        -reportId: ReportId
+        -reportsId: ReportId
 
         +create(command: GenerateRecommendationCommand): Recommendation
         +markAsImplemented(command: ImplementRecommendationCommand): void
         +getId(): RecommendationId
         +getPriority(): PriorityLevel
         +getStatus(): RecommendationStatus
-        +getReportId(): ReportId
+        +getReportsId(): ReportId
       }
+
     }
 
     package "enums" {
+
       enum ReportType {
         FINANCIAL
         IOT
@@ -67,9 +70,11 @@ package "domain" {
         PENDING
         IMPLEMENTED
       }
+
     }
 
     package "valueobject" {
+
       class ReportId {
         -value: Long
         +of(value: Long): ReportId
@@ -99,25 +104,30 @@ package "domain" {
         +of(value: String): FileUrl
         +getValue(): String
       }
+
     }
+
   }
 
   package "commands" {
+
     class GenerateReportCommand {
       -type: ReportType
-      -userId: UserId
-      -seasonId: SeasonId
+      -usersId: UserId
+      -seasonsId: SeasonId
     }
 
     class GenerateRecommendationCommand {
-      -reportId: ReportId
+      -reportsId: ReportId
       -priority: PriorityLevel
     }
 
     class ImplementRecommendationCommand {
       -recommendationId: RecommendationId
     }
+
   }
+
 }
 
 ReportDomainService --> Report
