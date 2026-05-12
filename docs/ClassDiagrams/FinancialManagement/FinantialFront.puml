@@ -1,24 +1,228 @@
 @startuml
 title Class Diagram – Financial Management (Frontend - Angular DDD)
 
+left to right direction
+
+package "domain" {
+
+    package "model" {
+
+        package "aggregates" {
+            class FinancialRecord <<Aggregate Root>> {
+                -id: FinancialRecordId
+                -fundoId: FundoId
+                -seasonId: SeasonId
+                -expenses: Expense[]
+                -incomes: Income[]
+                -sales: Sale[]
+
+                +getId(): FinancialRecordId
+                +getFundoId(): FundoId
+                +getSeasonId(): SeasonId
+                +addExpense(description: string, amount: Money, category: ExpenseCategory, date: Date): void
+                +addIncome(description: string, amount: Money, date: Date): void
+                +addSale(cropName: string, quantity: number, pricePerUnit: Money, date: Date): void
+                +calculateProfitability(): Profitability
+                +getExpenses(): Expense[]
+                +getIncomes(): Income[]
+                +getSales(): Sale[]
+            }
+        }
+
+        package "entities" {
+            class Expense <<Entity>> {
+                -id: ExpenseId
+                -description: string
+                -amount: Money
+                -category: ExpenseCategory
+                -date: Date
+
+                +getId(): ExpenseId
+                +getDescription(): string
+                +getAmount(): Money
+                +getCategory(): ExpenseCategory
+                +getDate(): Date
+                +updateAmount(newAmount: Money): void
+            }
+
+            class Income <<Entity>> {
+                -id: IncomeId
+                -description: string
+                -amount: Money
+                -date: Date
+
+                +getId(): IncomeId
+                +getDescription(): string
+                +getAmount(): Money
+                +getDate(): Date
+                +updateAmount(newAmount: Money): void
+            }
+
+            class Sale <<Entity>> {
+                -id: SaleId
+                -cropName: string
+                -quantity: number
+                -pricePerUnit: Money
+                -date: Date
+
+                +getId(): SaleId
+                +getCropName(): string
+                +getQuantity(): number
+                +getPricePerUnit(): Money
+                +getTotalAmount(): Money
+                +getDate(): Date
+            }
+        }
+
+        package "value-objects" {
+            class FinancialRecordId <<Value Object>> {
+                -value: number
+                +getValue(): number
+                +equals(other: FinancialRecordId): boolean
+            }
+
+            class FundoId <<Value Object>> {
+                -value: number
+                +getValue(): number
+                +equals(other: FundoId): boolean
+            }
+
+            class SeasonId <<Value Object>> {
+                -value: number
+                +getValue(): number
+                +equals(other: SeasonId): boolean
+            }
+
+            class ExpenseId <<Value Object>> {
+                -value: number
+                +getValue(): number
+                +equals(other: ExpenseId): boolean
+            }
+
+            class IncomeId <<Value Object>> {
+                -value: number
+                +getValue(): number
+                +equals(other: IncomeId): boolean
+            }
+
+            class SaleId <<Value Object>> {
+                -value: number
+                +getValue(): number
+                +equals(other: SaleId): boolean
+            }
+
+            class Money <<Value Object>> {
+                -amount: number
+                -currency: string
+                +getAmount(): number
+                +getCurrency(): string
+                +add(other: Money): Money
+                +subtract(other: Money): Money
+                +equals(other: Money): boolean
+            }
+
+            class Profitability <<Value Object>> {
+                -totalIncome: Money
+                -totalExpenses: Money
+                -totalSales: Money
+                -netProfit: Money
+                -margin: number
+
+                +getTotalIncome(): Money
+                +getTotalExpenses(): Money
+                +getTotalSales(): Money
+                +getNetProfit(): Money
+                +getMargin(): number
+                +isProfit(): boolean
+            }
+        }
+
+        package "repositories" {
+            interface FinancialRecordRepository <<Repository Interface>> {
+                +findByFundoAndSeason(fundoId: FundoId, seasonId: SeasonId): Observable<FinancialRecord>
+                +save(record: FinancialRecord): Observable<FinancialRecord>
+                +findAllByFundo(fundoId: FundoId): Observable<FinancialRecord[]>
+            }
+        }
+
+        package "enums" {
+            enum ExpenseCategory {
+                LABOR
+                INPUT
+                TRANSPORT
+                MAINTENANCE
+                OTHER
+            }
+
+            enum FinancialPeriod {
+                MONTHLY
+                QUARTERLY
+                SEASONAL
+                ANNUAL
+            }
+        }
+    }
+
+    ' Domain relationships
+    FinancialRecord "1" *-down-> "many" Expense   : contains
+    FinancialRecord "1" *-down-> "many" Income     : contains
+    FinancialRecord "1" *-down-> "many" Sale       : contains
+    FinancialRecord ..> Profitability              : calculates >
+    FinancialRecord --> FinancialRecordId
+    FinancialRecord --> FundoId
+    FinancialRecord --> SeasonId
+
+    Expense --> ExpenseId
+    Expense --> Money
+    Expense --> ExpenseCategory
+
+    Income --> IncomeId
+    Income --> Money
+
+    Sale --> SaleId
+    Sale --> Money
+
+    Profitability --> Money
+
+    FinancialRecordRepository ..> FinancialRecord  : manages
+}
+
+package "application" {
+
+    class FinancialStore <<Store>> {
+        -record: FinancialRecord | null
+        -profitability: Profitability | null
+        -isLoading: boolean
+        -selectedFundoId: FundoId | null
+        -selectedSeasonId: SeasonId | null
+
+        +loadRecord(fundoId: FundoId, seasonId: SeasonId): void
+        +addExpense(description: string, amount: Money, category: ExpenseCategory, date: Date): void
+        +addIncome(description: string, amount: Money, date: Date): void
+        +addSale(cropName: string, quantity: number, pricePerUnit: Money, date: Date): void
+        +computeProfitability(): void
+        +selectFundo(fundoId: FundoId): void
+        +selectSeason(seasonId: SeasonId): void
+    }
+
+    FinancialStore --> FinancialRecordRepository : uses (interface)
+    FinancialStore ..> FinancialRecord
+    FinancialStore ..> Profitability
+    FinancialStore ..> Money
+}
+
 package "infrastructure" {
 
-    class FinancialApi {
-        +expensesEndpoint: string
-        +incomesEndpoint: string
-        +salesEndpoint: string
-        +profitabilityEndpoint: string
-        +categoriesEndpoint: string
-        +getExpenses(fundoId: number): Observable<Expense[]>
-        +getExpensesByCategory(fundoId: number, categoryId: number): Observable<Expense[]>
-        +createExpense(expense: Expense): Observable<Expense>
-        +getIncomes(fundoId: number): Observable<Income[]>
-        +getIncomeHistory(fundoId: number, from: Date, to: Date): Observable<Income[]>
-        +createIncome(income: Income): Observable<Income>
-        +getSales(fundoId: number): Observable<Sale[]>
-        +createSale(sale: Sale): Observable<Sale>
-        +calculateProfitability(fundoId: number, seasonId: number): Observable<Profitability>
-        +getCategories(): Observable<ExpenseCategory[]>
+    class FinancialApi <<Repository Impl>> {
+        -endpoint: string
+        +findByFundoAndSeason(fundoId: FundoId, seasonId: SeasonId): Observable<FinancialRecord>
+        +save(record: FinancialRecord): Observable<FinancialRecord>
+        +findAllByFundo(fundoId: FundoId): Observable<FinancialRecord[]>
+    }
+
+    class FinancialRecordAssembler {
+        +toEntityFromResponse(response: FinancialRecordResponse): FinancialRecord
+        +toResourceFromEntity(entity: FinancialRecord): FinancialRecordResource
     }
 
     class ExpenseAssembler {
@@ -36,14 +240,88 @@ package "infrastructure" {
         +toResourceFromEntity(entity: Sale): SaleResource
     }
 
-    class ProfitabilityAssembler {
-        +toEntityFromResponse(response: ProfitabilityResponse): Profitability
+    class FinancialRecordResponse {
+        +id: number
+        +fundoId: number
+        +seasonId: number
+        +expenses: ExpenseResponse[]
+        +incomes: IncomeResponse[]
+        +sales: SaleResponse[]
     }
 
-    FinancialApi ..> ExpenseAssembler       : uses for conversion
-    FinancialApi ..> IncomeAssembler        : uses for conversion
-    FinancialApi ..> SaleAssembler          : uses for conversion
-    FinancialApi ..> ProfitabilityAssembler : uses for conversion
+    class ExpenseResponse {
+        +id: number
+        +description: string
+        +amount: number
+        +currency: string
+        +category: string
+        +date: string
+    }
+
+    class IncomeResponse {
+        +id: number
+        +description: string
+        +amount: number
+        +currency: string
+        +date: string
+    }
+
+    class SaleResponse {
+        +id: number
+        +cropName: string
+        +quantity: number
+        +pricePerUnit: number
+        +currency: string
+        +date: string
+    }
+
+    class FinancialRecordResource {
+        +fundoId: number
+        +seasonId: number
+        +expenses: ExpenseResource[]
+        +incomes: IncomeResource[]
+        +sales: SaleResource[]
+    }
+
+    class ExpenseResource {
+        +description: string
+        +amount: number
+        +currency: string
+        +category: string
+        +date: string
+    }
+
+    class IncomeResource {
+        +description: string
+        +amount: number
+        +currency: string
+        +date: string
+    }
+
+    class SaleResource {
+        +cropName: string
+        +quantity: number
+        +pricePerUnit: number
+        +currency: string
+        +date: string
+    }
+
+    ' Infrastructure implements domain repository interface
+    FinancialApi .up.|> FinancialRecordRepository : implements
+
+    FinancialApi ..> FinancialRecordAssembler : uses
+    FinancialRecordAssembler ..> ExpenseAssembler
+    FinancialRecordAssembler ..> IncomeAssembler
+    FinancialRecordAssembler ..> SaleAssembler
+
+    FinancialRecordAssembler ..> FinancialRecordResponse
+    FinancialRecordAssembler ..> FinancialRecordResource
+    ExpenseAssembler ..> ExpenseResponse
+    ExpenseAssembler ..> ExpenseResource
+    IncomeAssembler ..> IncomeResponse
+    IncomeAssembler ..> IncomeResource
+    SaleAssembler ..> SaleResponse
+    SaleAssembler ..> SaleResource
 }
 
 package "presentation" {
@@ -51,202 +329,54 @@ package "presentation" {
     package "views" {
 
         class ExpenseListComponent <<Component>> {
-            +expenses: Expense[]
-            +categories: ExpenseCategory[]
-            +selectedCategoryId: number
-            +isLoading: boolean
+            -expenses: Expense[]
+            -isLoading: boolean
             +ngOnInit(): void
             +loadExpenses(): void
-            +filterByCategory(categoryId: number): void
-            +onDelete(id: number): void
+            +filterByCategory(category: ExpenseCategory): void
+            +onAddExpense(): void
         }
 
         class ExpenseFormComponent <<Component>> {
-            +expense: Expense
-            +categories: ExpenseCategory[]
-            +isSubmitting: boolean
+            -categories: ExpenseCategory[]
+            -isSubmitting: boolean
             +ngOnInit(): void
-            +onSubmit(): void
+            +onSubmit(description: string, amount: Money, category: ExpenseCategory, date: Date): void
             +cancel(): void
         }
 
         class IncomeListComponent <<Component>> {
-            +incomes: Income[]
-            +dateFrom: Date
-            +dateTo: Date
-            +isLoading: boolean
+            -incomes: Income[]
+            -isLoading: boolean
             +ngOnInit(): void
             +loadIncomes(): void
             +filterByDateRange(from: Date, to: Date): void
-            +onCreateIncome(income: Income): void
+            +onAddIncome(): void
         }
 
         class SaleListComponent <<Component>> {
-            +sales: Sale[]
-            +isLoading: boolean
+            -sales: Sale[]
+            -isLoading: boolean
             +ngOnInit(): void
             +loadSales(): void
-            +onCreateSale(sale: Sale): void
-            +calculateTotalRevenue(): number
+            +onAddSale(): void
+            +calculateTotalRevenue(): Money
         }
 
         class ProfitabilityDashboardComponent <<Component>> {
-            +profitability: Profitability
-            +fundoId: number
-            +seasonId: number
-            +isLoading: boolean
-            +chartData: any[]
+            -profitability: Profitability
+            -isLoading: boolean
             +ngOnInit(): void
             +loadProfitability(): void
-            +buildChartData(): void
             +getMarginColor(): string
         }
     }
 
-    ExpenseListComponent          --> FinancialStore : uses
-    ExpenseFormComponent          --> FinancialStore : uses
-    IncomeListComponent           --> FinancialStore : uses
-    SaleListComponent             --> FinancialStore : uses
-    ProfitabilityDashboardComponent --> FinancialStore : uses
-}
-
-package "application" {
-
-    class FinancialStore <<Store>> {
-        +expenses: Expense[]
-        +incomes: Income[]
-        +sales: Sale[]
-        +profitability: Profitability | null
-        +categories: ExpenseCategory[]
-        +selectedFundoId: number | null
-        +isLoading: boolean
-        +getExpenses(fundoId: number): void
-        +getExpensesByCategory(fundoId: number, categoryId: number): void
-        +addExpense(expense: Expense): void
-        +getIncomes(fundoId: number): void
-        +addIncome(income: Income): void
-        +getSales(fundoId: number): void
-        +addSale(sale: Sale): void
-        +calculateProfitability(fundoId: number, seasonId: number): void
-        +getCategories(): void
-        +selectFundo(fundoId: number): void
-    }
-
-    FinancialStore --> FinancialApi : delegates to
-}
-
-package "domain" {
-
-    package "model" {
-
-        class Expense <<Entity>> {
-            +_id: number
-            +_description: string
-            +_amount: number
-            +_categoryId: number
-            +_fundoId: number
-            +_date: Date
-            +getId(): number
-            +setId(id: number): void
-            +getDescription(): string
-            +setDescription(description: string): void
-            +getAmount(): number
-            +setAmount(amount: number): void
-            +getCategoryId(): number
-            +setCategoryId(categoryId: number): void
-            +getFundoId(): number
-            +setFundoId(fundoId: number): void
-            +getDate(): Date
-            +setDate(date: Date): void
-        }
-
-        class Income <<Entity>> {
-            +_id: number
-            +_description: string
-            +_amount: number
-            +_fundoId: number
-            +_date: Date
-            +getId(): number
-            +setId(id: number): void
-            +getDescription(): string
-            +setDescription(description: string): void
-            +getAmount(): number
-            +setAmount(amount: number): void
-            +getFundoId(): number
-            +setFundoId(fundoId: number): void
-            +getDate(): Date
-            +setDate(date: Date): void
-        }
-
-        class Sale <<Entity>> {
-            +_id: number
-            +_cropName: string
-            +_quantity: number
-            +_pricePerUnit: number
-            +_totalAmount: number
-            +_fundoId: number
-            +_date: Date
-            +getId(): number
-            +setId(id: number): void
-            +getCropName(): string
-            +setCropName(cropName: string): void
-            +getQuantity(): number
-            +setQuantity(quantity: number): void
-            +getPricePerUnit(): number
-            +setPricePerUnit(pricePerUnit: number): void
-            +getTotalAmount(): number
-            +getFundoId(): number
-            +getDate(): Date
-            +setDate(date: Date): void
-        }
-
-        class Profitability <<Entity>> {
-            +_fundoId: number
-            +_seasonId: number
-            +_totalIncome: number
-            +_totalExpenses: number
-            +_totalSales: number
-            +_netProfit: number
-            +_margin: number
-            +getFundoId(): number
-            +getSeasonId(): number
-            +getTotalIncome(): number
-            +getTotalExpenses(): number
-            +getNetProfit(): number
-            +getMargin(): number
-        }
-
-        class ExpenseCategory <<Entity>> {
-            +_id: number
-            +_name: string
-            +_description: string
-            +getId(): number
-            +getName(): string
-            +setName(name: string): void
-            +getDescription(): string
-        }
-
-        enum ExpenseType {
-            LABOR
-            INPUT
-            TRANSPORT
-            MAINTENANCE
-            OTHER
-        }
-
-        enum FinancialPeriod {
-            MONTHLY
-            QUARTERLY
-            SEASONAL
-            ANNUAL
-        }
-
-        Expense --> ExpenseType
-        Expense --> ExpenseCategory
-        Profitability ..> Expense  : aggregates
-        Profitability ..> Income   : aggregates
-        Profitability ..> Sale     : aggregates
-    }
+    ExpenseListComponent           ..> FinancialStore : uses
+    ExpenseFormComponent           ..> FinancialStore : uses
+    IncomeListComponent            ..> FinancialStore : uses
+    SaleListComponent              ..> FinancialStore : uses
+    ProfitabilityDashboardComponent ..> FinancialStore : uses
 }
 
 @enduml
