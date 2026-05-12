@@ -1,0 +1,194 @@
+@startuml
+
+left to right direction
+
+title Class Diagram - Alert Management (Frontend)
+
+package "application" {
+  class AlertStore <<Store>> {
+    -rules: Rule[]
+    -alerts: Alert[]
+    -selectedAlert: Alert
+    -isLoading: boolean
+
+    +getRules(): void
+    +getAlerts(): void
+    +configureAlertRule(rule: Rule): void
+    +evaluateCondition(ruleId: number, currentValue: number): void
+    +sendAlert(ruleId: number, message: string): void
+    +markAlertRead(alertId: number): void
+    +selectAlert(alertId: number): void
+  }
+}
+
+package "presentation" {
+  package "views" {
+    class AlertViewComponent <<Component>> {
+      -rules: Rule[]
+      -alerts: Alert[]
+      -selectedAlert: Alert
+      -isLoading: boolean
+
+      +ngOnInit(): void
+      +onConfigureAlertRule(): void
+      +onEvaluateCondition(): void
+      +onSendAlert(): void
+      +onMarkAlertRead(): void
+      +onSelectAlert(alertId: number): void
+    }
+
+    class AlertRuleFormComponent <<Component>> {
+      -rule: Rule
+
+      +ngOnInit(): void
+      +onConfigureAlertRule(): void
+    }
+
+    class AlertListComponent <<Component>> {
+      -alerts: Alert[]
+      -isLoading: boolean
+
+      +ngOnInit(): void
+      +onSelectAlert(alertId: number): void
+      +onMarkAlertRead(alertId: number): void
+    }
+
+    class AlertDetailComponent <<Component>> {
+      -alert: Alert
+
+      +ngOnInit(): void
+      +showStatus(): string
+    }
+  }
+}
+
+package "infrastructure" {
+  class AlertApi {
+    -rulesEndpoint: string
+    -alertsEndpoint: string
+    -sendAlertEndpoint: string
+
+    +getRules(): Observable<Rule[]>
+    +getAlerts(): Observable<Alert[]>
+    +configureAlertRule(rule: Rule): Observable<Rule>
+    +evaluateCondition(ruleId: number, currentValue: number): Observable<boolean>
+    +sendAlert(ruleId: number, message: string): Observable<Alert>
+    +markAlertRead(alertId: number): Observable<Alert>
+  }
+
+  class RuleAssembler {
+    +toEntityFromResponse(response: RuleResponse): Rule
+    +toResourceFromEntity(entity: Rule): RuleResource
+  }
+
+  class AlertAssembler {
+    +toEntityFromResponse(response: AlertResponse): Alert
+    +toResourceFromEntity(entity: Alert): AlertResource
+  }
+
+  class RuleResponse {
+    -id: number
+    -condition: string
+    -threshold: number
+    -type: string
+    -status: string
+  }
+
+  class AlertResponse {
+    -id: number
+    -ruleId: number
+    -message: string
+    -status: string
+    -sentAt: Date
+  }
+
+  class RuleResource {
+    -condition: string
+    -threshold: number
+    -type: string
+  }
+
+  class AlertResource {
+    -ruleId: number
+    -message: string
+  }
+}
+
+package "domain" {
+  package "model" {
+    package "entities" {
+      class Rule <<Entity>> {
+        -id: number
+        -condition: string
+        -threshold: number
+        -type: RuleType
+        -status: RuleStatus
+
+        +getId(): number
+        +getCondition(): string
+        +getThreshold(): number
+        +getType(): RuleType
+        +getStatus(): RuleStatus
+      }
+
+      class Alert <<Entity>> {
+        -id: number
+        -ruleId: number
+        -message: string
+        -status: AlertStatus
+        -sentAt: Date
+
+        +getId(): number
+        +getRuleId(): number
+        +getMessage(): string
+        +getStatus(): AlertStatus
+        +getSentAt(): Date
+      }
+    }
+
+    package "enums" {
+      enum RuleType {
+        TEMPERATURE
+        HUMIDITY
+        PH
+        WEATHER
+      }
+
+      enum RuleStatus {
+        ACTIVE
+        INACTIVE
+      }
+
+      enum AlertStatus {
+        SENT
+        READ
+      }
+    }
+  }
+}
+
+AlertStore -down-> AlertApi : delegates to
+AlertStore -right-> Rule
+AlertStore -right-> Alert
+
+AlertApi ..down..> RuleAssembler : uses for conversion
+AlertApi ..down..> AlertAssembler : uses for conversion
+
+RuleAssembler ..right..> RuleResponse
+RuleAssembler ..right..> RuleResource
+RuleAssembler ..right..> Rule
+
+AlertAssembler ..right..> AlertResponse
+AlertAssembler ..right..> AlertResource
+AlertAssembler ..right..> Alert
+
+AlertViewComponent ..down..> AlertStore : uses
+AlertRuleFormComponent ..down..> AlertStore : uses
+AlertListComponent ..down..> AlertStore : uses
+AlertDetailComponent ..down..> AlertStore : uses
+
+Rule --> RuleType
+Rule --> RuleStatus
+Alert --> AlertStatus
+
+@enduml

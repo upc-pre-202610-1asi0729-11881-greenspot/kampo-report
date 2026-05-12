@@ -1,0 +1,144 @@
+@startuml
+
+left to right direction
+
+title Class Diagram - Alert Management (Backend)
+
+package "domain" {
+
+  together {
+
+    package "commands" {
+
+      class ConfigureAlertRuleCommand {
+        -condition: String
+        -threshold: Double
+        -ruleType: RuleType
+      }
+
+      class EvaluateConditionCommand {
+        -ruleId: RuleId
+        -currentValue: Double
+      }
+
+      class SendAlertCommand {
+        -ruleId: RuleId
+        -message: String
+      }
+
+      class MarkAlertReadCommand {
+        -alertId: AlertId
+      }
+
+    }
+
+    package "model" {
+
+      package "aggregate" {
+
+        class Rule {
+          -id: RuleId
+          -condition: String
+          -threshold: Double
+          -type: RuleType
+          -status: RuleStatus
+          -createdAt: LocalDateTime
+
+          +create(command: ConfigureAlertRuleCommand): Rule
+          +evaluate(command: EvaluateConditionCommand): boolean
+          +activate(): void
+          +deactivate(): void
+          +getId(): RuleId
+          +getType(): RuleType
+          +getStatus(): RuleStatus
+        }
+
+        class Alert {
+          -id: AlertId
+          -ruleId: RuleId
+          -message: String
+          -status: AlertStatus
+          -sentAt: LocalDateTime
+          -readAt: LocalDateTime
+
+          +create(command: SendAlertCommand): Alert
+          +markAsRead(command: MarkAlertReadCommand): void
+          +isRead(): boolean
+          +getId(): AlertId
+          +getRuleId(): RuleId
+          +getStatus(): AlertStatus
+        }
+
+      }
+
+      package "valueobject" {
+
+        class RuleId {
+          -value: Long
+          +of(value: Long): RuleId
+          +getValue(): Long
+        }
+
+        class AlertId {
+          -value: Long
+          +of(value: Long): AlertId
+          +getValue(): Long
+        }
+
+      }
+
+      package "enums" {
+
+        enum RuleType {
+          TEMPERATURE
+          HUMIDITY
+          PH
+          WEATHER
+        }
+
+        enum RuleStatus {
+          ACTIVE
+          INACTIVE
+        }
+
+        enum AlertStatus {
+          SENT
+          READ
+        }
+
+      }
+
+    }
+
+  }
+
+  package "services" {
+
+    interface AlertDomainService {
+      +validateRule(rule: Rule): void
+      +evaluateCondition(rule: Rule): boolean
+      +sendAlert(alert: Alert): void
+      +markAlertAsRead(alert: Alert): void
+    }
+
+  }
+
+}
+
+ConfigureAlertRuleCommand ..> Rule
+EvaluateConditionCommand ..> Rule
+SendAlertCommand ..> Alert
+MarkAlertReadCommand ..> Alert
+
+Rule --> RuleId
+Alert --> AlertId
+Alert --> RuleId
+
+Rule --> RuleType
+Rule --> RuleStatus
+Alert --> AlertStatus
+
+AlertDomainService ..> Rule
+AlertDomainService ..> Alert
+
+@enduml
