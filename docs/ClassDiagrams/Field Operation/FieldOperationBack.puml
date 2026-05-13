@@ -1,0 +1,147 @@
+@startuml
+left to right direction
+title Class Diagram - Field Operation (Backend)
+
+package "domain" {
+  together {
+    package "commands" {
+      class ScheduleFieldVisitCommand {
+        -fieldId: FieldId
+        -scheduledAt: LocalDateTime
+      }
+      class CompleteFieldVisitCommand {
+        -fieldVisitId: FieldVisitId
+        -doneAt: LocalDateTime
+      }
+      class RegisterObservationCommand {
+        -fieldVisitId: FieldVisitId
+        -notes: String
+        -pestName: String
+        -pestSeverity: Severity
+        -diseaseName: String
+        -diseaseSeverity: Severity
+        -recommendation: String
+      }
+      class UploadEvidenceCommand {
+        -observationId: ObservationId
+        -evidenceUrl: String
+      }
+      class ImplementRecommendationCommand {
+        -observationId: ObservationId
+        -recommendation: String
+      }
+    }
+
+    package "model" {
+      package "aggregate" {
+        class FieldVisit <<Aggregate>>{
+          -id: FieldVisitId
+          -fieldId: FieldId
+          -scheduledAt: LocalDateTime
+          -doneAt: LocalDateTime
+          -status: FieldVisitStatus
+          -observations: List<Observation>
+          +schedule(command: ScheduleFieldVisitCommand): FieldVisit
+          +complete(command: CompleteFieldVisitCommand): void
+          +addObservation(command: RegisterObservationCommand): Observation
+          +uploadEvidence(command: UploadEvidenceCommand): void
+          +implementRecommendation(command: ImplementRecommendationCommand): void
+          +getId(): FieldVisitId
+          +getFieldId(): FieldId
+          +getStatus(): FieldVisitStatus
+          +getObservations(): List<Observation>
+          +isCompleted(): boolean
+        }
+      }
+
+      package "entities" {
+        class Observation <<Entity>> {
+          -id: ObservationId
+          -fieldVisitId: FieldVisitId
+          -notes: String
+          -pestName: String
+          -pestSeverity: Severity
+          -diseaseName: String
+          -diseaseSeverity: Severity
+          -recommendation: String
+          -evidenceUrl: String
+          +getId(): ObservationId
+          +getFieldVisitId(): FieldVisitId
+          +getNotes(): String
+          +getPestSeverity(): Severity
+          +getDiseaseSeverity(): Severity
+          +updateEvidence(url: String): void
+          +updateRecommendation(recommendation: String): void
+        }
+      }
+
+      package "valueobject" {
+        class FieldVisitId {
+          -value: Long
+          +of(value: Long): FieldVisitId
+          +getValue(): Long
+        }
+        class FieldId {
+          -value: Long
+          +of(value: Long): FieldId
+          +getValue(): Long
+        }
+        class ObservationId {
+          -value: Long
+          +of(value: Long): ObservationId
+          +getValue(): Long
+        }
+      }
+
+      package "enums" {
+        enum FieldVisitStatus {
+          SCHEDULED
+          DONE
+        }
+        enum Severity {
+          LOW
+          MEDIUM
+          HIGH
+          CRITICAL
+        }
+      }
+    }
+  }
+
+  package "services" {
+    interface FieldOperationDomainService {
+      +validateSchedule(fieldVisit: FieldVisit): void
+      +canAddObservation(fieldVisit: FieldVisit): boolean
+      +evaluateSeverity(observation: Observation): Severity
+    }
+  }
+
+  package "repositories" {
+    interface FieldVisitRepository {
+      +findById(id: FieldVisitId): Optional<FieldVisit>
+      +findByFieldId(fieldId: FieldId): List<FieldVisit>
+      +save(fieldVisit: FieldVisit): FieldVisit
+      +delete(id: FieldVisitId): void
+    }
+  }
+}
+
+ScheduleFieldVisitCommand        ..> FieldVisit
+CompleteFieldVisitCommand        ..> FieldVisit
+RegisterObservationCommand       ..> FieldVisit
+UploadEvidenceCommand            ..> FieldVisit
+ImplementRecommendationCommand   ..> FieldVisit
+
+FieldVisit   "1" *--> "many" Observation : contains
+FieldVisit   --> FieldVisitId
+FieldVisit   --> FieldId
+FieldVisit   --> FieldVisitStatus
+Observation  --> ObservationId
+Observation  --> FieldVisitId
+Observation  --> Severity
+
+FieldOperationDomainService ..> FieldVisit
+FieldOperationDomainService ..> Observation
+FieldVisitRepository        ..> FieldVisit
+
+@enduml
