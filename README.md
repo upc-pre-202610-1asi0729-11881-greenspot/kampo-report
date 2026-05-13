@@ -253,15 +253,13 @@ La mayoría de agricultores peruanos aún gestionan sus cultivos y finanzas de f
 
 ##### 1.1.2. Perfiles de integrantes del equipo
 
-
-
-|                               Miembro                               |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 Descripción                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
-|:-------------------------------------------------------------------:|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
-|  <img src="assets/img/Chapter1/members/Rommel.jpg " width="3000"/>  | **Hurtado Balcazar Rommel Daniel  \- U202517474** <br>  Soy Rommel Hurtado Balcázar, tengo 23 años y estudio Ingeniería de Software en el 5to-6to ciclo. Me considero un líder técnico orientado a la resolución de problemas, con capacidad para tomar decisiones y guiar al equipo hacia los objetivos del proyecto.<br>Cuento con experiencia en desarrollo fullstack, manejando tanto frontend como backend. En el lado del servidor trabajo principalmente con Java, y en el frontend utilizo React. Además, tengo conocimientos en bases de datos relacionales con SQL y no relacionales con MongoDB, así como experiencia con Node.js, Python y HTML/CSS.<br>He desarrollado proyectos propios fuera del ámbito universitario, lo que me ha dado una visión completa del ciclo de desarrollo de software. También me desenvuelvo en inglés a nivel intermedio-avanzado, lo que me permite acceder a documentación técnica y comunicarme en entornos internacionales. |
-| <img src="assets/img/Chapter1/members/Adriana.jpg " width="3000"/>  |                                                                   **Ramos Fuentes Rivera Adriana Nicole \- U202018427** <br> Soy Adriana Nicole Ramos Fuentes Rivera, estudio la carrera de Ingeniería de Software en la UPC, actualmente estoy en el 5to ciclo. Me gusta aprender nuevas tecnologias y conocimientos complementarios que me permitan desarrollar soluciones a problematicas dentro de un contexto real. Cuento con experiencia en lenguajes de programación como C++ y Python, además de conocimientos en base de datos no relacional como MongoDB. Dentro del equipo, me enfoco en el desarrollo de frontend y backend, aplicando principios de Domain Driven Design para mantener una lógica de negocio clara y el modelo de arquitectura C4, para documentar la arquitectura de sistemas de software de una manera clara y jerárquica. Me considero una persona organizada y empática                                                                   |
-|  <img src="assets/img/Chapter1/members/Kiara.jpg " width="3000"/>   |                                                                                                                                                                                                                                                                                                       **Tuesta Girón Kiara Lucia \- U20251I477** <br> Soy estudiante de Ingeniería de Software, tengo 20 años y me interesa el desarrollo de aplicaciones. He trabajado con lenguajes como C++ y C#, y también tengo experiencia usando SQL para bases de datos. En trabajos en equipo me gusta participar activamente, aportar ideas y ayudar a que el grupo avance.                                                                                                                                                                                                                                                                                                       |
-|  <img src="assets/img/Chapter1/members/Emily.png " width="3000"/>   |                                                                                                                                                                                                                                                                                                                                            **Arroyo Gonzales Emily Juliette \- U202311469**   <br>  Soy estudiante de la carrera de Ingeniería de Software, tengo 20 años, tengo experiencia en lenguajes como C++, MongoDB, en trabajos grupales me gusta aportar ideas que contribuyan a mi grupo y avanzar según lo asignado.                                                                                                                                                                                                                                                                                                                                            |
-| <img src="assets/img/Chapter1/members/Mathias.jpeg " width="3000"/> |                                                                                                                                                                                                                                                                                     **Acuache Lucas Mathias Joaquin \- U202314898**  <br> Soy Mathias Joaquin Acuache Lucas, me encuentro en el sexto ciclo de la carrera de ingeniería de software, mi código de alumno es u202314898. Tengo experiencia en C++, SQL, MongoDB, además de utilizar GitHub de manera correcta. Me considero una persona que trata de apoyar en los diversos trabajos en equipo e investigo cosas nuevas.                                                                                                                                                                                                                                                                                     |                                                                          
+|                                Miembro                                 | Descripción |
+|:----------------------------------------------------------------------:|:---|
+|  <img src="docs/assets/img/Chapter1/members/Rommel.jpg" width="200"/>  | **Hurtado Balcazar Rommel Daniel - U202517474** <br><br> Soy Rommel Hurtado Balcázar, tengo 23 años y estudio Ingeniería de Software en el 5to-6to ciclo. Me considero un líder técnico orientado a la resolución de problemas, con capacidad para tomar decisiones y guiar al equipo hacia los objetivos del proyecto.<br><br>Cuento con experiencia en desarrollo fullstack, manejando tanto frontend como backend. En el lado del servidor trabajo principalmente con Java, y en el frontend utilizo React. Además, tengo conocimientos en bases de datos relacionales con SQL y no relacionales con MongoDB, así como experiencia con Node.js, Python y HTML/CSS.<br><br>He desarrollado proyectos propios fuera del ámbito universitario, lo que me ha dado una visión completa del ciclo de desarrollo de software. También me desenvuelvo en inglés a nivel intermedio-avanzado, lo que me permite acceder a documentación técnica y comunicarme en entornos internacionales. |
+| <img src="docs/assets/img/Chapter1/members/Adriana.jpg" width="200"/>  | **Ramos Fuentes Rivera Adriana Nicole - U202018427** <br><br> Soy Adriana Nicole Ramos Fuentes Rivera, estudio la carrera de Ingeniería de Software en la UPC, actualmente estoy en el 5to ciclo. Me gusta aprender nuevas tecnologías y conocimientos complementarios que me permitan desarrollar soluciones a problemáticas dentro de un contexto real. Cuento con experiencia en lenguajes de programación como C++ y Python, además de conocimientos en base de datos no relacional como MongoDB. Dentro del equipo, me enfoco en el desarrollo de frontend y backend, aplicando principios de Domain Driven Design y el modelo de arquitectura C4 para documentar sistemas de software de manera clara y jerárquica. Me considero una persona organizada y empática. |
+|  <img src="docs/assets/img/Chapter1/members/Kiara.jpg" width="200"/>   | **Tuesta Girón Kiara Lucia - U20251I477** <br><br> Soy estudiante de Ingeniería de Software, tengo 20 años y me interesa el desarrollo de aplicaciones. He trabajado con lenguajes como C++ y C#, y también tengo experiencia usando SQL para bases de datos. En trabajos en equipo me gusta participar activamente, aportar ideas y ayudar a que el grupo avance. |
+|  <img src="docs/assets/img/Chapter1/members/Emily.png" width="200"/>   | **Arroyo Gonzales Emily Juliette - U202311469** <br><br> Soy estudiante de la carrera de Ingeniería de Software, tengo 20 años y tengo experiencia en lenguajes como C++ y MongoDB. En trabajos grupales me gusta aportar ideas que contribuyan a mi grupo y avanzar según lo asignado. |
+| <img src="docs/assets/img/Chapter1/members/Mathias.jpeg" width="200"/> | **Acuache Lucas Mathias Joaquin - U202314898** <br><br> Soy Mathias Joaquin Acuache Lucas, me encuentro en el sexto ciclo de la carrera de Ingeniería de Software. Tengo experiencia en C++, SQL y MongoDB, además de utilizar GitHub de manera correcta. Me considero una persona que trata de apoyar en los diversos trabajos en equipo e investigo cosas nuevas. |
 
 #### 1.2. Solution Profile
 ##### 1.2.1. Antecedentes y problemática
@@ -370,7 +368,7 @@ objetivo, las ideas de solución, las hipótesis a validar, y el mínimo esfuerz
 necesario para aprender antes de construir. El canvas completo se presenta en
 la figura adjunta.
 
-![LeanUXCanvas(V2)](/docs/assets/img/LeanUXCanvas(V2).png)
+![LeanUXCanvas(V2)](docs/assets/img/LeanUXCanvas(V2).png)
 
 #### 1.3. Segmentos objetivo
 
@@ -1027,7 +1025,7 @@ Para esta sección se ha realizado la creación del Impact Mapping de KAMPO, bas
 
 #### Impact Mapping - Ingeniero agrónomo asesor
 
-<img alt="Impact Mapping Ingeniero Agrónomo Asesor" src="assets/img/Impact Mapping/Impact Mapping.png">
+<img alt="Impact Mapping Ingeniero Agrónomo Asesor" src="docs/assets/img/Impact Mapping/Impact Mapping.png">
 
 [Ver Imagen](https://raw.githubusercontent.com/GreenSpot-app/Kampo-Report/refs/heads/feature/sprint1-emily/assets/img/Impact%20Mapping/Impact%20Mapping.png)
 
@@ -1295,10 +1293,10 @@ El wireframe de la Landing Page se diseñó con un enfoque en la jerarquía de i
 
 * **Navegación:** Un menú superior fijo (Sticky Navbar) que permite el acceso rápido a las secciones de beneficios y precios.
 
-![WireFrame1](assets/img/Web-Wireframe1.png)
-![WireFrame2](assets/img/Web-Wireframe2.png)
-![WireFrame3](assets/img/Page-Wireframe.png)
-![WireFrame4](assets/img/Page-Wireframe1.png)
+![WireFrame1](./docs/assets/img/Web-Wireframe1.png)
+![WireFrame2](./docs/assets/img/Web-Wireframe2.png)
+![WireFrame3](./docs/assets/img/Page-Wireframe.png)
+![WireFrame4](./docs/assets/img/Page-Wireframe1.png)
 
 ##### 4.3.2. Landing Page Mock-up
 
@@ -1310,10 +1308,10 @@ El mock-up aplica la identidad visual de la marca utilizando la paleta de colore
 
 * **Imágenes:** Se incluyeron fotografías de alta resolución del sector agrícola peruano para generar cercanía y confianza con el usuario final.
 
-![Mockup1](assets/img/Web-Mockup.png)
-![Mockup2](assets/img/Web-Mockup1.png)
-![Mockup3](assets/img/Page-Mockup.png)
-![Mockup4](assets/img/Page-Mockup1.png)
+![Mockup1](./docs/assets/img/Web-Mockup.png)
+![Mockup2](./docs/assets/img/Web-Mockup1.png)
+![Mockup3](./docs/assets/img/Page-Mockup.png)
+![Mockup4](./docs/assets/img/Page-Mockup1.png)
 
 ## 4.4. Web Applications UX/UI Design
 
@@ -1324,11 +1322,11 @@ Los wireframes de la aplicación web se dividieron en dos vistas principales par
 
 * **Registro de Visita (Mobile):** Diseñado bajo el principio de "Thumb-Driven Design", ubicando los controles principales en la zona de fácil acceso para el pulgar. Se reemplazó el teclado por sliders y dropdowns para agilizar el registro bajo la luz del sol.
 
-![Wireframes](assets/img/WireFrames.png)
+![Wireframes](./docs/assets/img/WireFrames.png)
 
 ##### 4.4.2. Web Applications Wireflow Diagrams
 El usuario puede manejar las diversas opciones que tiene cuando entra en su fundo, de esta manera se tiene un flujo centrandose en todo lo que puede realizar de manera autonoma, por lo cual es una manera interactiva de poder realizar esto.
-![Mockup4](assets/img/Page-Mockup1.png)
+![Mockup4](./docs/assets/img/Page-Mockup1.png)
 
 ##### 4.4.3. Web Applications Mock-ups
 
@@ -1341,7 +1339,7 @@ Los mock-ups finales integran el Color System semántico de KAMPO:
 ##### 4.4.4. Web Applications User Flow Diagrams
 Para validar la experiencia de usuario (UX), se desarrolló un prototipo funcional e interactivo en Figma. Este prototipo permite simular el flujo real de un ingeniero agrónomo, desde la recepción de una alerta hídrica hasta el registro de una inspección en campo. Se implementaron transiciones de tipo 'Smart Animate' para representar de forma fluida el despliegue de menús laterales y el movimiento de los sliders de severidad, garantizando que la navegación sea intuitiva y eficiente.
 
-![Mockups](assets/img/Mockups.png)
+![Mockups](./docs/assets/img/Mockups.png)
 
 ## 4.5. Web Applications Prototyping
 ## 4.6. Domain-Driven Software Architecture
@@ -1462,16 +1460,64 @@ Para validar la experiencia de usuario (UX), se desarrolló un prototipo funcion
 
 ## 4.7. Software Object-Oriented Design
 ##### 4.7.1. Class Diagrams
-<<<<<<< HEAD
-<p align="center">
-  <img src="docs/assets/img/class-diagram/class-diagram.png" width="500"/>
-  <br/>
-</p>
-=======
 
-![Class-Diagrams](docs/assets/img/class-diagram.jpeg)
+En esta sección se presentan los diagramas de clases correspondientes a cada Bounded Context del sistema, diferenciando entre la arquitectura del backend y del frontend. Todos los diagramas han sido elaborados en PlantUML y se encuentran en formato `.puml`.
 
->>>>>>> develop
+Estos archivos representan la estructura de clases, atributos y relaciones de cada módulo, permitiendo una visión clara de la separación de responsabilidades entre capas.
+
+---
+
+### Alert Management
+- Backend: `alert-management-backend.puml`
+- Frontend: `alert-management-frontend.puml`
+
+### Employee Management
+- Backend:
+  [Employee Management Backend](./docs/ClassDiagrams/EmployeeManagement/EmployeeManagementBack.puml)
+- Frontend:
+  [Employee Management Frontend](./docs/ClassDiagrams/EmployeeManagement/EmployeeManagementFront.puml)
+
+### Field Operation
+- Backend: `field-operation-backend.puml`
+- Frontend: `field-operation-frontend.puml`
+
+### Financial Management
+- Backend: `financial-management-backend.puml`
+- Frontend: `financial-management-frontend.puml`
+
+### Inventory Management
+- Backend: `inventory-management-backend.puml`
+- Frontend: `inventory-management-frontend.puml`
+
+### Monitoring IoT
+- Backend: `monitoring-iot-backend.puml`
+- Frontend: `monitoring-iot-frontend.puml`
+
+### Organization Management
+- Backend: `organization-management-backend.puml`
+- Frontend: `organization-management-frontend.puml`
+
+### Profile & Access
+- Backend: `profile-access-backend.puml`
+- Frontend: `profile-access-frontend.puml`
+
+### Report
+- Backend: `report-backend.puml`
+- Frontend: `report-frontend.puml`
+
+### Season Management
+- Backend: `season-management-backend.puml`
+- Frontend: `season-management-frontend.puml`
+
+### Subscription
+- Backend: `subscription-backend.puml`
+- Frontend: `subscription-frontend.puml`
+
+---
+
+Cada uno de estos diagramas permite entender cómo se estructuran las clases en el backend y cómo se manejan en el frontend dentro de cada bounded context, manteniendo la separación de responsabilidades del sistema.
+
+
 ## 4.8. Database Design
 ##### 4.8.1. Database Diagrams
 ![Database-Diagrams](docs/assets/img/kampo-database-diagram.png)
