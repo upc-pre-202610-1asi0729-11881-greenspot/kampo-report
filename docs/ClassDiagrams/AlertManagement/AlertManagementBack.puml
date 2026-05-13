@@ -1,0 +1,149 @@
+@startuml
+
+left to right direction
+
+title Class Diagram - Alert Management (Backend)
+
+package "domain" {
+
+  package "services" {
+    interface AlertDomainService {
+      +validateAlertRule(alertRule: AlertRule): void
+      +evaluateCondition(alertRule: AlertRule): boolean
+      +sendAlert(alert: Alert): void
+      +markAlertAsRead(alert: Alert): void
+    }
+  }
+
+  package "model" {
+
+    package "aggregate" {
+      class AlertRule {
+        -id: AlertRuleId
+        -readingType: ReadingType
+        -conditionOperator: ConditionOperator
+        -severity: SeverityLevel
+        -fieldId: FieldId
+
+        +create(command: ConfigureAlertRuleCommand): AlertRule
+        +evaluate(command: EvaluateConditionCommand): boolean
+        +getId(): AlertRuleId
+        +getReadingType(): ReadingType
+        +getConditionOperator(): ConditionOperator
+        +getSeverity(): SeverityLevel
+        +getFieldId(): FieldId
+      }
+
+      class Alert {
+        -id: AlertId
+        -message: String
+        -priority: AlertPriority
+        -isRead: boolean
+        -fieldId: FieldId
+        -alertRuleId: AlertRuleId
+
+        +create(command: SendAlertCommand): Alert
+        +markAsRead(command: MarkAlertReadCommand): void
+        +getId(): AlertId
+        +getMessage(): String
+        +getPriority(): AlertPriority
+        +getIsRead(): boolean
+        +getFieldId(): FieldId
+        +getAlertRuleId(): AlertRuleId
+      }
+    }
+
+    package "enums" {
+      enum AlertPriority {
+        LOW
+        MEDIUM
+        HIGH
+      }
+
+      enum ReadingType {
+        TEMPERATURE
+        HUMIDITY
+        PH
+      }
+
+      enum ConditionOperator {
+        GREATER_THAN
+        LESS_THAN
+        EQUAL
+      }
+
+      enum SeverityLevel {
+        LOW
+        MEDIUM
+        HIGH
+      }
+    }
+
+    package "valueobject" {
+      class AlertId {
+        -value: Long
+        +of(value: Long): AlertId
+        +getValue(): Long
+      }
+
+      class AlertRuleId {
+        -value: Long
+        +of(value: Long): AlertRuleId
+        +getValue(): Long
+      }
+
+      class FieldId {
+        -value: Long
+        +of(value: Long): FieldId
+        +getValue(): Long
+      }
+    }
+  }
+
+  package "commands" {
+    class ConfigureAlertRuleCommand {
+      -readingType: ReadingType
+      -conditionOperator: ConditionOperator
+      -severity: SeverityLevel
+      -fieldId: FieldId
+    }
+
+    class EvaluateConditionCommand {
+      -alertRuleId: AlertRuleId
+    }
+
+    class SendAlertCommand {
+      -message: String
+      -priority: AlertPriority
+      -fieldId: FieldId
+      -alertRuleId: AlertRuleId
+    }
+
+    class MarkAlertReadCommand {
+      -alertId: AlertId
+    }
+  }
+}
+
+AlertDomainService --> AlertRule
+AlertDomainService --> Alert
+
+AlertRule --> AlertRuleId
+AlertRule --> ReadingType
+AlertRule --> ConditionOperator
+AlertRule --> SeverityLevel
+AlertRule --> FieldId
+
+Alert --> AlertId
+Alert --> AlertPriority
+Alert --> FieldId
+Alert --> AlertRuleId
+
+Alert --> AlertRule
+
+ConfigureAlertRuleCommand --> AlertRule
+EvaluateConditionCommand --> AlertRule
+SendAlertCommand --> Alert
+MarkAlertReadCommand --> Alert
+
+@enduml

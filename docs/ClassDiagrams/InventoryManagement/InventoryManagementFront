@@ -1,0 +1,254 @@
+@startuml
+left to right direction
+title Class Diagram - Inventory Management (Frontend)
+
+package "application" {
+  class InventoryStore <<Store>> {
+    -inventories: Inventory[]
+    -suppliers: Supplier[]
+    -orders: OrderInput[]
+    -selectedInventory: Inventory
+    -isLoading: boolean
+
+    +getInventories(): void
+    +getSuppliers(): void
+    +getOrders(): void
+    +updateStock(inventoryId: number, quantity: number): void
+    +addSupplier(supplier: Supplier): void
+    +orderInput(inventoryId: number, supplierId: number, quantity: number): void
+    +receiveInput(orderId: number, quantity: number): void
+    +registerInput(inventory: Inventory): void
+    +selectInventory(inventoryId: number): void
+  }
+}
+
+package "presentation" {
+  package "views" {
+    class InventoryViewComponent <<Component>> {
+      -inventories: Inventory[]
+      -selectedInventory: Inventory
+      -isLoading: boolean
+
+      +ngOnInit(): void
+      +onUpdateStock(): void
+      +onRegisterInput(): void
+      +onSelectInventory(inventoryId: number): void
+    }
+
+    class InventoryFormComponent <<Component>> {
+      -inventory: Inventory
+
+      +ngOnInit(): void
+      +onRegisterInput(): void
+      +onUpdateStock(): void
+    }
+
+    class InventoryListComponent <<Component>> {
+      -inventories: Inventory[]
+      -isLoading: boolean
+
+      +ngOnInit(): void
+      +onSelectInventory(inventoryId: number): void
+    }
+
+    class SupplierFormComponent <<Component>> {
+      -supplier: Supplier
+
+      +ngOnInit(): void
+      +onAddSupplier(): void
+    }
+
+    class SupplierContactViewComponent <<Component>> {
+      -supplier: Supplier
+
+      +ngOnInit(): void
+      +showContact(): string
+    }
+
+    class OrderInputFormComponent <<Component>> {
+      -order: OrderInput
+      -suppliers: Supplier[]
+
+      +ngOnInit(): void
+      +onOrderInput(): void
+      +onReceiveInput(orderId: number): void
+    }
+
+    class StockDashboardComponent <<Component>> {
+      -inventories: Inventory[]
+      -isLoading: boolean
+
+      +ngOnInit(): void
+      +showStockStatus(): string
+    }
+  }
+}
+
+package "infrastructure" {
+  class InventoryApi {
+    -inventoriesEndpoint: string
+    -suppliersEndpoint: string
+    -ordersEndpoint: string
+
+    +getInventories(): Observable<Inventory[]>
+    +getSuppliers(): Observable<Supplier[]>
+    +getOrders(): Observable<OrderInput[]>
+    +updateStock(inventoryId: number, quantity: number): Observable<Inventory>
+    +addSupplier(supplier: Supplier): Observable<Supplier>
+    +orderInput(inventoryId: number, supplierId: number, quantity: number): Observable<OrderInput>
+    +receiveInput(orderId: number, quantity: number): Observable<OrderInput>
+    +registerInput(inventory: Inventory): Observable<Inventory>
+  }
+
+  class InventoryAssembler {
+    +toEntityFromResponse(response: InventoryResponse): Inventory
+    +toResourceFromEntity(entity: Inventory): InventoryResource
+  }
+
+  class SupplierAssembler {
+    +toEntityFromResponse(response: SupplierResponse): Supplier
+    +toResourceFromEntity(entity: Supplier): SupplierResource
+  }
+
+  class OrderInputAssembler {
+    +toEntityFromResponse(response: OrderInputResponse): OrderInput
+    +toResourceFromEntity(entity: OrderInput): OrderInputResource
+  }
+
+  class InventoryResponse {
+    -id: number
+    -name: string
+    -quantity: number
+    -unit: string
+    -status: string
+  }
+
+  class SupplierResponse {
+    -id: number
+    -name: string
+    -contact: string
+    -email: string
+  }
+
+  class OrderInputResponse {
+    -id: number
+    -inventoryId: number
+    -supplierId: number
+    -quantity: number
+    -status: string
+  }
+
+  class InventoryResource {
+    -name: string
+    -quantity: number
+    -unit: string
+  }
+
+  class SupplierResource {
+    -name: string
+    -contact: string
+    -email: string
+  }
+
+  class OrderInputResource {
+    -inventoryId: number
+    -supplierId: number
+    -quantity: number
+  }
+}
+
+package "domain" {
+  package "model" {
+    package "entities" {
+      class Inventory <<Entity>> {
+        -id: number
+        -name: string
+        -quantity: number
+        -unit: string
+        -minStock: number
+        -status: InventoryStatus
+
+        +getId(): number
+        +getName(): string
+        +getQuantity(): number
+        +getStatus(): InventoryStatus
+        +setQuantity(quantity: number): void
+      }
+
+      class Supplier <<Entity>> {
+        -id: number
+        -name: string
+        -contact: string
+        -email: string
+
+        +getId(): number
+        +getName(): string
+        +getContact(): string
+        +getEmail(): string
+      }
+
+      class OrderInput <<Entity>> {
+        -id: number
+        -inventoryId: number
+        -supplierId: number
+        -quantity: number
+        -status: OrderStatus
+
+        +getId(): number
+        +getInventoryId(): number
+        +getSupplierId(): number
+        +getQuantity(): number
+        +getStatus(): OrderStatus
+        +setStatus(status: OrderStatus): void
+      }
+    }
+
+    package "enums" {
+      enum InventoryStatus {
+        AVAILABLE
+        LOW_STOCK
+        OUT_OF_STOCK
+      }
+
+      enum OrderStatus {
+        PENDING
+        RECEIVED
+        CANCELLED
+      }
+    }
+  }
+}
+
+InventoryStore -down-> InventoryApi : delegates to
+InventoryStore -right-> Inventory
+InventoryStore -right-> Supplier
+InventoryStore -right-> OrderInput
+
+InventoryApi ..down..> InventoryAssembler : uses for conversion
+InventoryApi ..down..> SupplierAssembler : uses for conversion
+InventoryApi ..down..> OrderInputAssembler : uses for conversion
+
+InventoryAssembler ..right..> InventoryResponse
+InventoryAssembler ..right..> InventoryResource
+InventoryAssembler ..right..> Inventory
+
+SupplierAssembler ..right..> SupplierResponse
+SupplierAssembler ..right..> SupplierResource
+SupplierAssembler ..right..> Supplier
+
+OrderInputAssembler ..right..> OrderInputResponse
+OrderInputAssembler ..right..> OrderInputResource
+OrderInputAssembler ..right..> OrderInput
+
+InventoryViewComponent ..down..> InventoryStore : uses
+InventoryFormComponent ..down..> InventoryStore : uses
+InventoryListComponent ..down..> InventoryStore : uses
+SupplierFormComponent ..down..> InventoryStore : uses
+SupplierContactViewComponent ..down..> InventoryStore : uses
+OrderInputFormComponent ..down..> InventoryStore : uses
+StockDashboardComponent ..down..> InventoryStore : uses
+
+Inventory --> InventoryStatus
+OrderInput --> OrderStatus
+
+@enduml

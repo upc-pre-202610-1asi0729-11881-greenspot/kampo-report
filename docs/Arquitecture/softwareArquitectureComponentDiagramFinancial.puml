@@ -1,0 +1,83 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+LAYOUT_TOP_DOWN()
+HIDE_STEREOTYPE()
+
+title Component Diagram – Financial Management Bounded Context
+
+Container_Ext(spa, "Web Application", "Angular", "Calls financial management endpoints")
+Container_Ext(orgBC, "Organization Management BC", "Internal", "Provides fundo and field context")
+Container_Ext(inventoryBC, "Inventory Management BC", "Internal", "Publishes InputPurchased events with costs")
+Container_Ext(employeeBC, "Employee Management BC", "Internal", "Publishes EmployeeExpense events")
+ContainerDb_Ext(db, "Database", "MySQL", "Persistent storage")
+
+Container_Boundary(financialBC, "Financial Management – Bounded Context") {
+
+    Component(expenseController,     "ExpenseController",            "REST Controller",     "Handles /expenses endpoints: register, list, categorize")
+    Component(incomeController,      "IncomeController",             "REST Controller",     "Handles /incomes endpoints: register, list")
+    Component(saleController,        "SaleController",               "REST Controller",     "Handles /sales endpoints: register, list")
+    Component(profitabilityCtrl,     "ProfitabilityController",      "REST Controller",     "Handles /profitability endpoints: dashboard, calculate")
+
+    Component(registerExpenseUC,     "RegisterExpenseUseCase",       "Application Service", "Validates and persists a new expense record")
+    Component(registerIncomeUC,      "RegisterIncomeUseCase",        "Application Service", "Validates and persists a new income record")
+    Component(registerSaleUC,        "RegisterSaleUseCase",          "Application Service", "Records a crop sale and links to season")
+    Component(calculateProfitUC,     "CalculateProfitabilityUseCase","Application Service", "Aggregates income and expenses to compute profitability")
+    Component(getCategoryExpenseUC,  "GetExpensesByCategoryUseCase", "Application Service", "Queries and groups expenses by category")
+    Component(getIncomeHistoryUC,    "GetIncomeHistoryUseCase",      "Application Service", "Retrieves income history with filters")
+
+    Component(financialDomainSvc,    "FinancialDomainService",       "Domain Service",      "Business rules: profitability formula, expense categorization rules")
+    Component(saleDomainSvc,         "SaleDomainService",            "Domain Service",      "Business rules: sale validation and revenue recognition")
+
+    Component(expenseRepo,           "ExpenseRepository",            "Repository",          "CRUD for Expense aggregate")
+    Component(incomeRepo,            "IncomeRepository",             "Repository",          "CRUD for Income aggregate")
+    Component(saleRepo,              "SaleRepository",               "Repository",          "CRUD for Sale aggregate")
+    Component(categoryRepo,          "ExpenseCategoryRepository",    "Repository",          "CRUD for ExpenseCategory reference data")
+
+    Component(eventConsumer,         "FinancialEventConsumer",       "Event Consumer",      "Listens to InputPurchased and EmployeeExpense events")
+    Component(profitabilityPub,      "ProfitabilityEventPublisher",  "Event Publisher",     "Publishes ProfitabilityCalculated event to Report BC")
+}
+
+Rel(spa, expenseController,    "GET|POST /expenses",       "HTTPS/JSON")
+Rel(spa, incomeController,     "GET|POST /incomes",        "HTTPS/JSON")
+Rel(spa, saleController,       "GET|POST /sales",          "HTTPS/JSON")
+Rel(spa, profitabilityCtrl,    "GET /profitability",       "HTTPS/JSON")
+
+Rel(inventoryBC, eventConsumer, "InputPurchased event",    "Internal")
+Rel(employeeBC,  eventConsumer, "EmployeeExpense event",   "Internal")
+
+Rel(expenseController,   registerExpenseUC,    "Calls")
+Rel(expenseController,   getCategoryExpenseUC, "Calls")
+Rel(incomeController,    registerIncomeUC,     "Calls")
+Rel(incomeController,    getIncomeHistoryUC,   "Calls")
+Rel(saleController,      registerSaleUC,       "Calls")
+Rel(profitabilityCtrl,   calculateProfitUC,    "Calls")
+
+Rel(eventConsumer,       registerExpenseUC,    "Auto-registers expense from event")
+
+Rel(registerExpenseUC,   financialDomainSvc,   "Validates expense category rules")
+Rel(registerExpenseUC,   expenseRepo,          "Persists expense")
+Rel(registerExpenseUC,   categoryRepo,         "Queries category")
+Rel(registerIncomeUC,    financialDomainSvc,   "Validates income record")
+Rel(registerIncomeUC,    incomeRepo,           "Persists income")
+Rel(registerSaleUC,      saleDomainSvc,        "Validates sale data")
+Rel(registerSaleUC,      saleRepo,             "Persists sale")
+Rel(registerSaleUC,      incomeRepo,           "Records as income")
+Rel(calculateProfitUC,   financialDomainSvc,   "Applies profitability formula")
+Rel(calculateProfitUC,   expenseRepo,          "Queries total expenses")
+Rel(calculateProfitUC,   incomeRepo,           "Queries total income")
+Rel(calculateProfitUC,   saleRepo,             "Queries total sales")
+Rel(calculateProfitUC,   profitabilityPub,     "Publishes result")
+Rel(getCategoryExpenseUC,expenseRepo,          "Queries by category")
+Rel(getCategoryExpenseUC,categoryRepo,         "Queries categories")
+Rel(getIncomeHistoryUC,  incomeRepo,           "Queries with filters")
+
+Rel(expenseRepo,  db, "Reads/Writes", "JDBC")
+Rel(incomeRepo,   db, "Reads/Writes", "JDBC")
+Rel(saleRepo,     db, "Reads/Writes", "JDBC")
+Rel(categoryRepo, db, "Reads/Writes", "JDBC")
+
+Rel(registerExpenseUC, orgBC, "Validates fundo context", "Internal call")
+Rel(registerSaleUC,    orgBC, "Validates field context", "Internal call")
+
+@enduml

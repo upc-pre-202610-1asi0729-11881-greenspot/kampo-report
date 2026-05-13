@@ -1,0 +1,151 @@
+@startuml
+
+left to right direction
+
+title Class Diagram - Subscription (Frontend)
+
+package "application" {
+
+  class SubscriptionStore <<Store>> {
+    -subscriptions: Subscription[]
+    -selectedSubscriptionId: number
+    -isLoading: boolean
+
+    +getSubscriptions(): void
+    +purchaseSubscription(plan: SubscriptionPlan, userId: number): void
+    +renewSubscription(subscriptionId: number): void
+    +cancelSubscription(subscriptionId: number): void
+    +selectSubscription(id: number): void
+  }
+
+}
+
+package "presentation" {
+
+  package "views" {
+
+    class SubscriptionViewComponent <<Component>> {
+      -subscriptions: Subscription[]
+      -selectedSubscriptionId: number
+      -isLoading: boolean
+
+      +ngOnInit(): void
+      +onPurchaseSubscription(): void
+      +onRenewSubscription(id: number): void
+      +onCancelSubscription(id: number): void
+      +onSelectSubscription(id: number): void
+    }
+
+    class SubscriptionCardComponent <<Component>> {
+      -subscription: Subscription
+
+      +ngOnInit(): void
+      +showStatus(): string
+    }
+
+    class SubscriptionActionsComponent <<Component>> {
+      -selectedSubscriptionId: number
+
+      +onPurchase(): void
+      +onRenew(): void
+      +onCancel(): void
+    }
+
+  }
+
+}
+
+package "infrastructure" {
+
+  class SubscriptionApi {
+    -subscriptionsEndpoint: string
+
+    +getSubscriptions(): Observable<Subscription[]>
+    +purchaseSubscription(resource: SubscriptionResource): Observable<Subscription>
+    +renewSubscription(subscriptionId: number): Observable<Subscription>
+    +cancelSubscription(subscriptionId: number): Observable<Subscription>
+  }
+
+  class SubscriptionAssembler {
+    +toEntityFromResponse(response: SubscriptionResponse): Subscription
+    +toResourceFromEntity(entity: Subscription): SubscriptionResource
+  }
+
+  class SubscriptionResponse {
+    -id: number
+    -name: string
+    -description: string
+    -price: number
+    -startDate: Date
+    -endDate: Date
+    -status: string
+    -userId: number
+  }
+
+  class SubscriptionResource {
+    -name: string
+    -description: string
+    -price: number
+    -userId: number
+  }
+
+}
+
+package "domain" {
+
+  package "model" {
+
+    class Subscription <<Entity>> {
+      -id: number
+      -name: string
+      -description: string
+      -price: number
+      -startDate: Date
+      -endDate: Date
+      -status: SubscriptionStatus
+      -userId: number
+
+      +getId(): number
+      +getName(): string
+      +getDescription(): string
+      +getPrice(): number
+      +getStartDate(): Date
+      +getEndDate(): Date
+      +getStatus(): SubscriptionStatus
+      +getUserId(): number
+    }
+
+    enum SubscriptionStatus {
+      STARTED
+      RENEWED
+      CANCELLED
+    }
+
+    enum SubscriptionPlan {
+      MONTHLY
+      QUARTERLY
+      ANNUAL
+    }
+
+  }
+
+}
+
+SubscriptionStore -down-> SubscriptionApi : delegates to
+
+SubscriptionViewComponent ..down..> SubscriptionStore : uses
+SubscriptionCardComponent ..down..> SubscriptionStore : uses
+SubscriptionActionsComponent ..down..> SubscriptionStore : uses
+
+SubscriptionApi ..down..> SubscriptionAssembler : uses for conversion
+
+SubscriptionAssembler ..down..> SubscriptionResponse
+SubscriptionAssembler ..down..> SubscriptionResource
+SubscriptionAssembler ..right..> Subscription
+
+SubscriptionStore ..right..> Subscription
+
+Subscription --> SubscriptionStatus
+Subscription --> SubscriptionPlan
+
+@enduml

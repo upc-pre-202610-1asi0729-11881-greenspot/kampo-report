@@ -1,0 +1,210 @@
+@startuml
+
+left to right direction
+
+title Class Diagram - Alert Management (Frontend)
+
+package "application" {
+
+  class AlertStore <<Store>> {
+    -alerts: Alert[]
+    -alertRules: AlertRule[]
+    -selectedAlertId: number
+    -isLoading: boolean
+
+    +getAlerts(): void
+    +getAlertRules(): void
+    +configureAlertRule(fieldsId: number, readingType: ReadingType, conditionOperator: ConditionOperator, severity: SeverityLevel): void
+    +evaluateCondition(alertRuleId: number): void
+    +sendAlert(alertRuleId: number, message: string, priority: AlertPriority): void
+    +markAlertRead(alertId: number): void
+    +selectAlert(id: number): void
+  }
+
+}
+
+package "presentation" {
+
+  package "views" {
+
+    class AlertViewComponent <<Component>> {
+      -alerts: Alert[]
+      -alertRules: AlertRule[]
+      -selectedAlertId: number
+      -isLoading: boolean
+
+      +ngOnInit(): void
+      +onConfigureAlertRule(): void
+      +onEvaluateCondition(id: number): void
+      +onSendAlert(): void
+      +onMarkAlertRead(id: number): void
+      +onSelectAlert(id: number): void
+    }
+
+    class AlertRuleFormComponent <<Component>> {
+      -alertRule: AlertRule
+
+      +ngOnInit(): void
+      +onSubmit(): void
+    }
+
+    class AlertListComponent <<Component>> {
+      -alerts: Alert[]
+
+      +ngOnInit(): void
+      +onSelect(id: number): void
+      +onMarkRead(id: number): void
+    }
+
+  }
+
+}
+
+package "infrastructure" {
+
+  class AlertApi {
+    -alertsEndpoint: string
+    -alertRulesEndpoint: string
+
+    +getAlerts(): Observable<Alert[]>
+    +getAlertRules(): Observable<AlertRule[]>
+    +configureAlertRule(resource: AlertRuleResource): Observable<AlertRule>
+    +evaluateCondition(alertRuleId: number): Observable<boolean>
+    +sendAlert(resource: AlertResource): Observable<Alert>
+    +markAlertRead(alertId: number): Observable<Alert>
+  }
+
+  class AlertAssembler {
+    +toEntityFromResponse(response: AlertResponse): Alert
+    +toResourceFromEntity(entity: Alert): AlertResource
+  }
+
+  class AlertRuleAssembler {
+    +toEntityFromResponse(response: AlertRuleResponse): AlertRule
+    +toResourceFromEntity(entity: AlertRule): AlertRuleResource
+  }
+
+  class AlertResponse {
+    -id: number
+    -message: string
+    -priority: string
+    -isRead: boolean
+    -fieldsId: number
+    -alertRulesId: number
+  }
+
+  class AlertRuleResponse {
+    -id: number
+    -readingType: string
+    -conditionOperator: string
+    -severity: string
+    -fieldsId: number
+  }
+
+  class AlertResource {
+    -message: string
+    -priority: string
+    -fieldsId: number
+    -alertRulesId: number
+  }
+
+  class AlertRuleResource {
+    -readingType: string
+    -conditionOperator: string
+    -severity: string
+    -fieldsId: number
+  }
+
+}
+
+package "domain" {
+
+  package "model" {
+
+    class Alert <<Entity>> {
+      -id: number
+      -message: string
+      -priority: AlertPriority
+      -isRead: boolean
+      -fieldsId: number
+      -alertRulesId: number
+
+      +getId(): number
+      +getMessage(): string
+      +getPriority(): AlertPriority
+      +getIsRead(): boolean
+      +getFieldsId(): number
+      +getAlertRulesId(): number
+    }
+
+    class AlertRule <<Entity>> {
+      -id: number
+      -readingType: ReadingType
+      -conditionOperator: ConditionOperator
+      -severity: SeverityLevel
+      -fieldsId: number
+
+      +getId(): number
+      +getReadingType(): ReadingType
+      +getConditionOperator(): ConditionOperator
+      +getSeverity(): SeverityLevel
+      +getFieldsId(): number
+    }
+
+    enum AlertPriority {
+      LOW
+      MEDIUM
+      HIGH
+    }
+
+    enum SeverityLevel {
+      LOW
+      MEDIUM
+      HIGH
+    }
+
+    enum ConditionOperator {
+      GREATER_THAN
+      LESS_THAN
+      EQUAL
+    }
+
+    enum ReadingType {
+      TEMPERATURE
+      HUMIDITY
+      PH
+    }
+
+  }
+
+}
+
+AlertStore -down-> AlertApi : delegates to
+
+AlertViewComponent ..down..> AlertStore : uses
+AlertRuleFormComponent ..down..> AlertStore : uses
+AlertListComponent ..down..> AlertStore : uses
+
+AlertApi ..down..> AlertAssembler : uses for conversion
+AlertApi ..down..> AlertRuleAssembler : uses for conversion
+
+AlertAssembler ..down..> AlertResponse
+AlertAssembler ..down..> AlertResource
+AlertAssembler ..right..> Alert
+
+AlertRuleAssembler ..down..> AlertRuleResponse
+AlertRuleAssembler ..down..> AlertRuleResource
+AlertRuleAssembler ..right..> AlertRule
+
+AlertStore ..right..> Alert
+AlertStore ..right..> AlertRule
+
+Alert --> AlertRule
+
+Alert --> AlertPriority
+
+AlertRule --> ReadingType
+AlertRule --> ConditionOperator
+AlertRule --> SeverityLevel
+
+@enduml

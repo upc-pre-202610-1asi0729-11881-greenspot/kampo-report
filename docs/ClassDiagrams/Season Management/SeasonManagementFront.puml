@@ -1,0 +1,146 @@
+@startuml
+
+left to right direction
+
+title Class Diagram - Season Management (Frontend)
+
+package "application" {
+  class SeasonStore <<Store>> {
+    -seasons: Season[]
+    -selectedSeason: Season | null
+    -isLoading: boolean
+    -error: string | null
+
+    +loadSeasonsByField(fieldId: number): void
+    +assignCropToSeason(seasonId: number, cropId: number): void
+    +updateSeasonStatus(seasonId: number, status: SeasonStatus): void
+    +endSeason(seasonId: number): void
+    +selectSeason(id: number): void
+    +getSeasonById(id: number): Season | undefined
+  }
+
+  SeasonStore -down-> SeasonApi : delegates to
+  SeasonStore -right-> Season
+}
+
+package "presentation" {
+  package "views" {
+    class SeasonFormComponent <<Component>> {
+      -isLoading: boolean
+      -fieldId: number | null
+      -isEdit: boolean
+      -seasonId: number | null
+
+      +ngOnInit(): void
+      +onAssignCropToSeason(cropId: number): void
+      +onUpdateSeasonStatus(status: SeasonStatus): void
+      +onEndSeason(): void
+    }
+
+    class SeasonListComponent <<Component>> {
+      -isLoading: boolean
+      -displayedColumns: string[]
+
+      +ngOnInit(): void
+      +onSelectSeason(id: number): void
+      +navigateToNew(): void
+      +ngAfterViewChecked(): void
+    }
+
+    class SeasonDetailComponent <<Component>> {
+      -season: Season
+      -isLoading: boolean
+
+      +ngOnInit(): void
+      +showSeasonStatus(): string
+      +showCropName(): string
+    }
+  }
+
+  SeasonFormComponent  ..> SeasonStore : uses
+  SeasonListComponent  ..> SeasonStore : uses
+  SeasonDetailComponent ..> SeasonStore : uses
+}
+
+package "infrastructure" {
+  class SeasonApi {
+    -seasonsEndpoint: string
+    -assignCropEndpoint: string
+    -statusEndpoint: string
+
+    +getSeasonsByField(fieldId: number): Observable<Season[]>
+    +createSeason(season: Season): Observable<Season>
+    +assignCropToSeason(seasonId: number, cropId: number): Observable<Season>
+    +updateSeasonStatus(seasonId: number, status: string): Observable<Season>
+    +endSeason(seasonId: number): Observable<Season>
+  }
+
+  class SeasonAssembler {
+    +toEntityFromResponse(response: SeasonResponse): Season
+    +toResourceFromEntity(entity: Season): SeasonResource
+  }
+
+  class SeasonResponse {
+    +id: number
+    +fieldId: number
+    +cropId: number
+    +cropName: string
+    +status: string
+    +startedAt: Date
+    +endedAt: Date
+  }
+
+  class SeasonResource {
+    +fieldId: number
+    +cropId: number
+    +startedAt: Date
+  }
+
+  SeasonApi ..> SeasonAssembler : uses for conversion
+
+  SeasonAssembler ..> SeasonResponse
+  SeasonAssembler ..> SeasonResource
+  SeasonAssembler ..> Season
+}
+
+package "domain" {
+  package "model" {
+
+    package "entities" {
+      class Season <<Entity>> {
+        -id: number
+        -fieldId: number
+        -cropId: number
+        -cropName: string
+        -status: SeasonStatus
+        -startedAt: Date
+        -endedAt: Date
+
+        +getId(): number
+        +getFieldId(): number
+        +getCropId(): number
+        +getCropName(): string
+        +getStatus(): SeasonStatus
+        +getStartedAt(): Date
+        +getEndedAt(): Date
+        +assignCrop(cropId: number, cropName: string): void
+        +updateStatus(status: SeasonStatus): void
+        +end(): void
+        +isActive(): boolean
+      }
+    }
+
+    package "enums" {
+      enum SeasonStatus {
+        PLANTING
+        GROWING
+        HARVESTING
+        ENDED
+      }
+    }
+  }
+
+  Season --> SeasonStatus
+}
+
+@enduml

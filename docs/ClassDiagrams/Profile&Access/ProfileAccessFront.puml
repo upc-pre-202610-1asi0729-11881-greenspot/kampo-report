@@ -1,0 +1,232 @@
+@startuml
+
+left to right direction
+
+
+title Class Diagram - Profile & Access (Frontend)
+
+package "application" {
+
+  class ProfileAccessStore <<Store>> {
+    -users: User[]
+    -roles: Role[]
+    -permissions: Permission[]
+    -selectedUserId: number
+    -isLoading: boolean
+
+    +registerUser(firstName: string, lastName: string, email: string, phone: string): void
+    +login(email: string): void
+    +modifyProfile(userId: number, firstName: string, lastName: string, email: string, phone: string): void
+    +assignRole(userId: number, roleId: number): void
+    +assignPermission(roleId: number, permissionId: number): void
+    +getRoles(): void
+    +getPermissions(): void
+    +selectUser(id: number): void
+  }
+
+}
+
+package "presentation" {
+
+  package "views" {
+
+    class RegistrationFormComponent <<Component>> {
+      +onRegisterUser(): void
+    }
+
+    class LoginFormComponent <<Component>> {
+      +onLogin(): void
+    }
+
+    class ProfileViewComponent <<Component>> {
+      +onModifyProfile(): void
+    }
+
+    class RoleAssignmentComponent <<Component>> {
+      +onAssignRole(): void
+    }
+
+    class PermissionAssignmentComponent <<Component>> {
+      +onAssignPermission(): void
+    }
+
+  }
+
+}
+
+package "infrastructure" {
+
+  class ProfileAccessApi {
+    -usersEndpoint: string
+    -rolesEndpoint: string
+    -permissionsEndpoint: string
+
+    +registerUser(resource: UserResource): Observable<User>
+    +login(email: string): Observable<User>
+    +modifyProfile(userId: number, resource: UserResource): Observable<User>
+    +assignRole(resource: UserRoleResource): Observable<UserRole>
+    +assignPermission(resource: RolePermissionResource): Observable<RolePermission>
+    +getRoles(): Observable<Role[]>
+    +getPermissions(): Observable<Permission[]>
+  }
+
+  class UserAssembler {
+    +toEntityFromResponse(response: UserResponse): User
+    +toResourceFromEntity(entity: User): UserResource
+  }
+
+  class RoleAssembler {
+    +toEntityFromResponse(response: RoleResponse): Role
+  }
+
+  class PermissionAssembler {
+    +toEntityFromResponse(response: PermissionResponse): Permission
+  }
+
+  class UserResponse {
+    -id: number
+    -lastName: string
+    -firstName: string
+    -createdAt: Date
+    -email: string
+    -phone: string
+  }
+
+  class RoleResponse {
+    -id: number
+    -position: string
+    -description: string
+  }
+
+  class PermissionResponse {
+    -id: number
+    -category: string
+    -description: string
+  }
+
+  class UserResource {
+    -lastName: string
+    -firstName: string
+    -email: string
+    -phone: string
+  }
+
+  class UserRoleResource {
+    -rolesId: number
+    -userId: number
+  }
+
+  class RolePermissionResource {
+    -permissionId: number
+    -roleId: number
+  }
+
+}
+
+package "domain" {
+
+  package "model" {
+
+    class User <<Entity>> {
+      -id: number
+      -lastName: string
+      -firstName: string
+      -createdAt: Date
+      -email: string
+      -phone: string
+
+      +getId(): number
+      +getLastName(): string
+      +getFirstName(): string
+      +getCreatedAt(): Date
+      +getEmail(): string
+      +getPhone(): string
+    }
+
+    class Role <<Entity>> {
+      -id: number
+      -position: RolePosition
+      -description: string
+
+      +getId(): number
+      +getPosition(): RolePosition
+      +getDescription(): string
+    }
+
+    class Permission <<Entity>> {
+      -id: number
+      -category: PermissionCategory
+      -description: string
+
+      +getId(): number
+      +getCategory(): PermissionCategory
+      +getDescription(): string
+    }
+
+    class UserRole <<Entity>> {
+      -id: number
+      -rolesId: number
+      -userId: number
+    }
+
+    class RolePermission <<Entity>> {
+      -id: number
+      -permissionId: number
+      -roleId: number
+    }
+
+    enum RolePosition {
+      ADMIN
+      AGRONOMIST
+      TECHNICIAN
+      SUPERVISOR
+    }
+
+    enum PermissionCategory {
+      USERS
+      REPORTS
+      ALERTS
+      INVENTORY
+      FINANCIAL
+    }
+
+  }
+
+}
+
+ProfileAccessStore -down-> ProfileAccessApi : delegates to
+
+RegistrationFormComponent ..down..> ProfileAccessStore : uses
+LoginFormComponent ..down..> ProfileAccessStore : uses
+ProfileViewComponent ..down..> ProfileAccessStore : uses
+RoleAssignmentComponent ..down..> ProfileAccessStore : uses
+PermissionAssignmentComponent ..down..> ProfileAccessStore : uses
+
+ProfileAccessApi ..down..> UserAssembler : uses for conversion
+ProfileAccessApi ..down..> RoleAssembler : uses for conversion
+ProfileAccessApi ..down..> PermissionAssembler : uses for conversion
+
+UserAssembler ..right..> UserResponse
+UserAssembler ..right..> UserResource
+UserAssembler ..right..> User
+
+RoleAssembler ..right..> RoleResponse
+RoleAssembler ..right..> Role
+
+PermissionAssembler ..right..> PermissionResponse
+PermissionAssembler ..right..> Permission
+
+ProfileAccessStore ..right..> User
+ProfileAccessStore ..right..> Role
+ProfileAccessStore ..right..> Permission
+
+UserRole --> User
+UserRole --> Role
+
+RolePermission --> Role
+RolePermission --> Permission
+
+Role --> RolePosition
+Permission --> PermissionCategory
+
+@enduml

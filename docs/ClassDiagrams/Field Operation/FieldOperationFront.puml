@@ -1,0 +1,216 @@
+@startuml
+
+left to right direction
+
+title Class Diagram - Field Operation (Frontend)
+
+package "application" {
+  class FieldOperationStore <<Store>> {
+    -fieldVisits: FieldVisit[]
+    -selectedFieldVisit: FieldVisit | null
+    -observations: Observation[]
+    -isLoading: boolean
+    -error: string | null
+
+    +loadFieldVisits(fieldId: number): void
+    +scheduleFieldVisit(fieldVisit: FieldVisit): void
+    +completeFieldVisit(fieldVisitId: number): void
+    +registerObservation(observation: Observation): void
+    +uploadEvidence(fieldVisitId: number, file: File): void
+    +implementRecommendation(observationId: number, recommendation: string): void
+    +selectFieldVisit(id: number): void
+    +getFieldVisitById(id: number): FieldVisit | undefined
+  }
+
+  FieldOperationStore -down-> FieldOperationApi : delegates to
+  FieldOperationStore -right-> FieldVisit
+  FieldOperationStore -right-> Observation
+}
+
+package "presentation" {
+  package "views" {
+    class FieldVisitFormComponent <<Component>> {
+      -isLoading: boolean
+      -fieldId: number | null
+
+      +ngOnInit(): void
+      +onScheduleFieldVisit(fieldVisit: FieldVisit): void
+      +onCompleteFieldVisit(fieldVisitId: number): void
+    }
+
+    class FieldVisitListComponent <<Component>> {
+      -isLoading: boolean
+      -displayedColumns: string[]
+
+      +ngOnInit(): void
+      +onSelectFieldVisit(id: number): void
+      +navigateToNew(): void
+      +ngAfterViewChecked(): void
+    }
+
+    class ObservationFormComponent <<Component>> {
+      -isLoading: boolean
+      -fieldVisitId: number | null
+
+      +ngOnInit(): void
+      +onRegisterObservation(observation: Observation): void
+      +onUploadEvidence(file: File): void
+      +onImplementRecommendation(recommendation: string): void
+    }
+
+    class ObservationDetailComponent <<Component>> {
+      -observation: Observation
+      -isLoading: boolean
+
+      +ngOnInit(): void
+      +showPestSeverity(): string
+      +showDiseaseSeverity(): string
+    }
+  }
+
+  FieldVisitFormComponent    ..> FieldOperationStore : uses
+  FieldVisitListComponent    ..> FieldOperationStore : uses
+  ObservationFormComponent   ..> FieldOperationStore : uses
+  ObservationDetailComponent ..> FieldOperationStore : uses
+}
+
+package "infrastructure" {
+  class FieldOperationApi {
+    -fieldVisitsEndpoint: string
+    -observationsEndpoint: string
+    -evidenceEndpoint: string
+
+    +getFieldVisitsByField(fieldId: number): Observable<FieldVisit[]>
+    +scheduleFieldVisit(fieldVisit: FieldVisit): Observable<FieldVisit>
+    +completeFieldVisit(fieldVisitId: number): Observable<FieldVisit>
+    +registerObservation(observation: Observation): Observable<Observation>
+    +uploadEvidence(fieldVisitId: number, file: File): Observable<string>
+    +implementRecommendation(observationId: number, recommendation: string): Observable<Observation>
+  }
+
+  class FieldVisitAssembler {
+    +toEntityFromResponse(response: FieldVisitResponse): FieldVisit
+    +toResourceFromEntity(entity: FieldVisit): FieldVisitResource
+  }
+
+  class ObservationAssembler {
+    +toEntityFromResponse(response: ObservationResponse): Observation
+    +toResourceFromEntity(entity: Observation): ObservationResource
+  }
+
+  class FieldVisitResponse {
+    +id: number
+    +fieldId: number
+    +scheduledAt: Date
+    +doneAt: Date
+    +status: string
+    +observations: ObservationResponse[]
+  }
+
+  class ObservationResponse {
+    +id: number
+    +fieldVisitId: number
+    +notes: string
+    +pestName: string
+    +pestSeverity: string
+    +diseaseName: string
+    +diseaseSeverity: string
+    +recommendation: string
+    +evidenceUrl: string
+  }
+
+  class FieldVisitResource {
+    +fieldId: number
+    +scheduledAt: Date
+  }
+
+  class ObservationResource {
+    +fieldVisitId: number
+    +notes: string
+    +pestName: string
+    +pestSeverity: string
+    +diseaseName: string
+    +diseaseSeverity: string
+    +recommendation: string
+  }
+
+  FieldOperationApi ..> FieldVisitAssembler   : uses for conversion
+  FieldOperationApi ..> ObservationAssembler  : uses for conversion
+
+  FieldVisitAssembler ..> FieldVisitResponse
+  FieldVisitAssembler ..> FieldVisitResource
+  FieldVisitAssembler ..> FieldVisit
+
+  ObservationAssembler ..> ObservationResponse
+  ObservationAssembler ..> ObservationResource
+  ObservationAssembler ..> Observation
+}
+
+package "domain" {
+  package "model" {
+
+    package "entities" {
+      class FieldVisit <<Entity>> {
+        -id: number
+        -fieldId: number
+        -scheduledAt: Date
+        -doneAt: Date
+        -status: FieldVisitStatus
+        -observations: Observation[]
+
+        +getId(): number
+        +getFieldId(): number
+        +getScheduledAt(): Date
+        +getDoneAt(): Date
+        +getStatus(): FieldVisitStatus
+        +getObservations(): Observation[]
+        +complete(): void
+        +addObservation(observation: Observation): void
+      }
+
+      class Observation <<Entity>> {
+        -id: number
+        -fieldVisitId: number
+        -notes: string
+        -pestName: string
+        -pestSeverity: Severity
+        -diseaseName: string
+        -diseaseSeverity: Severity
+        -recommendation: string
+        -evidenceUrl: string
+
+        +getId(): number
+        +getFieldVisitId(): number
+        +getNotes(): string
+        +getPestName(): string
+        +getPestSeverity(): Severity
+        +getDiseaseName(): string
+        +getDiseaseSeverity(): Severity
+        +getRecommendation(): string
+        +getEvidenceUrl(): string
+        +uploadEvidence(url: string): void
+        +implementRecommendation(recommendation: string): void
+      }
+    }
+
+    package "enums" {
+      enum FieldVisitStatus {
+        SCHEDULED
+        DONE
+      }
+
+      enum Severity {
+        LOW
+        MEDIUM
+        HIGH
+        CRITICAL
+      }
+    }
+  }
+
+  FieldVisit "1" *--> "many" Observation : contains
+  FieldVisit   --> FieldVisitStatus
+  Observation  --> Severity
+}
+
+@enduml

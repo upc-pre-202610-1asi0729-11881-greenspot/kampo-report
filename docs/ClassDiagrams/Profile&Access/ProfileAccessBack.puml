@@ -1,0 +1,199 @@
+@startuml
+
+left to right direction
+
+title Class Diagram - Profile & Access (Backend)
+
+package "domain" {
+
+  package "services" {
+    interface ProfileAccessDomainService {
+      +validateUser(user: User): void
+      +validateRole(role: Role): void
+      +validatePermission(permission: Permission): void
+      +assignDefaultRole(user: User): User
+    }
+  }
+
+  package "model" {
+
+    package "aggregate" {
+      class User {
+        -id: UserId
+        -lastName: String
+        -firstName: String
+        -createdAt: LocalDateTime
+        -email: Email
+        -phone: String
+
+        +create(command: RegisterUserCommand): User
+        +login(command: LoginCommand): boolean
+        +modifyProfile(command: ModifyProfileCommand): void
+        +getId(): UserId
+        +getLastName(): String
+        +getFirstName(): String
+        +getEmail(): Email
+        +getPhone(): String
+      }
+
+      class Role {
+        -id: RoleId
+        -position: RolePosition
+        -description: String
+
+        +create(position: RolePosition, description: String): Role
+        +getId(): RoleId
+        +getPosition(): RolePosition
+        +getDescription(): String
+      }
+
+      class Permission {
+        -id: PermissionId
+        -category: PermissionCategory
+        -description: String
+
+        +create(category: PermissionCategory, description: String): Permission
+        +getId(): PermissionId
+        +getCategory(): PermissionCategory
+        +getDescription(): String
+      }
+
+      class UserRole {
+        -id: UserRoleId
+        -rolesId: RoleId
+        -userId: UserId
+
+        +assign(command: AssignRoleCommand): UserRole
+        +getId(): UserRoleId
+        +getRolesId(): RoleId
+        +getUserId(): UserId
+      }
+
+      class RolePermission {
+        -id: RolePermissionId
+        -permissionId: PermissionId
+        -roleId: RoleId
+
+        +assign(command: AssignPermissionCommand): RolePermission
+        +getId(): RolePermissionId
+        +getPermissionId(): PermissionId
+        +getRoleId(): RoleId
+      }
+    }
+
+    package "enums" {
+      enum RolePosition {
+        ADMIN
+        AGRONOMIST
+        TECHNICIAN
+        SUPERVISOR
+      }
+
+      enum PermissionCategory {
+        USERS
+        REPORTS
+        ALERTS
+        INVENTORY
+        FINANCIAL
+      }
+    }
+
+    package "valueobject" {
+      class UserId {
+        -value: Long
+        +of(value: Long): UserId
+        +getValue(): Long
+      }
+
+      class RoleId {
+        -value: Long
+        +of(value: Long): RoleId
+        +getValue(): Long
+      }
+
+      class PermissionId {
+        -value: Long
+        +of(value: Long): PermissionId
+        +getValue(): Long
+      }
+
+      class UserRoleId {
+        -value: Long
+        +of(value: Long): UserRoleId
+        +getValue(): Long
+      }
+
+      class RolePermissionId {
+        -value: Long
+        +of(value: Long): RolePermissionId
+        +getValue(): Long
+      }
+
+      class Email {
+        -value: String
+        +of(value: String): Email
+        +getValue(): String
+      }
+    }
+  }
+
+  package "commands" {
+    class RegisterUserCommand {
+      -lastName: String
+      -firstName: String
+      -email: Email
+      -phone: String
+    }
+
+    class LoginCommand {
+      -email: Email
+    }
+
+    class ModifyProfileCommand {
+      -userId: UserId
+      -lastName: String
+      -firstName: String
+      -email: Email
+      -phone: String
+    }
+
+    class AssignRoleCommand {
+      -rolesId: RoleId
+      -userId: UserId
+    }
+
+    class AssignPermissionCommand {
+      -permissionId: PermissionId
+      -roleId: RoleId
+    }
+  }
+}
+
+ProfileAccessDomainService --> User
+ProfileAccessDomainService --> Role
+ProfileAccessDomainService --> Permission
+
+User --> UserId
+User --> Email
+
+Role --> RoleId
+Role --> RolePosition
+
+Permission --> PermissionId
+Permission --> PermissionCategory
+
+UserRole --> UserRoleId
+UserRole --> RoleId
+UserRole --> UserId
+
+RolePermission --> RolePermissionId
+RolePermission --> PermissionId
+RolePermission --> RoleId
+
+RegisterUserCommand --> User
+LoginCommand --> User
+ModifyProfileCommand --> User
+AssignRoleCommand --> UserRole
+AssignPermissionCommand --> RolePermission
+
+@enduml

@@ -1,0 +1,262 @@
+@startuml
+
+left to right direction
+
+title Class Diagram - Organization Management (Frontend)
+
+package "application" {
+  class OrganizationStore <<Store>> {
+    -organizations: Organization[]
+    -selectedOrganization: Organization | null
+    -fundos: Fundo[]
+    -selectedFundo: Fundo | null
+    -isLoading: boolean
+    -error: string | null
+
+    +loadOrganizations(): void
+    +createOrganization(name: string, address: string): void
+    +updateOrganization(organization: Organization): void
+    +deleteOrganization(id: number): void
+    +loadFundosByOrganization(organizationId: number): void
+    +registerFundo(fundo: Fundo): void
+    +registerField(field: Field): void
+    +registerCrop(crop: Crop): void
+    +selectOrganization(id: number): void
+    +selectFundo(id: number): void
+    +getOrganizationById(id: number): Organization | undefined
+    +getFundoById(id: number): Fundo | undefined
+  }
+
+  OrganizationStore -down-> OrganizationApi : delegates to
+  OrganizationStore -right-> Organization
+  OrganizationStore -right-> Fundo
+}
+
+package "presentation" {
+  package "views" {
+    class OrganizationFormComponent <<Component>> {
+      -isLoading: boolean
+      -isEdit: boolean
+      -organizationId: number | null
+
+      +ngOnInit(): void
+      +onCreateOrganization(name: string, address: string): void
+      +onUpdateOrganization(organization: Organization): void
+    }
+
+    class OrganizationListComponent <<Component>> {
+      -isLoading: boolean
+      -displayedColumns: string[]
+
+      +ngOnInit(): void
+      +onSelectOrganization(id: number): void
+      +onDeleteOrganization(id: number): void
+      +navigateToNew(): void
+      +ngAfterViewChecked(): void
+    }
+
+    class FundoFormComponent <<Component>> {
+      -isLoading: boolean
+      -organizationId: number | null
+
+      +ngOnInit(): void
+      +onRegisterFundo(fundo: Fundo): void
+      +onRegisterField(field: Field): void
+      +onRegisterCrop(crop: Crop): void
+    }
+
+    class FundoDetailComponent <<Component>> {
+      -fundo: Fundo
+      -isLoading: boolean
+
+      +ngOnInit(): void
+      +showFields(): Field[]
+      +showCrops(): Crop[]
+    }
+  }
+
+  OrganizationFormComponent  ..> OrganizationStore : uses
+  OrganizationListComponent  ..> OrganizationStore : uses
+  FundoFormComponent         ..> OrganizationStore : uses
+  FundoDetailComponent       ..> OrganizationStore : uses
+}
+
+package "infrastructure" {
+  class OrganizationApi {
+    -organizationsEndpoint: string
+    -fundosEndpoint: string
+    -fieldsEndpoint: string
+    -cropsEndpoint: string
+
+    +getOrganizations(): Observable<Organization[]>
+    +createOrganization(organization: Organization): Observable<Organization>
+    +updateOrganization(organization: Organization): Observable<Organization>
+    +deleteOrganization(id: number): Observable<void>
+    +getFundosByOrganization(organizationId: number): Observable<Fundo[]>
+    +registerFundo(fundo: Fundo): Observable<Fundo>
+    +registerField(field: Field): Observable<Field>
+    +registerCrop(crop: Crop): Observable<Crop>
+  }
+
+  class OrganizationAssembler {
+    +toEntityFromResponse(response: OrganizationResponse): Organization
+    +toResourceFromEntity(entity: Organization): OrganizationResource
+  }
+
+  class FundoAssembler {
+    +toEntityFromResponse(response: FundoResponse): Fundo
+    +toResourceFromEntity(entity: Fundo): FundoResource
+  }
+
+  class FieldAssembler {
+    +toEntityFromResponse(response: FieldResponse): Field
+    +toResourceFromEntity(entity: Field): FieldResource
+  }
+
+  class CropAssembler {
+    +toEntityFromResponse(response: CropResponse): Crop
+    +toResourceFromEntity(entity: Crop): CropResource
+  }
+
+  class OrganizationResponse {
+    +id: number
+    +name: string
+    +address: string
+  }
+
+  class FundoResponse {
+    +id: number
+    +name: string
+    +organizationId: number
+    +latitude: number
+    +longitude: number
+    +fields: FieldResponse[]
+  }
+
+  class FieldResponse {
+    +id: number
+    +name: string
+    +areaSqm: number
+    +fundoId: number
+    +crops: CropResponse[]
+  }
+
+  class CropResponse {
+    +id: number
+    +name: string
+    +fieldId: number
+    +plantedAt: Date
+  }
+
+  class OrganizationResource {
+    +name: string
+    +address: string
+  }
+
+  class FundoResource {
+    +name: string
+    +organizationId: number
+    +latitude: number
+    +longitude: number
+  }
+
+  class FieldResource {
+    +name: string
+    +areaSqm: number
+    +fundoId: number
+  }
+
+  class CropResource {
+    +name: string
+    +fieldId: number
+    +plantedAt: Date
+  }
+
+  OrganizationApi ..> OrganizationAssembler : uses for conversion
+  OrganizationApi ..> FundoAssembler       : uses for conversion
+  OrganizationApi ..> FieldAssembler       : uses for conversion
+  OrganizationApi ..> CropAssembler        : uses for conversion
+
+  OrganizationAssembler ..> OrganizationResponse
+  OrganizationAssembler ..> OrganizationResource
+  OrganizationAssembler ..> Organization
+
+  FundoAssembler ..> FundoResponse
+  FundoAssembler ..> FundoResource
+  FundoAssembler ..> Fundo
+
+  FieldAssembler ..> FieldResponse
+  FieldAssembler ..> FieldResource
+  FieldAssembler ..> Field
+
+  CropAssembler ..> CropResponse
+  CropAssembler ..> CropResource
+  CropAssembler ..> Crop
+}
+
+package "domain" {
+  package "model" {
+
+    package "entities" {
+      class Organization <<Entity>> {
+        -id: number
+        -name: string
+        -address: string
+
+        +getId(): number
+        +getName(): string
+        +getAddress(): string
+        +update(name: string, address: string): void
+      }
+
+      class Fundo <<Entity>> {
+        -id: number
+        -name: string
+        -organizationId: number
+        -latitude: number
+        -longitude: number
+        -fields: Field[]
+
+        +getId(): number
+        +getName(): string
+        +getOrganizationId(): number
+        +getLatitude(): number
+        +getLongitude(): number
+        +getFields(): Field[]
+        +addField(field: Field): void
+      }
+
+      class Field <<Entity>> {
+        -id: number
+        -name: string
+        -areaSqm: number
+        -fundoId: number
+        -crops: Crop[]
+
+        +getId(): number
+        +getName(): string
+        +getAreaSqm(): number
+        +getFundoId(): number
+        +getCrops(): Crop[]
+        +addCrop(crop: Crop): void
+      }
+
+      class Crop <<Entity>> {
+        -id: number
+        -name: string
+        -fieldId: number
+        -plantedAt: Date
+
+        +getId(): number
+        +getName(): string
+        +getFieldId(): number
+        +getPlantedAt(): Date
+      }
+    }
+  }
+
+  Fundo "1" *--> "many" Field : contains
+  Field "1" *--> "many" Crop  : contains
+}
+
+@enduml

@@ -1,0 +1,153 @@
+@startuml
+
+left to right direction
+
+title Class Diagram - Report (Backend)
+
+package "domain" {
+
+  package "services" {
+    interface ReportDomainService {
+      +validateReport(report: Report): void
+      +generateReport(report: Report): Report
+      +validateRecommendation(recommendation: Recommendation): void
+    }
+  }
+
+  package "model" {
+
+    package "aggregate" {
+
+      class Report {
+        -id: ReportId
+        -type: ReportType
+        -fileUrl: FileUrl
+        -usersId: UserId
+        -seasonsId: SeasonId
+
+        +create(command: GenerateReportCommand): Report
+        +attachFile(fileUrl: FileUrl): void
+        +getId(): ReportId
+        +getType(): ReportType
+        +getFileUrl(): FileUrl
+        +getUsersId(): UserId
+        +getSeasonsId(): SeasonId
+      }
+
+      class Recommendation {
+        -id: RecommendationId
+        -priority: PriorityLevel
+        -status: RecommendationStatus
+        -createdAt: LocalDateTime
+        -implementedAt: LocalDateTime
+        -reportsId: ReportId
+
+        +create(command: GenerateRecommendationCommand): Recommendation
+        +markAsImplemented(command: ImplementRecommendationCommand): void
+        +getId(): RecommendationId
+        +getPriority(): PriorityLevel
+        +getStatus(): RecommendationStatus
+        +getReportsId(): ReportId
+      }
+
+    }
+
+    package "enums" {
+
+      enum ReportType {
+        FINANCIAL
+        IOT
+        RECOMMENDATION
+      }
+
+      enum PriorityLevel {
+        LOW
+        MEDIUM
+        HIGH
+      }
+
+      enum RecommendationStatus {
+        PENDING
+        IMPLEMENTED
+      }
+
+    }
+
+    package "valueobject" {
+
+      class ReportId {
+        -value: Long
+        +of(value: Long): ReportId
+        +getValue(): Long
+      }
+
+      class RecommendationId {
+        -value: Long
+        +of(value: Long): RecommendationId
+        +getValue(): Long
+      }
+
+      class UserId {
+        -value: Long
+        +of(value: Long): UserId
+        +getValue(): Long
+      }
+
+      class SeasonId {
+        -value: Long
+        +of(value: Long): SeasonId
+        +getValue(): Long
+      }
+
+      class FileUrl {
+        -value: String
+        +of(value: String): FileUrl
+        +getValue(): String
+      }
+
+    }
+
+  }
+
+  package "commands" {
+
+    class GenerateReportCommand {
+      -type: ReportType
+      -usersId: UserId
+      -seasonsId: SeasonId
+    }
+
+    class GenerateRecommendationCommand {
+      -reportsId: ReportId
+      -priority: PriorityLevel
+    }
+
+    class ImplementRecommendationCommand {
+      -recommendationId: RecommendationId
+    }
+
+  }
+
+}
+
+ReportDomainService --> Report
+ReportDomainService --> Recommendation
+
+Report --> ReportId
+Report --> ReportType
+Report --> FileUrl
+Report --> UserId
+Report --> SeasonId
+
+Recommendation --> RecommendationId
+Recommendation --> PriorityLevel
+Recommendation --> RecommendationStatus
+Recommendation --> ReportId
+
+Report --> Recommendation
+
+GenerateReportCommand --> Report
+GenerateRecommendationCommand --> Recommendation
+ImplementRecommendationCommand --> Recommendation
+
+@enduml
