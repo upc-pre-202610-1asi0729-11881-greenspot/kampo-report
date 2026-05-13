@@ -1,0 +1,176 @@
+@startuml
+left to right direction
+title Class Diagram - Organization Management (Backend)
+
+package "domain" {
+  together {
+    package "commands" {
+      class CreateOrganizationCommand {
+        -name: String
+        -address: String
+      }
+      class UpdateOrganizationCommand {
+        -organizationId: OrganizationId
+        -name: String
+        -address: String
+      }
+      class DeleteOrganizationCommand {
+        -organizationId: OrganizationId
+      }
+      class RegisterFundoCommand {
+        -organizationId: OrganizationId
+        -name: String
+        -latitude: Double
+        -longitude: Double
+      }
+      class RegisterFieldCommand {
+        -fundoId: FundoId
+        -name: String
+        -areaSqm: Double
+      }
+      class RegisterCropCommand {
+        -fieldId: FieldId
+        -name: String
+        -plantedAt: LocalDate
+      }
+    }
+
+    package "model" {
+      package "aggregate" {
+        class Organization <<Aggregate Root>> {
+          -id: OrganizationId
+          -name: String
+          -address: String
+          -fundos: List<Fundo>
+          +create(command: CreateOrganizationCommand): Organization
+          +update(command: UpdateOrganizationCommand): void
+          +delete(command: DeleteOrganizationCommand): void
+          +registerFundo(command: RegisterFundoCommand): Fundo
+          +getId(): OrganizationId
+          +getName(): String
+          +getAddress(): String
+          +getFundos(): List<Fundo>
+        }
+      }
+
+      package "entities" {
+        class Fundo <<Entity>> {
+          -id: FundoId
+          -organizationId: OrganizationId
+          -name: String
+          -latitude: Double
+          -longitude: Double
+          -fields: List<Field>
+          +registerField(command: RegisterFieldCommand): Field
+          +getId(): FundoId
+          +getOrganizationId(): OrganizationId
+          +getName(): String
+          +getLatitude(): Double
+          +getLongitude(): Double
+          +getFields(): List<Field>
+        }
+
+        class Field <<Entity>> {
+          -id: FieldId
+          -fundoId: FundoId
+          -name: String
+          -areaSqm: Double
+          -crops: List<Crop>
+          +registerCrop(command: RegisterCropCommand): Crop
+          +getId(): FieldId
+          +getFundoId(): FundoId
+          +getName(): String
+          +getAreaSqm(): Double
+          +getCrops(): List<Crop>
+        }
+
+        class Crop <<Entity>> {
+          -id: CropId
+          -fieldId: FieldId
+          -name: String
+          -plantedAt: LocalDate
+          +getId(): CropId
+          +getFieldId(): FieldId
+          +getName(): String
+          +getPlantedAt(): LocalDate
+        }
+      }
+
+      package "valueobject" {
+        class OrganizationId {
+          -value: Long
+          +of(value: Long): OrganizationId
+          +getValue(): Long
+        }
+        class FundoId {
+          -value: Long
+          +of(value: Long): FundoId
+          +getValue(): Long
+        }
+        class FieldId {
+          -value: Long
+          +of(value: Long): FieldId
+          +getValue(): Long
+        }
+        class CropId {
+          -value: Long
+          +of(value: Long): CropId
+          +getValue(): Long
+        }
+        class GeoLocation {
+          -latitude: Double
+          -longitude: Double
+          +of(lat: Double, lng: Double): GeoLocation
+          +getLatitude(): Double
+          +getLongitude(): Double
+          +equals(other: GeoLocation): boolean
+        }
+      }
+    }
+  }
+
+  package "services" {
+    interface OrganizationDomainService {
+      +validateOrganization(organization: Organization): void
+      +validateFundo(fundo: Fundo): void
+      +validateField(field: Field): void
+      +canRegisterFundo(organization: Organization): boolean
+    }
+  }
+
+  package "repositories" {
+    interface OrganizationRepository {
+      +findById(id: OrganizationId): Optional<Organization>
+      +findAll(): List<Organization>
+      +save(organization: Organization): Organization
+      +delete(id: OrganizationId): void
+    }
+  }
+}
+
+CreateOrganizationCommand  ..> Organization
+UpdateOrganizationCommand  ..> Organization
+DeleteOrganizationCommand  ..> Organization
+RegisterFundoCommand       ..> Organization
+RegisterFieldCommand       ..> Fundo
+RegisterCropCommand        ..> Field
+
+Organization "1" *--> "many" Fundo  : contains
+Fundo        "1" *--> "many" Field  : contains
+Field        "1" *--> "many" Crop   : contains
+
+Organization --> OrganizationId
+Fundo        --> FundoId
+Fundo        --> OrganizationId
+Fundo        --> GeoLocation
+Field        --> FieldId
+Field        --> FundoId
+Crop         --> CropId
+Crop         --> FieldId
+
+OrganizationDomainService ..> Organization
+OrganizationDomainService ..> Fundo
+OrganizationDomainService ..> Field
+OrganizationRepository    ..> Organization
+
+@enduml
