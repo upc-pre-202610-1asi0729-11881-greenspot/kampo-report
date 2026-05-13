@@ -788,13 +788,22 @@ En este caso, se elaboraron dos User Personas correspondientes a los segmentos i
 
 USER PERSONA 01- Ingeniero agrónomo asesor
 <p align="center">
+<<<<<<< HEAD
+  <img src="docs/assets/img/cap-ii/Carlos Mendoza.png" width="500"/>
+=======
   <img src="docs/assets/img/Capítulo%202/Carlos%20Mendoza.png"/>
+>>>>>>> develop
   <br/>
 </p>
 
 USER PERSONA 02 - Agroindustria mediana y grande
 <p align="center">
+<<<<<<< HEAD
+  <img src="docs/assets/img/cap-ii/Luis Ramos.png" width="500"/>
+  <br/>
+=======
   <img src="docs/assets/img/Capítulo%202/Luis%Ramos.png/>
+>>>>>>> develop
 </p>
 
 ##### 2.3.2. User Task Matrix
@@ -820,11 +829,22 @@ Las tareas con mayor frecuencia e importancia para ambos segmentos son consolida
 
 ##### 2.3.3. User Journey Mapping
 SEGMENTO 01
+<<<<<<< HEAD
+<p align="center">
+  <img src="docs/assets/img/cap-ii/SEGMENTO 1.png" width="500"/>
+  <br/>
+</p>
+
+SEGMENTO 02
+<p align="center">
+  <img src="docs/assets/img/cap-ii/SEGMENTO 2.png" width="500"/>
+=======
 <p aling="center"><img src="docs/assets/img/Capítulo%202/SEGMENTO 1.png" width="500"/><br/></p>
 
 SEGMENTO 02
 <p align="center">
   <img src="docs/assets/img/Capítulo%202/SEGMENTO 2.png" width="500"/>
+>>>>>>> develop
   <br/>
 </p>
 
@@ -833,13 +853,21 @@ El Empathy Mapping permite comprender de manera integral a los usuarios, identif
 
 USER PERSONA 01
 <p align="center">
+<<<<<<< HEAD
+  <img src="docs/assets/img/cap-ii/PERSONA 1.png" width="500"/>
+=======
   <img src="docs/assets/img/Capítulo%202/PERSONA 1.png" width="500"/>
+>>>>>>> develop
   <br/>
 </p>
 
 USER PERSONA 02
 <p align="center">
+<<<<<<< HEAD
+  <img src="docs/assets/img/cap-ii/PERSONA 2.png" width="500"/>
+=======
   <img src="docs/assets/img/Capítulo%202/PERSONA 2.png" width="500"/>
+>>>>>>> develop
   <br/>
 </p>
 
@@ -1443,9 +1471,16 @@ Para validar la experiencia de usuario (UX), se desarrolló un prototipo funcion
 
 ## 4.7. Software Object-Oriented Design
 ##### 4.7.1. Class Diagrams
+<<<<<<< HEAD
+<p align="center">
+  <img src="docs/assets/img/class-diagram/class-diagram.png" width="500"/>
+  <br/>
+</p>
+=======
 
 ![Class-Diagrams](docs/assets/img/class-diagram.jpeg)
 
+>>>>>>> develop
 ## 4.8. Database Design
 ##### 4.8.1. Database Diagrams
 ![Database-Diagrams](docs/assets/img/kampo-database-diagram.png)
