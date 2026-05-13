@@ -5,80 +5,73 @@ left to right direction
 title Class Diagram - Alert Management (Frontend)
 
 package "application" {
+
   class AlertStore <<Store>> {
-    -rules: Rule[]
     -alerts: Alert[]
-    -selectedAlert: Alert
+    -alertRules: AlertRule[]
+    -selectedAlertId: number
     -isLoading: boolean
 
-    +getRules(): void
     +getAlerts(): void
-    +configureAlertRule(rule: Rule): void
-    +evaluateCondition(ruleId: number, currentValue: number): void
-    +sendAlert(ruleId: number, message: string): void
+    +getAlertRules(): void
+    +configureAlertRule(fieldsId: number, readingType: ReadingType, conditionOperator: ConditionOperator, severity: SeverityLevel): void
+    +evaluateCondition(alertRuleId: number): void
+    +sendAlert(alertRuleId: number, message: string, priority: AlertPriority): void
     +markAlertRead(alertId: number): void
-    +selectAlert(alertId: number): void
+    +selectAlert(id: number): void
   }
+
 }
 
 package "presentation" {
+
   package "views" {
+
     class AlertViewComponent <<Component>> {
-      -rules: Rule[]
       -alerts: Alert[]
-      -selectedAlert: Alert
+      -alertRules: AlertRule[]
+      -selectedAlertId: number
       -isLoading: boolean
 
       +ngOnInit(): void
       +onConfigureAlertRule(): void
-      +onEvaluateCondition(): void
+      +onEvaluateCondition(id: number): void
       +onSendAlert(): void
-      +onMarkAlertRead(): void
-      +onSelectAlert(alertId: number): void
+      +onMarkAlertRead(id: number): void
+      +onSelectAlert(id: number): void
     }
 
     class AlertRuleFormComponent <<Component>> {
-      -rule: Rule
+      -alertRule: AlertRule
 
       +ngOnInit(): void
-      +onConfigureAlertRule(): void
+      +onSubmit(): void
     }
 
     class AlertListComponent <<Component>> {
       -alerts: Alert[]
-      -isLoading: boolean
 
       +ngOnInit(): void
-      +onSelectAlert(alertId: number): void
-      +onMarkAlertRead(alertId: number): void
+      +onSelect(id: number): void
+      +onMarkRead(id: number): void
     }
 
-    class AlertDetailComponent <<Component>> {
-      -alert: Alert
-
-      +ngOnInit(): void
-      +showStatus(): string
-    }
   }
+
 }
 
 package "infrastructure" {
+
   class AlertApi {
-    -rulesEndpoint: string
     -alertsEndpoint: string
-    -sendAlertEndpoint: string
+    -alertRulesEndpoint: string
 
-    +getRules(): Observable<Rule[]>
     +getAlerts(): Observable<Alert[]>
-    +configureAlertRule(rule: Rule): Observable<Rule>
-    +evaluateCondition(ruleId: number, currentValue: number): Observable<boolean>
-    +sendAlert(ruleId: number, message: string): Observable<Alert>
+    +getAlertRules(): Observable<AlertRule[]>
+    +configureAlertRule(resource: AlertRuleResource): Observable<AlertRule>
+    +evaluateCondition(alertRuleId: number): Observable<boolean>
+    +sendAlert(resource: AlertResource): Observable<Alert>
     +markAlertRead(alertId: number): Observable<Alert>
-  }
-
-  class RuleAssembler {
-    +toEntityFromResponse(response: RuleResponse): Rule
-    +toResourceFromEntity(entity: Rule): RuleResource
   }
 
   class AlertAssembler {
@@ -86,109 +79,132 @@ package "infrastructure" {
     +toResourceFromEntity(entity: Alert): AlertResource
   }
 
-  class RuleResponse {
-    -id: number
-    -condition: string
-    -threshold: number
-    -type: string
-    -status: string
+  class AlertRuleAssembler {
+    +toEntityFromResponse(response: AlertRuleResponse): AlertRule
+    +toResourceFromEntity(entity: AlertRule): AlertRuleResource
   }
 
   class AlertResponse {
     -id: number
-    -ruleId: number
     -message: string
-    -status: string
-    -sentAt: Date
+    -priority: string
+    -isRead: boolean
+    -fieldsId: number
+    -alertRulesId: number
   }
 
-  class RuleResource {
-    -condition: string
-    -threshold: number
-    -type: string
+  class AlertRuleResponse {
+    -id: number
+    -readingType: string
+    -conditionOperator: string
+    -severity: string
+    -fieldsId: number
   }
 
   class AlertResource {
-    -ruleId: number
     -message: string
+    -priority: string
+    -fieldsId: number
+    -alertRulesId: number
   }
+
+  class AlertRuleResource {
+    -readingType: string
+    -conditionOperator: string
+    -severity: string
+    -fieldsId: number
+  }
+
 }
 
 package "domain" {
+
   package "model" {
-    package "entities" {
-      class Rule <<Entity>> {
-        -id: number
-        -condition: string
-        -threshold: number
-        -type: RuleType
-        -status: RuleStatus
 
-        +getId(): number
-        +getCondition(): string
-        +getThreshold(): number
-        +getType(): RuleType
-        +getStatus(): RuleStatus
-      }
+    class Alert <<Entity>> {
+      -id: number
+      -message: string
+      -priority: AlertPriority
+      -isRead: boolean
+      -fieldsId: number
+      -alertRulesId: number
 
-      class Alert <<Entity>> {
-        -id: number
-        -ruleId: number
-        -message: string
-        -status: AlertStatus
-        -sentAt: Date
-
-        +getId(): number
-        +getRuleId(): number
-        +getMessage(): string
-        +getStatus(): AlertStatus
-        +getSentAt(): Date
-      }
+      +getId(): number
+      +getMessage(): string
+      +getPriority(): AlertPriority
+      +getIsRead(): boolean
+      +getFieldsId(): number
+      +getAlertRulesId(): number
     }
 
-    package "enums" {
-      enum RuleType {
-        TEMPERATURE
-        HUMIDITY
-        PH
-        WEATHER
-      }
+    class AlertRule <<Entity>> {
+      -id: number
+      -readingType: ReadingType
+      -conditionOperator: ConditionOperator
+      -severity: SeverityLevel
+      -fieldsId: number
 
-      enum RuleStatus {
-        ACTIVE
-        INACTIVE
-      }
-
-      enum AlertStatus {
-        SENT
-        READ
-      }
+      +getId(): number
+      +getReadingType(): ReadingType
+      +getConditionOperator(): ConditionOperator
+      +getSeverity(): SeverityLevel
+      +getFieldsId(): number
     }
+
+    enum AlertPriority {
+      LOW
+      MEDIUM
+      HIGH
+    }
+
+    enum SeverityLevel {
+      LOW
+      MEDIUM
+      HIGH
+    }
+
+    enum ConditionOperator {
+      GREATER_THAN
+      LESS_THAN
+      EQUAL
+    }
+
+    enum ReadingType {
+      TEMPERATURE
+      HUMIDITY
+      PH
+    }
+
   }
+
 }
 
 AlertStore -down-> AlertApi : delegates to
-AlertStore -right-> Rule
-AlertStore -right-> Alert
-
-AlertApi ..down..> RuleAssembler : uses for conversion
-AlertApi ..down..> AlertAssembler : uses for conversion
-
-RuleAssembler ..right..> RuleResponse
-RuleAssembler ..right..> RuleResource
-RuleAssembler ..right..> Rule
-
-AlertAssembler ..right..> AlertResponse
-AlertAssembler ..right..> AlertResource
-AlertAssembler ..right..> Alert
 
 AlertViewComponent ..down..> AlertStore : uses
 AlertRuleFormComponent ..down..> AlertStore : uses
 AlertListComponent ..down..> AlertStore : uses
-AlertDetailComponent ..down..> AlertStore : uses
 
-Rule --> RuleType
-Rule --> RuleStatus
-Alert --> AlertStatus
+AlertApi ..down..> AlertAssembler : uses for conversion
+AlertApi ..down..> AlertRuleAssembler : uses for conversion
+
+AlertAssembler ..down..> AlertResponse
+AlertAssembler ..down..> AlertResource
+AlertAssembler ..right..> Alert
+
+AlertRuleAssembler ..down..> AlertRuleResponse
+AlertRuleAssembler ..down..> AlertRuleResource
+AlertRuleAssembler ..right..> AlertRule
+
+AlertStore ..right..> Alert
+AlertStore ..right..> AlertRule
+
+Alert --> AlertRule
+
+Alert --> AlertPriority
+
+AlertRule --> ReadingType
+AlertRule --> ConditionOperator
+AlertRule --> SeverityLevel
 
 @enduml

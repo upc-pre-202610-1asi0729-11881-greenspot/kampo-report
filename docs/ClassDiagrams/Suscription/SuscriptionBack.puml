@@ -2,7 +2,7 @@
 
 left to right direction
 
-title Class Diagram - Subscription (Backend)
+title Class Diagram - Subscription (Backend - Spring Boot)
 
 package "domain" {
 
@@ -20,102 +20,69 @@ package "domain" {
 
     package "aggregate" {
 
-      together {
+      class Subscription {
+        -id: SubscriptionId
+        -name: String
+        -description: String
+        -price: Money
+        -startDate: LocalDateTime
+        -endDate: LocalDateTime
+        -status: SubscriptionStatus
+        -userId: UserId
 
-        class Subscription {
-          -id: SubscriptionId
-          -plan: SubscriptionPlan
-          -status: SubscriptionStatus
-          -payment: Payment
-          -startedAt: LocalDateTime
-          -renewedAt: LocalDateTime
-          -cancelledAt: LocalDateTime
-
-          +create(command: PurchaseSubscriptionCommand): Subscription
-          +renew(command: RenewSubscriptionCommand): void
-          +cancel(command: CancelSubscriptionCommand): void
-          +isActive(): boolean
-          +getId(): SubscriptionId
-          +getPlan(): SubscriptionPlan
-          +getStatus(): SubscriptionStatus
-          +getPayment(): Payment
-        }
-
-        class Payment {
-          -id: PaymentId
-          -amount: Money
-          -method: PaymentMethod
-          -status: PaymentStatus
-
-          +create(amount: Money, method: PaymentMethod): Payment
-          +markAsPaid(): void
-          +markAsFailed(): void
-          +getId(): PaymentId
-          +getAmount(): Money
-          +getMethod(): PaymentMethod
-          +getStatus(): PaymentStatus
-        }
-
-      }
-
-    }
-
-    package "valueobject" {
-
-      together {
-
-        class SubscriptionId {
-          -value: Long
-          +of(value: Long): SubscriptionId
-          +getValue(): Long
-        }
-
-        class PaymentId {
-          -value: Long
-          +of(value: Long): PaymentId
-          +getValue(): Long
-        }
-
-        class Money {
-          -amount: BigDecimal
-          -currency: String
-          +of(amount: BigDecimal): Money
-          +isPositive(): boolean
-          +getAmount(): BigDecimal
-        }
-
+        +create(command: PurchaseSubscriptionCommand): Subscription
+        +renew(command: RenewSubscriptionCommand): void
+        +cancel(command: CancelSubscriptionCommand): void
+        +isActive(): boolean
+        +getId(): SubscriptionId
+        +getName(): String
+        +getDescription(): String
+        +getPrice(): Money
+        +getStartDate(): LocalDateTime
+        +getEndDate(): LocalDateTime
+        +getStatus(): SubscriptionStatus
+        +getUserId(): UserId
       }
 
     }
 
     package "enums" {
 
-      together {
+      enum SubscriptionStatus {
+        STARTED
+        RENEWED
+        CANCELLED
+      }
 
-        enum SubscriptionPlan {
-          MONTHLY
-          QUARTERLY
-          ANNUAL
-        }
+      enum SubscriptionPlan {
+        MONTHLY
+        QUARTERLY
+        ANNUAL
+      }
 
-        enum SubscriptionStatus {
-          STARTED
-          RENEWED
-          CANCELLED
-        }
+    }
 
-        enum PaymentMethod {
-          CARD
-          TRANSFER
-          DIGITAL_WALLET
-        }
+    package "valueobject" {
 
-        enum PaymentStatus {
-          PENDING
-          PAID
-          FAILED
-        }
+      class SubscriptionId {
+        -value: Long
+        +of(value: Long): SubscriptionId
+        +getValue(): Long
+      }
 
+      class UserId {
+        -value: Long
+        +of(value: Long): UserId
+        +getValue(): Long
+      }
+
+      class Money {
+        -amount: BigDecimal
+        -currency: String
+
+        +of(amount: BigDecimal): Money
+        +isPositive(): boolean
+        +getAmount(): BigDecimal
       }
 
     }
@@ -124,46 +91,36 @@ package "domain" {
 
   package "commands" {
 
-    together {
+    class PurchaseSubscriptionCommand {
+      -name: String
+      -description: String
+      -price: Money
+      -plan: SubscriptionPlan
+      -userId: UserId
+    }
 
-      class PurchaseSubscriptionCommand {
-        -plan: SubscriptionPlan
-        -paymentMethod: PaymentMethod
-        -amount: Money
-      }
+    class RenewSubscriptionCommand {
+      -subscriptionId: SubscriptionId
+    }
 
-      class RenewSubscriptionCommand {
-        -subscriptionId: SubscriptionId
-        -paymentMethod: PaymentMethod
-      }
-
-      class CancelSubscriptionCommand {
-        -subscriptionId: SubscriptionId
-        -reason: String
-      }
-
+    class CancelSubscriptionCommand {
+      -subscriptionId: SubscriptionId
     }
 
   }
 
 }
 
-Subscription --> Payment
+SubscriptionDomainService --> Subscription
 
 Subscription --> SubscriptionId
-Payment --> PaymentId
-Payment --> Money
-
-Subscription --> SubscriptionPlan
+Subscription --> UserId
+Subscription --> Money
 Subscription --> SubscriptionStatus
+Subscription --> SubscriptionPlan
 
-Payment --> PaymentMethod
-Payment --> PaymentStatus
-
-PurchaseSubscriptionCommand ..> Subscription
-RenewSubscriptionCommand ..> Subscription
-CancelSubscriptionCommand ..> Subscription
-
-SubscriptionDomainService ..> Subscription
+PurchaseSubscriptionCommand --> Subscription
+RenewSubscriptionCommand --> Subscription
+CancelSubscriptionCommand --> Subscription
 
 @enduml
