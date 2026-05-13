@@ -786,26 +786,17 @@ En conclusión, este segmento enfrenta una problemática centrada en la falta de
 Las User Personas representan arquetipos construidos a partir de la información recopilada en las entrevistas realizadas a los segmentos objetivo, complementadas con el análisis del contexto del sector agrícola. Estas permiten sintetizar comportamientos, necesidades y problemáticas comunes, facilitando la toma de decisiones en el diseño de soluciones centradas en el usuario.
 En este caso, se elaboraron dos User Personas correspondientes a los segmentos identificados: ingenieros agrónomos asesores y actores del sector agroindustrial. Las características incluidas en cada perfil se derivan directamente de los patrones observados en las entrevistas, tales como el uso de herramientas no especializadas, la falta de monitoreo en tiempo real y la necesidad de centralización de información
 
-USER PERSONA 01- Ingeniero agrónomo asesor
+USER PERSONA 01 - Ingeniero agrónomo asesor
 <p align="center">
-<<<<<<< HEAD
   <img src="docs/assets/img/cap-ii/Carlos Mendoza.png" width="500"/>
-=======
-  <img src="docs/assets/img/Capítulo%202/Carlos%20Mendoza.png"/>
->>>>>>> develop
   <br/>
 </p>
 
 USER PERSONA 02 - Agroindustria mediana y grande
 <p align="center">
-<<<<<<< HEAD
   <img src="docs/assets/img/cap-ii/Luis Ramos.png" width="500"/>
   <br/>
-=======
-  <img src="docs/assets/img/Capítulo%202/Luis%Ramos.png/>
->>>>>>> develop
 </p>
-
 ##### 2.3.2. User Task Matrix
 En esta sección se presenta el User Task Matrix considerando los dos segmentos objetivo identificados: ingenieros agrónomos asesores y supervisores, representados por Calor Mendoza, y gestores del sector agroindustrial, representados por Luis Ramos. Las tareas listadas corresponden a actividades que ambos segmentos realizan en su trabajo cotidiano, independientemente de la existencia de la solución propuesta.
 
