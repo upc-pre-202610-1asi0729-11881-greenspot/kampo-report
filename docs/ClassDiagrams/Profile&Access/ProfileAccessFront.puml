@@ -2,84 +2,72 @@
 
 left to right direction
 
+
 title Class Diagram - Profile & Access (Frontend)
 
 package "application" {
+
   class ProfileAccessStore <<Store>> {
-    -currentUser: User
+    -users: User[]
     -roles: Role[]
     -permissions: Permission[]
+    -selectedUserId: number
     -isLoading: boolean
 
-    +registerUser(user: User): void
-    +login(email: string, password: string): void
-    +modifyProfile(user: User): void
+    +registerUser(firstName: string, lastName: string, email: string, phone: string): void
+    +login(email: string): void
+    +modifyProfile(userId: number, firstName: string, lastName: string, email: string, phone: string): void
     +assignRole(userId: number, roleId: number): void
     +assignPermission(roleId: number, permissionId: number): void
-    +getCurrentUser(): User
-    +getRoles(): Role[]
-    +getPermissions(): Permission[]
+    +getRoles(): void
+    +getPermissions(): void
+    +selectUser(id: number): void
   }
+
 }
 
 package "presentation" {
-  package "views" {
-    class RegistrationFormComponent <<Component>> {
-      -user: User
-      -isLoading: boolean
 
-      +ngOnInit(): void
+  package "views" {
+
+    class RegistrationFormComponent <<Component>> {
       +onRegisterUser(): void
     }
 
     class LoginFormComponent <<Component>> {
-      -email: string
-      -password: string
-      -isLoading: boolean
-
-      +ngOnInit(): void
       +onLogin(): void
     }
 
     class ProfileViewComponent <<Component>> {
-      -currentUser: User
-      -isLoading: boolean
-
-      +ngOnInit(): void
       +onModifyProfile(): void
     }
 
     class RoleAssignmentComponent <<Component>> {
-      -users: User[]
-      -roles: Role[]
-
-      +ngOnInit(): void
-      +onAssignRole(userId: number, roleId: number): void
+      +onAssignRole(): void
     }
 
     class PermissionAssignmentComponent <<Component>> {
-      -roles: Role[]
-      -permissions: Permission[]
-
-      +ngOnInit(): void
-      +onAssignPermission(roleId: number, permissionId: number): void
+      +onAssignPermission(): void
     }
+
   }
+
 }
 
 package "infrastructure" {
-  class ProfileAccessApi {
-    -registerEndpoint: string
-    -loginEndpoint: string
-    -profileEndpoint: string
-    -roleEndpoint: string
-    -permissionEndpoint: string
 
-    +registerUser(user: User): Observable<User>
-    +login(email: string, password: string): Observable<User>
-    +modifyProfile(user: User): Observable<User>
-    +assignRole(userId: number, roleId: number): Observable<Role>
-    +assignPermission(roleId: number, permissionId: number): Observable<Permission>
+  class ProfileAccessApi {
+    -usersEndpoint: string
+    -rolesEndpoint: string
+    -permissionsEndpoint: string
+
+    +registerUser(resource: UserResource): Observable<User>
+    +login(email: string): Observable<User>
+    +modifyProfile(userId: number, resource: UserResource): Observable<User>
+    +assignRole(resource: UserRoleResource): Observable<UserRole>
+    +assignPermission(resource: RolePermissionResource): Observable<RolePermission>
+    +getRoles(): Observable<Role[]>
+    +getPermissions(): Observable<Permission[]>
   }
 
   class UserAssembler {
@@ -89,89 +77,130 @@ package "infrastructure" {
 
   class RoleAssembler {
     +toEntityFromResponse(response: RoleResponse): Role
-    +toResourceFromEntity(entity: Role): RoleResource
   }
 
   class PermissionAssembler {
     +toEntityFromResponse(response: PermissionResponse): Permission
-    +toResourceFromEntity(entity: Permission): PermissionResource
   }
 
   class UserResponse {
     -id: number
-    -name: string
+    -lastName: string
+    -firstName: string
+    -createdAt: Date
     -email: string
-    -roleId: number
+    -phone: string
   }
 
   class RoleResponse {
     -id: number
-    -name: string
+    -position: string
+    -description: string
   }
 
   class PermissionResponse {
     -id: number
-    -name: string
+    -category: string
+    -description: string
   }
 
   class UserResource {
-    -id: number
-    -name: string
+    -lastName: string
+    -firstName: string
     -email: string
+    -phone: string
+  }
+
+  class UserRoleResource {
+    -rolesId: number
+    -userId: number
+  }
+
+  class RolePermissionResource {
+    -permissionId: number
     -roleId: number
   }
 
-  class RoleResource {
-    -id: number
-    -name: string
-  }
-
-  class PermissionResource {
-    -id: number
-    -name: string
-  }
 }
 
 package "domain" {
+
   package "model" {
-    package "entities" {
-      class User <<Entity>> {
-        -id: number
-        -name: string
-        -email: string
-        -roleId: number
 
-        +getId(): number
-        +getName(): string
-        +getEmail(): string
-        +getRoleId(): number
-        +setName(name: string): void
-        +setEmail(email: string): void
-      }
+    class User <<Entity>> {
+      -id: number
+      -lastName: string
+      -firstName: string
+      -createdAt: Date
+      -email: string
+      -phone: string
 
-      class Role <<Entity>> {
-        -id: number
-        -name: string
-
-        +getId(): number
-        +getName(): string
-      }
-
-      class Permission <<Entity>> {
-        -id: number
-        -name: string
-
-        +getId(): number
-        +getName(): string
-      }
+      +getId(): number
+      +getLastName(): string
+      +getFirstName(): string
+      +getCreatedAt(): Date
+      +getEmail(): string
+      +getPhone(): string
     }
+
+    class Role <<Entity>> {
+      -id: number
+      -position: RolePosition
+      -description: string
+
+      +getId(): number
+      +getPosition(): RolePosition
+      +getDescription(): string
+    }
+
+    class Permission <<Entity>> {
+      -id: number
+      -category: PermissionCategory
+      -description: string
+
+      +getId(): number
+      +getCategory(): PermissionCategory
+      +getDescription(): string
+    }
+
+    class UserRole <<Entity>> {
+      -id: number
+      -rolesId: number
+      -userId: number
+    }
+
+    class RolePermission <<Entity>> {
+      -id: number
+      -permissionId: number
+      -roleId: number
+    }
+
+    enum RolePosition {
+      ADMIN
+      AGRONOMIST
+      TECHNICIAN
+      SUPERVISOR
+    }
+
+    enum PermissionCategory {
+      USERS
+      REPORTS
+      ALERTS
+      INVENTORY
+      FINANCIAL
+    }
+
   }
+
 }
 
 ProfileAccessStore -down-> ProfileAccessApi : delegates to
-ProfileAccessStore -right-> User
-ProfileAccessStore -right-> Role
-ProfileAccessStore -right-> Permission
+
+RegistrationFormComponent ..down..> ProfileAccessStore : uses
+LoginFormComponent ..down..> ProfileAccessStore : uses
+ProfileViewComponent ..down..> ProfileAccessStore : uses
+RoleAssignmentComponent ..down..> ProfileAccessStore : uses
+PermissionAssignmentComponent ..down..> ProfileAccessStore : uses
 
 ProfileAccessApi ..down..> UserAssembler : uses for conversion
 ProfileAccessApi ..down..> RoleAssembler : uses for conversion
@@ -182,19 +211,22 @@ UserAssembler ..right..> UserResource
 UserAssembler ..right..> User
 
 RoleAssembler ..right..> RoleResponse
-RoleAssembler ..right..> RoleResource
 RoleAssembler ..right..> Role
 
 PermissionAssembler ..right..> PermissionResponse
-PermissionAssembler ..right..> PermissionResource
 PermissionAssembler ..right..> Permission
 
-RegistrationFormComponent ..down..> ProfileAccessStore : uses
-LoginFormComponent ..down..> ProfileAccessStore : uses
-ProfileViewComponent ..down..> ProfileAccessStore : uses
-RoleAssignmentComponent ..down..> ProfileAccessStore : uses
-PermissionAssignmentComponent ..down..> ProfileAccessStore : uses
+ProfileAccessStore ..right..> User
+ProfileAccessStore ..right..> Role
+ProfileAccessStore ..right..> Permission
 
-User --> Role
-Role --> Permission
+UserRole --> User
+UserRole --> Role
+
+RolePermission --> Role
+RolePermission --> Permission
+
+Role --> RolePosition
+Permission --> PermissionCategory
+
 @enduml

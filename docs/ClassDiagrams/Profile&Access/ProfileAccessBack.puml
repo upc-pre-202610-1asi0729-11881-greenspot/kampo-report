@@ -2,7 +2,7 @@
 
 left to right direction
 
-title Class Diagram - Profile & Access  (Backend)
+title Class Diagram - Profile & Access (Backend)
 
 package "domain" {
 
@@ -10,8 +10,8 @@ package "domain" {
     interface ProfileAccessDomainService {
       +validateUser(user: User): void
       +validateRole(role: Role): void
+      +validatePermission(permission: Permission): void
       +assignDefaultRole(user: User): User
-      +validatePermission(role: Role, permission: Permission): void
     }
   }
 
@@ -20,64 +20,82 @@ package "domain" {
     package "aggregate" {
       class User {
         -id: UserId
-        -name: String
-        -email: Email
-        -password: String
-        -role: Role
+        -lastName: String
+        -firstName: String
         -createdAt: LocalDateTime
+        -email: Email
+        -phone: String
 
         +create(command: RegisterUserCommand): User
         +login(command: LoginCommand): boolean
         +modifyProfile(command: ModifyProfileCommand): void
-        +assignRole(role: Role): void
         +getId(): UserId
-        +getName(): String
+        +getLastName(): String
+        +getFirstName(): String
         +getEmail(): Email
-        +getRole(): Role
+        +getPhone(): String
       }
 
       class Role {
         -id: RoleId
-        -name: RoleType
-        -permissions: Permission[]
+        -position: RolePosition
+        -description: String
 
-        +create(name: RoleType): Role
-        +assignPermission(permission: Permission): void
+        +create(position: RolePosition, description: String): Role
         +getId(): RoleId
-        +getName(): RoleType
-        +getPermissions(): Permission[]
+        +getPosition(): RolePosition
+        +getDescription(): String
       }
 
       class Permission {
         -id: PermissionId
-        -name: PermissionType
+        -category: PermissionCategory
+        -description: String
 
-        +create(name: PermissionType): Permission
+        +create(category: PermissionCategory, description: String): Permission
         +getId(): PermissionId
-        +getName(): PermissionType
+        +getCategory(): PermissionCategory
+        +getDescription(): String
       }
 
-      User -[hidden]right- Role
-      Role -[hidden]right- Permission
+      class UserRole {
+        -id: UserRoleId
+        -rolesId: RoleId
+        -userId: UserId
+
+        +assign(command: AssignRoleCommand): UserRole
+        +getId(): UserRoleId
+        +getRolesId(): RoleId
+        +getUserId(): UserId
+      }
+
+      class RolePermission {
+        -id: RolePermissionId
+        -permissionId: PermissionId
+        -roleId: RoleId
+
+        +assign(command: AssignPermissionCommand): RolePermission
+        +getId(): RolePermissionId
+        +getPermissionId(): PermissionId
+        +getRoleId(): RoleId
+      }
     }
 
     package "enums" {
-      enum RoleType {
+      enum RolePosition {
         ADMIN
         AGRONOMIST
         TECHNICIAN
         SUPERVISOR
       }
 
-      enum PermissionType {
-        CREATE
-        READ
-        UPDATE
-        DELETE
-        ASSIGN
+      enum PermissionCategory {
+        USERS
+        REPORTS
+        ALERTS
+        INVENTORY
+        FINANCIAL
       }
-
-      RoleType -[hidden]down- PermissionType
     }
 
     package "valueobject" {
@@ -99,50 +117,55 @@ package "domain" {
         +getValue(): Long
       }
 
+      class UserRoleId {
+        -value: Long
+        +of(value: Long): UserRoleId
+        +getValue(): Long
+      }
+
+      class RolePermissionId {
+        -value: Long
+        +of(value: Long): RolePermissionId
+        +getValue(): Long
+      }
+
       class Email {
         -value: String
         +of(value: String): Email
         +getValue(): String
       }
-
-      UserId -[hidden]down- RoleId
-      RoleId -[hidden]down- PermissionId
-      PermissionId -[hidden]down- Email
     }
   }
 
   package "commands" {
     class RegisterUserCommand {
-      -name: String
-      -email: String
-      -password: String
+      -lastName: String
+      -firstName: String
+      -email: Email
+      -phone: String
     }
 
     class LoginCommand {
-      -email: String
-      -password: String
+      -email: Email
     }
 
     class ModifyProfileCommand {
-      -userId: Long
-      -name: String
-      -email: String
+      -userId: UserId
+      -lastName: String
+      -firstName: String
+      -email: Email
+      -phone: String
     }
 
     class AssignRoleCommand {
-      -userId: Long
-      -roleId: Long
+      -rolesId: RoleId
+      -userId: UserId
     }
 
     class AssignPermissionCommand {
-      -roleId: Long
-      -permissionId: Long
+      -permissionId: PermissionId
+      -roleId: RoleId
     }
-
-    RegisterUserCommand -[hidden]down- LoginCommand
-    LoginCommand -[hidden]down- ModifyProfileCommand
-    ModifyProfileCommand -[hidden]down- AssignRoleCommand
-    AssignRoleCommand -[hidden]down- AssignPermissionCommand
   }
 }
 
@@ -152,19 +175,25 @@ ProfileAccessDomainService --> Permission
 
 User --> UserId
 User --> Email
-User --> Role
 
 Role --> RoleId
-Role --> RoleType
-Role --> Permission
+Role --> RolePosition
 
 Permission --> PermissionId
-Permission --> PermissionType
+Permission --> PermissionCategory
 
-RegisterUserCommand ..> User
-LoginCommand ..> User
-ModifyProfileCommand ..> User
-AssignRoleCommand ..> Role
-AssignPermissionCommand ..> Permission
+UserRole --> UserRoleId
+UserRole --> RoleId
+UserRole --> UserId
+
+RolePermission --> RolePermissionId
+RolePermission --> PermissionId
+RolePermission --> RoleId
+
+RegisterUserCommand --> User
+LoginCommand --> User
+ModifyProfileCommand --> User
+AssignRoleCommand --> UserRole
+AssignPermissionCommand --> RolePermission
 
 @enduml
