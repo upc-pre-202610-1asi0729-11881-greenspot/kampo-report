@@ -1,0 +1,130 @@
+@startuml
+left to right direction
+title Class Diagram - Season Management (Backend)
+
+package "domain" {
+  together {
+    package "commands" {
+      class CreateSeasonCommand {
+        -fieldId: FieldId
+        -cropId: CropId
+        -cropName: String
+        -startedAt: LocalDate
+      }
+      class AssignCropToSeasonCommand {
+        -seasonId: SeasonId
+        -cropId: CropId
+        -cropName: String
+      }
+      class UpdateSeasonStatusCommand {
+        -seasonId: SeasonId
+        -status: SeasonStatus
+      }
+      class EndSeasonCommand {
+        -seasonId: SeasonId
+        -endedAt: LocalDate
+      }
+    }
+
+    package "model" {
+      package "aggregate" {
+        class Season <<Aggregate>> {
+          -id: SeasonId
+          -fieldId: FieldId
+          -cropId: CropId
+          -cropName: String
+          -status: SeasonStatus
+          -startedAt: LocalDate
+          -endedAt: LocalDate
+          +create(command: CreateSeasonCommand): Season
+          +assignCrop(command: AssignCropToSeasonCommand): void
+          +updateStatus(command: UpdateSeasonStatusCommand): void
+          +end(command: EndSeasonCommand): void
+          +getId(): SeasonId
+          +getFieldId(): FieldId
+          +getCropId(): CropId
+          +getCropName(): String
+          +getStatus(): SeasonStatus
+          +getStartedAt(): LocalDate
+          +getEndedAt(): LocalDate
+          +isActive(): boolean
+          +canTransitionTo(newStatus: SeasonStatus): boolean
+        }
+      }
+
+      package "valueobject" {
+        class SeasonId {
+          -value: Long
+          +of(value: Long): SeasonId
+          +getValue(): Long
+        }
+        class FieldId {
+          -value: Long
+          +of(value: Long): FieldId
+          +getValue(): Long
+        }
+        class CropId {
+          -value: Long
+          +of(value: Long): CropId
+          +getValue(): Long
+        }
+        class DateRange {
+          -startedAt: LocalDate
+          -endedAt: LocalDate
+          +of(start: LocalDate, end: LocalDate): DateRange
+          +getStartedAt(): LocalDate
+          +getEndedAt(): LocalDate
+          +isValid(): boolean
+          +overlapsWith(other: DateRange): boolean
+          +equals(other: DateRange): boolean
+        }
+      }
+
+      package "enums" {
+        enum SeasonStatus {
+          PLANTING
+          GROWING
+          HARVESTING
+          ENDED
+        }
+      }
+    }
+  }
+
+  package "services" {
+    interface SeasonDomainService {
+      +validateSeason(season: Season): void
+      +canCreateSeason(fieldId: FieldId): boolean
+      +validateStatusTransition(current: SeasonStatus, next: SeasonStatus): boolean
+      +hasActiveSeasonInField(fieldId: FieldId): boolean
+    }
+  }
+
+  package "repositories" {
+    interface SeasonRepository {
+      +findById(id: SeasonId): Optional<Season>
+      +findByFieldId(fieldId: FieldId): List<Season>
+      +findActiveByFieldId(fieldId: FieldId): Optional<Season>
+      +save(season: Season): Season
+      +delete(id: SeasonId): void
+    }
+  }
+}
+
+CreateSeasonCommand        ..> Season
+AssignCropToSeasonCommand  ..> Season
+UpdateSeasonStatusCommand  ..> Season
+EndSeasonCommand           ..> Season
+
+Season --> SeasonId
+Season --> FieldId
+Season --> CropId
+Season --> SeasonStatus
+Season --> DateRange
+
+SeasonDomainService ..> Season
+SeasonDomainService ..> SeasonStatus
+SeasonDomainService ..> FieldId
+SeasonRepository    ..> Season
+
+@enduml
