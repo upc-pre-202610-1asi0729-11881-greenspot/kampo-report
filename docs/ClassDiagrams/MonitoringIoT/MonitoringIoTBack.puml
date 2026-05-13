@@ -1,0 +1,147 @@
+@startuml
+left to right direction
+title Class Diagram - Monitoring IoT (Backend)
+
+package "domain" {
+  package "services" {
+    interface MonitoringDomainService {
+      +validateSensor(sensor: IoTSensor): void
+      +processSensorData(reading: Reading): void
+      +registerManualData(reading: Reading): Reading
+      +generateDashboard(sensorId: SensorId): void
+    }
+  }
+
+  package "commands" {
+    class RegisterSensorCommand {
+      -type: SensorType
+      -location: String
+      -fieldId: Long
+    }
+    class ConfigureSensorCommand {
+      -sensorId: SensorId
+      -minThreshold: Double
+      -maxThreshold: Double
+    }
+    class ModifySensorConfigurationCommand {
+      -sensorId: SensorId
+      -minThreshold: Double
+      -maxThreshold: Double
+    }
+    class SendSensorDataCommand {
+      -sensorId: SensorId
+      -value: Double
+      -recordedAt: LocalDateTime
+    }
+    class RegisterManualDataCommand {
+      -fieldId: Long
+      -value: Double
+      -type: ReadingType
+      -recordedAt: LocalDateTime
+    }
+
+    RegisterSensorCommand -[hidden]down- ConfigureSensorCommand
+    ConfigureSensorCommand -[hidden]down- ModifySensorConfigurationCommand
+    ModifySensorConfigurationCommand -[hidden]down- SendSensorDataCommand
+    SendSensorDataCommand -[hidden]down- RegisterManualDataCommand
+  }
+
+  package "model" {
+    package "aggregate" {
+      class IoTSensor {
+        -id: SensorId
+        -type: SensorType
+        -location: String
+        -status: SensorStatus
+        -minThreshold: Double
+        -maxThreshold: Double
+        -fieldId: Long
+        +create(command: RegisterSensorCommand): IoTSensor
+        +configure(command: ConfigureSensorCommand): void
+        +modifyConfiguration(command: ModifySensorConfigurationCommand): void
+        +activate(): void
+        +deactivate(): void
+        +getId(): SensorId
+        +getStatus(): SensorStatus
+        +getType(): SensorType
+      }
+
+      class Reading {
+        -id: ReadingId
+        -sensorId: SensorId
+        -value: Double
+        -type: ReadingType
+        -source: ReadingSource
+        -recordedAt: LocalDateTime
+        +createFromSensor(command: SendSensorDataCommand): Reading
+        +createManual(command: RegisterManualDataCommand): Reading
+        +isOutOfRange(min: Double, max: Double): boolean
+        +getId(): ReadingId
+        +getValue(): Double
+        +getType(): ReadingType
+        +getSource(): ReadingSource
+      }
+
+      IoTSensor -[hidden]right- Reading
+    }
+
+    package "valueobject" {
+      class SensorId {
+        -value: Long
+        +of(value: Long): SensorId
+        +getValue(): Long
+      }
+      class ReadingId {
+        -value: Long
+        +of(value: Long): ReadingId
+        +getValue(): Long
+      }
+
+      SensorId -[hidden]down- ReadingId
+    }
+
+    package "enums" {
+      enum SensorType {
+        HUMIDITY
+        TEMPERATURE
+        PH
+      }
+      enum SensorStatus {
+        ACTIVE
+        INACTIVE
+        MAINTENANCE
+      }
+      enum ReadingType {
+        HUMIDITY
+        TEMPERATURE
+        PH
+      }
+      enum ReadingSource {
+        IOT
+        MANUAL
+      }
+
+      SensorType -[hidden]right- SensorStatus
+      ReadingType -[hidden]right- ReadingSource
+    }
+  }
+}
+
+RegisterSensorCommand ..> IoTSensor
+ConfigureSensorCommand ..> IoTSensor
+ModifySensorConfigurationCommand ..> IoTSensor
+SendSensorDataCommand ..> Reading
+RegisterManualDataCommand ..> Reading
+
+IoTSensor --> SensorId
+IoTSensor --> SensorType
+IoTSensor --> SensorStatus
+Reading --> ReadingId
+Reading --> SensorId
+Reading --> ReadingType
+Reading --> ReadingSource
+
+MonitoringDomainService ..> IoTSensor
+MonitoringDomainService ..> Reading
+
+@enduml

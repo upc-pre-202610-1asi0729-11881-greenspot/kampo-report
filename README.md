@@ -1468,51 +1468,90 @@ Estos archivos representan la estructura de clases, atributos y relaciones de ca
 ---
 
 ### Alert Management
-- Backend: `alert-management-backend.puml`
-- Frontend: `alert-management-frontend.puml`
+- Backend:
+  [Alert Management Backend](./docs/ClassDiagrams/AlertManagement/AlertManagementBack.puml)
+  ![Alert Management Class Diagram](docs/assets/img/class-diagram/AlertManagement/AlertManagementBack.png)
+- Frontend: 
+  [Alert Management Frontend](./docs/ClassDiagrams/AlertManagement/AlertManagementFront.puml)
+  ![Alert Management Class Diagram](docs/assets/img/class-diagram/AlertManagement/AlertManagementFront.png)
 
 ### Employee Management
 - Backend:
   [Employee Management Backend](./docs/ClassDiagrams/EmployeeManagement/EmployeeManagementBack.puml)
+  ![Employee Management Class Diagram](docs/assets/img/class-diagram/EmployeeManagement/EmployeeManagementBack.png)
 - Frontend:
   [Employee Management Frontend](./docs/ClassDiagrams/EmployeeManagement/EmployeeManagementFront.puml)
-
+  ![Employee Management Class Diagram](docs/assets/img/class-diagram/EmployeeManagement/EmployeeManagementFront.png)
 ### Field Operation
-- Backend: `field-operation-backend.puml`
-- Frontend: `field-operation-frontend.puml`
-
+- Backend:
+  [Field Operation Backend](./docs/ClassDiagrams/FieldOperation/FieldOperationBack.puml)
+  ![Field Operation Class Diagram](docs/assets/img/class-diagram/FieldOperation/FieldOperationBack.png)
+- Frontend:
+  [Field Operation Frontend](./docs/ClassDiagrams/FieldOperation/FieldOperationFront.puml)
+  ![Field Operation Class Diagram](docs/assets/img/class-diagram/FieldOperation/FieldOperationFront.png)
 ### Financial Management
-- Backend: `financial-management-backend.puml`
-- Frontend: `financial-management-frontend.puml`
+- Backend:
+  [Financial Management Backend](./docs/ClassDiagrams/FinancialManagement/FinancialBack.puml)
+  ![Financial Management Class Diagram](docs/assets/img/class-diagram/FinancialManagement/FinancialManagementBack.png)
+- Frontend:
+  [Financial Management Frontend](./docs/ClassDiagrams/FinancialManagement/FinancialFront.puml)
+  ![Financial Management Class Diagram](docs/assets/img/class-diagram/FinancialManagement/FinancialManagementFront.png)
 
 ### Inventory Management
-- Backend: `inventory-management-backend.puml`
-- Frontend: `inventory-management-frontend.puml`
+- Backend:
+  [Inventory Management Backend](./docs/ClassDiagrams/InventoryManagement/InventoryManagementBack.puml)
+  ![Inventory Management Class Diagram](docs/assets/img/class-diagram/InventoryManagement/InventoryManagementBack.png)
+- Frontend:
+  [Inventory Management Frontend](./docs/ClassDiagrams/InventoryManagement/InventoryManagementFront.puml)
+  ![Inventory Management Class Diagram](docs/assets/img/class-diagram/InventoryManagement/InventoryManagementFront.png)
 
 ### Monitoring IoT
-- Backend: `monitoring-iot-backend.puml`
-- Frontend: `monitoring-iot-frontend.puml`
+- Backend:
+  [Monitoring IoT Backend](./docs/ClassDiagrams/MonitoringIoT/MonitoringIoTBack.puml)
+  ![Monitoring IoT Class Diagram](docs/assets/img/class-diagram/MonitoringIoT/MonitoringIoTBack.png)
+- Frontend:
+  [Monitoring IoT Frontend](./docs/ClassDiagrams/MonitoringIoT/MonitoringIoTFront.puml)
+  ![Monitoring IoT Class Diagram](docs/assets/img/class-diagram/MonitoringIoT/MonitoringIoTFront.png)
 
 ### Organization Management
-- Backend: `organization-management-backend.puml`
-- Frontend: `organization-management-frontend.puml`
+- Backend:
+  [Organization Management Backend](./docs/ClassDiagrams/OrganizationManagement/OrganizationManagementBack.puml)
+  ![Organization Management Class Diagram](docs/assets/img/class-diagram/OrganizationManagement/OrganizationManagementBack.png)
+- Frontend:
+  [Organization Management Frontend](./docs/ClassDiagrams/OrganizationManagement/OrganizationManagementFront.puml)
+  ![Organization Management Class Diagram](docs/assets/img/class-diagram/OrganizationManagement/OrganizationManagementFront.png)
 
 ### Profile & Access
-- Backend: `profile-access-backend.puml`
-- Frontend: `profile-access-frontend.puml`
+- Backend:
+  [Profile & Access Backend](./docs/ClassDiagrams/Profile&Access/ProfileAccessBack.puml)
+  ![Profile & Access Class Diagram](docs/assets/img/class-diagram/Profile&Access/Profile&AccessBack.png)
+- Frontend:
+  [Profile & Access Frontend](./docs/ClassDiagrams/Profile&Access/ProfileAccessFront.puml)
+  ![Profile & Access Class Diagram](docs/assets/img/class-diagram/Profile&Access/Profile&AccessFront.png)
 
 ### Report
-- Backend: `report-backend.puml`
-- Frontend: `report-frontend.puml`
+- Backend:
+  [Report Backend](./docs/ClassDiagrams/Report/ReportBack.puml)
+  ![Report Class Diagram](docs/assets/img/class-diagram/Report/ReportBack.png)
+- Frontend:
+  [Report Frontend](./docs/ClassDiagrams/Report/ReportFront.puml)
+  ![Report Class Diagram](docs/assets/img/class-diagram/Report/ReportFront.png)
 
 ### Season Management
-- Backend: `season-management-backend.puml`
-- Frontend: `season-management-frontend.puml`
+- Backend:
+  [Season Management Backend](./docs/ClassDiagrams/SeasonManagement/SeasonManagementBack.puml)
+  ![Season Management Class Diagram](docs/assets/img/class-diagram/SeasonManagement/SeasonManagementBack.png)
+- Frontend:
+  [Season Management Frontend](./docs/ClassDiagrams/SeasonManagement/SeasonManagementFront.puml)
+  ![Season Management Class Diagram](docs/assets/img/class-diagram/SeasonManagement/SeasonManagementFront.png)
 
 ### Subscription
-- Backend: `subscription-backend.puml`
-- Frontend: `subscription-frontend.puml`
-
+- Backend:
+  [Subscription Backend](./docs/ClassDiagrams/Subscription/SubscriptionBack.puml)
+  ![Subscription Class Diagram](docs/assets/img/class-diagram/Subscription/SubscriptionBack.png)
+- Frontend:
+  [Subscription Frontend](./docs/ClassDiagrams/Subscription/SubscriptionFront.puml)
+  ![Subscription Class Diagram](docs/assets/img/class-diagram/Subscription/SubscriptionFront.png)
 ---
 
 Cada uno de estos diagramas permite entender cómo se estructuran las clases en el backend y cómo se manejan en el frontend dentro de cada bounded context, manteniendo la separación de responsabilidades del sistema.
@@ -1520,7 +1559,7 @@ Cada uno de estos diagramas permite entender cómo se estructuran las clases en 
 
 ## 4.8. Database Design
 ##### 4.8.1. Database Diagrams
-![Database-Diagrams](docs/assets/img/kampo-database-diagram.png)
+![Database-Diagrams](docs/assets/img/class-diagram/DB.jpg)
 
 ---
 
