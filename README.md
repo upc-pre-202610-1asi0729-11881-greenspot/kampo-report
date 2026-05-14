@@ -818,7 +818,7 @@ Las tareas con mayor frecuencia e importancia para ambos segmentos son consolida
 
 ##### 2.3.3. User Journey Mapping
 SEGMENTO 01
-<<<<<<< HEAD
+
 <p align="center">
   <img src="docs/assets/img/cap-ii/SEGMENTO 1.png" width="500"/>
   <br/>
@@ -827,13 +827,13 @@ SEGMENTO 01
 SEGMENTO 02
 <p align="center">
   <img src="docs/assets/img/cap-ii/SEGMENTO 2.png" width="500"/>
-=======
+
 <p aling="center"><img src="docs/assets/img/Capítulo%202/SEGMENTO 1.png" width="500"/><br/></p>
 
 SEGMENTO 02
 <p align="center">
   <img src="docs/assets/img/Capítulo%202/SEGMENTO 2.png" width="500"/>
->>>>>>> develop
+
   <br/>
 </p>
 
@@ -842,21 +842,21 @@ El Empathy Mapping permite comprender de manera integral a los usuarios, identif
 
 USER PERSONA 01
 <p align="center">
-<<<<<<< HEAD
+
   <img src="docs/assets/img/cap-ii/PERSONA 1.png" width="500"/>
-=======
+
   <img src="docs/assets/img/Capítulo%202/PERSONA 1.png" width="500"/>
->>>>>>> develop
+
   <br/>
 </p>
 
 USER PERSONA 02
 <p align="center">
-<<<<<<< HEAD
+
   <img src="docs/assets/img/cap-ii/PERSONA 2.png" width="500"/>
-=======
+
   <img src="docs/assets/img/Capítulo%202/PERSONA 2.png" width="500"/>
->>>>>>> develop
+
   <br/>
 </p>
 
@@ -1342,6 +1342,12 @@ Para validar la experiencia de usuario (UX), se desarrolló un prototipo funcion
 ![Mockups](./docs/assets/img/Mockups.png)
 
 ## 4.5. Web Applications Prototyping
+![Landing1](docs/assets/img/landing1.jpeg)
+![Landing2](docs/assets/img/landing2.jpeg)
+![Landing3](docs/assets/img/landing3.jpeg)
+![Landing4](docs/assets/img/landing4.jpeg)
+
+**Url del video de la prueba del landing:**  https://upcedupe-my.sharepoint.com/:v:/g/personal/u202311469_upc_edu_pe/IQC3Aa-t5SkaRIfLSAEjwKB9AdL3AWh_9V-KZPTTfsqUM3I?e=IUrtDH&nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D
 ## 4.6. Domain-Driven Software Architecture
 ##### 4.6.1. Design-Level Event Storming
 <div align="justify">
@@ -2204,6 +2210,340 @@ periodo del Sprint 1, incluyendo número de commits, Pull Requests
 abiertos y mergeados, y contribuciones por integrante.
 
 ---
+##### 5.2.2. Sprint 2
+
+###### 5.2.2.1. Sprint Planning 2
+
+Durante el Sprint Planning 2, el equipo GreenSpot definió como objetivo
+principal el desarrollo de los diagramas de clases para todos los bounded
+contexts del sistema KAMPO (frontend y backend), así como el inicio del
+desarrollo del Frontend Web Application usando Angular Framework,
+cubriendo los principales módulos de la solución.
+
+<table>
+    <tr>
+        <th><b>Sprint #Number</b></th>
+        <th>Sprint #2</th>
+    </tr>
+    <tr>
+        <th><b>Sprint Planning Background</b></th>
+        <th></th>
+    </tr>
+    <tr>
+        <th><b>Date</b></th>
+        <th>2026-05-05</th>
+    </tr>
+    <tr>
+        <th><b>Time</b></th>
+        <th>07:00 PM</th>
+    </tr>
+    <tr>
+        <th><b>Location</b></th>
+        <th>Reunión virtual vía Google Meet</th>
+    </tr>
+    <tr>
+        <th><b>Prepared By</b></th>
+        <th>Hurtado Balcazar, Rommel Daniel — GreenSpot</th>
+    </tr>
+    <tr>
+        <th><b>Attendees (to planning meeting)</b></th>
+        <th>
+            Hurtado Balcazar, Rommel Daniel /<br>
+            Ramos Fuentes Rivera, Adriana Nicole /<br>
+            Tuesta Girón, Kiara Lucia /<br>
+            Arroyo Gonzales, Emily Juliette /<br>
+            Acuache Lucas, Mathias Joaquin
+        </th>
+    </tr>
+    <tr>
+        <th><b>Sprint 1 Review Summary</b></th>
+        <th>Durante el Sprint 1 se completó la documentación base del proyecto KAMPO en formato Markdown, incluyendo el Lean UX Process, los segmentos objetivo, las User Stories, el Product Backlog y la configuración del entorno de desarrollo. Se validó la estructura del informe y se realizaron los primeros commits al repositorio siguiendo GitFlow y Conventional Commits.</th>
+    </tr>
+    <tr>
+        <th><b>Sprint 1 Retrospective Summary</b></th>
+        <th>El equipo identificó como acierto la distribución clara de responsabilidades por sección del informe. Como oportunidad de mejora se identificó la necesidad de mejorar la comunicación interna para evitar secciones vacías y falta de evidencias de colaboración en GitHub. Para el Sprint 2 el equipo se compromete a mantener commits frecuentes y coordinar mejor los avances.</th>
+    </tr>
+    <tr>
+        <th><b>Sprint Goal & User Stories</b></th>
+        <th></th>
+    </tr>
+    <tr>
+        <th><b>Sprint 2 Goal</b></th>
+        <th>
+            > Our focus is on delivering the class diagrams for all bounded contexts of KAMPO and the first functional modules of the Frontend Web Application.<br>
+            > We believe it delivers a solid architectural foundation and a navigable initial experience to agronomist engineers and agroindustry managers.<br>
+            > This will be confirmed when all bounded contexts have their frontend and backend class diagrams published in the repository, and when users can navigate through the initial modules of the Angular web application.
+        </th>
+    </tr>
+    <tr>
+        <th><b>Sprint 2 Velocity</b></th>
+        <th>40 Story Points</th>
+    </tr>
+    <tr>
+        <th><b>Sum of Story Points</b></th>
+        <th>40 Story Points</th>
+    </tr>
+</table>
+
+---
+
+###### 5.2.2.2. Aspect Leaders and Collaborators
+
+Durante el Sprint 2, el equipo GreenSpot organizó el trabajo en torno
+a dos ejes principales: la elaboración de los diagramas de clases de
+todos los bounded contexts (frontend y backend) y el inicio del
+desarrollo del Frontend Web Application en Angular. Cada integrante
+lideró los bounded contexts asignados y colaboró en los demás.
+
+L = Leader (líder del aspecto)
+C = Collaborator (colaborador)
+
+| Team Member (Last Name, First Name) | GitHub Username | Aspecto 1: Diagramas de Clases (L/C) | Aspecto 2: Frontend – Inventory & Financial & Report (L/C) | Aspecto 3: Frontend – Field (L/C) | Aspecto 4: Frontend – Organization, Season & Profile (L/C) | Aspecto 5: Frontend – Alert & Employee (L/C) | Aspecto 6: Frontend – Subscription (L/C) |
+|---|---|---|---|---|---|---|---|
+| Hurtado Balcazar, Rommel Daniel | rommelDN | C | L | C | C | C | C |
+| Ramos Fuentes Rivera, Adriana Nicole | adriana832 | L | C | L | C | C | C |
+| Tuesta Girón, Kiara Lucia | Kitu05g | L | C | C | C | L | C |
+| Arroyo Gonzales, Emily Juliette | Em2920 | C | C | C | C | C | L |
+| Acuache Lucas, Mathias Joaquin | MathiasA25 | L | C | C | L | C | C |
+
+---
+
+###### 5.2.2.3. Sprint Backlog 2
+
+Durante el Sprint 2, el equipo GreenSpot se enfocó en dos entregables
+principales: los diagramas de clases de todos los bounded contexts del
+sistema KAMPO (frontend y backend) y el inicio del desarrollo del
+Frontend Web Application en Angular. El seguimiento de tareas se
+realizó mediante el repositorio GitHub.
+
+| Sprint # | Sprint 2 |
+|---|---|
+
+| US/TS ID | Título | Task ID | Task Título | Descripción | Estimación (hrs) | Asignado a | Estado |
+|---|---|---|---|---|---|---|---|
+| TS01 | Diagrama de clases – Inventory (front + back) | T01 | Elaborar class diagram Inventory frontend | Crear diagrama de clases .puml para el bounded context Inventory en la capa frontend | 2 | Hurtado Balcazar, Rommel Daniel | Done |
+| TS01 | Diagrama de clases – Inventory (front + back) | T02 | Elaborar class diagram Inventory backend | Crear diagrama de clases .puml para el bounded context Inventory en la capa backend | 2 | Hurtado Balcazar, Rommel Daniel | Done |
+| TS02 | Diagrama de clases – Financial (front + back) | T03 | Elaborar class diagram Financial frontend | Crear diagrama de clases .puml para el bounded context Financial en la capa frontend | 2 | Hurtado Balcazar, Rommel Daniel | Done |
+| TS02 | Diagrama de clases – Financial (front + back) | T04 | Elaborar class diagram Financial backend | Crear diagrama de clases .puml para el bounded context Financial en la capa backend | 2 | Hurtado Balcazar, Rommel Daniel | Done |
+| TS03 | Diagrama de clases – Report (front + back) | T05 | Elaborar class diagram Report frontend | Crear diagrama de clases .puml para el bounded context Report en la capa frontend | 2 | Hurtado Balcazar, Rommel Daniel | Done |
+| TS03 | Diagrama de clases – Report (front + back) | T06 | Elaborar class diagram Report backend | Crear diagrama de clases .puml para el bounded context Report en la capa backend | 2 | Hurtado Balcazar, Rommel Daniel | Done |
+| TS04 | Diagrama de clases – Field (front + back) | T07 | Elaborar class diagram Field frontend | Crear diagrama de clases .puml para el bounded context Field en la capa frontend | 2 | Ramos Fuentes Rivera, Adriana Nicole | Done |
+| TS04 | Diagrama de clases – Field (front + back) | T08 | Elaborar class diagram Field backend | Crear diagrama de clases .puml para el bounded context Field en la capa backend | 2 | Ramos Fuentes Rivera, Adriana Nicole | Done |
+| TS05 | Diagrama de clases – Organization (front + back) | T09 | Elaborar class diagram Organization frontend | Crear diagrama de clases .puml para el bounded context Organization en la capa frontend | 2 | Acuache Lucas, Mathias Joaquin | Done |
+| TS05 | Diagrama de clases – Organization (front + back) | T10 | Elaborar class diagram Organization backend | Crear diagrama de clases .puml para el bounded context Organization en la capa backend | 2 | Acuache Lucas, Mathias Joaquin | Done |
+| TS06 | Diagrama de clases – Season (front + back) | T11 | Elaborar class diagram Season frontend | Crear diagrama de clases .puml para el bounded context Season en la capa frontend | 2 | Acuache Lucas, Mathias Joaquin | Done |
+| TS06 | Diagrama de clases – Season (front + back) | T12 | Elaborar class diagram Season backend | Crear diagrama de clases .puml para el bounded context Season en la capa backend | 2 | Acuache Lucas, Mathias Joaquin | Done |
+| TS07 | Diagrama de clases – Profile & Access (front + back) | T13 | Elaborar class diagram Profile & Access frontend | Crear diagrama de clases .puml para el bounded context Profile & Access en la capa frontend | 2 | Acuache Lucas, Mathias Joaquin | Done |
+| TS07 | Diagrama de clases – Profile & Access (front + back) | T14 | Elaborar class diagram Profile & Access backend | Crear diagrama de clases .puml para el bounded context Profile & Access en la capa backend | 2 | Acuache Lucas, Mathias Joaquin | Done |
+| TS08 | Diagrama de clases – Alert (front + back) | T15 | Elaborar class diagram Alert frontend | Crear diagrama de clases .puml para el bounded context Alert en la capa frontend | 2 | Tuesta Girón, Kiara Lucia | Done |
+| TS08 | Diagrama de clases – Alert (front + back) | T16 | Elaborar class diagram Alert backend | Crear diagrama de clases .puml para el bounded context Alert en la capa backend | 2 | Tuesta Girón, Kiara Lucia | Done |
+| TS09 | Diagrama de clases – Employee (front + back) | T17 | Elaborar class diagram Employee frontend | Crear diagrama de clases .puml para el bounded context Employee en la capa frontend | 2 | Tuesta Girón, Kiara Lucia | Done |
+| TS09 | Diagrama de clases – Employee (front + back) | T18 | Elaborar class diagram Employee backend | Crear diagrama de clases .puml para el bounded context Employee en la capa backend | 2 | Tuesta Girón, Kiara Lucia | Done |
+| TS10 | Diagrama de clases – Subscription (front + back) | T19 | Elaborar class diagram Subscription frontend | Crear diagrama de clases .puml para el bounded context Subscription en la capa frontend | 2 | Arroyo Gonzales, Emily Juliette | Done |
+| TS10 | Diagrama de clases – Subscription (front + back) | T20 | Elaborar class diagram Subscription backend | Crear diagrama de clases .puml para el bounded context Subscription en la capa backend | 2 | Arroyo Gonzales, Emily Juliette | Done |
+| US01 | Frontend – Inventory bounded context | T21 | Implement Inventory frontend module | Desarrollar los componentes, servicios y modelos iniciales del bounded context Inventory en Angular | 4 | Hurtado Balcazar, Rommel Daniel | In Progress |
+| US02 | Frontend – Financial bounded context | T22 | Implement Financial frontend module | Desarrollar los componentes, servicios y modelos iniciales del bounded context Financial en Angular | 4 | Hurtado Balcazar, Rommel Daniel | In Progress |
+| US03 | Frontend – Report bounded context | T23 | Implement Report frontend module | Desarrollar los componentes, servicios y modelos iniciales del bounded context Report en Angular | 4 | Hurtado Balcazar, Rommel Daniel | In Progress |
+| US04 | Frontend – Field bounded context | T24 | Implement Field frontend module | Desarrollar los componentes, servicios y modelos iniciales del bounded context Field en Angular | 4 | Ramos Fuentes Rivera, Adriana Nicole | In Progress |
+| US05 | Frontend – Organization bounded context | T25 | Implement Organization frontend module | Desarrollar los componentes, servicios y modelos iniciales del bounded context Organization en Angular | 4 | Acuache Lucas, Mathias Joaquin | In Progress |
+| US06 | Frontend – Season bounded context | T26 | Implement Season frontend module | Desarrollar los componentes, servicios y modelos iniciales del bounded context Season en Angular | 4 | Acuache Lucas, Mathias Joaquin | In Progress |
+| US07 | Frontend – Profile & Access bounded context | T27 | Implement Profile & Access frontend module | Desarrollar los componentes, servicios y modelos iniciales del bounded context Profile & Access en Angular | 4 | Acuache Lucas, Mathias Joaquin | In Progress |
+| US08 | Frontend – Alert bounded context | T28 | Implement Alert frontend module | Desarrollar los componentes, servicios y modelos iniciales del bounded context Alert en Angular | 4 | Tuesta Girón, Kiara Lucia | In Progress |
+| US09 | Frontend – Employee bounded context | T29 | Implement Employee frontend module | Desarrollar los componentes, servicios y modelos iniciales del bounded context Employee en Angular | 4 | Tuesta Girón, Kiara Lucia | In Progress |
+| US10 | Frontend – Subscription bounded context | T30 | Implement Subscription frontend module | Desarrollar los componentes, servicios y modelos iniciales del bounded context Subscription en Angular | 4 | Arroyo Gonzales, Emily Juliette | In Progress |
+
+---
+
+###### 5.2.2.4. Development Evidence for Sprint Review
+
+Durante el Sprint 2, el equipo GreenSpot elaboró los diagramas de
+clases para todos los bounded contexts del sistema KAMPO (frontend y
+backend) en formato .puml, publicándolos en el repositorio del informe.
+Adicionalmente se inició el desarrollo del Frontend Web Application en
+Angular, creando los módulos iniciales por bounded context.
+
+| Repository | Branch | Commit Id | Commit Message | Commit Message Body | Committed on (Date) |
+|---|---|---|---|---|---|
+| GreenSpot-app/kampo-report | feature/class-diagrams | 8ada8740c4e067d8be188d406f422f42de348546 | feat(diagrams): add class diagrams for Inventory bounded context | Se agregaron los diagramas de clases frontend y backend del bounded context Inventory en formato .puml | 2026-05-06 |
+| GreenSpot-app/kampo-report | feature/class-diagrams | 0564b9ff3b612e2bc5bb7d8f498d0bb124cf88c5 | feat(diagrams): add class diagrams for Financial bounded context | Se agregaron los diagramas de clases frontend y backend del bounded context Financial en formato .puml | 2026-05-06 |
+| GreenSpot-app/kampo-report | feature/class-diagrams | 77bc899384d9149afa5a81dc68ee907ab81c314a | feat(diagrams): add class diagrams for Report bounded context | Se agregaron los diagramas de clases frontend y backend del bounded context Report en formato .puml | 2026-05-07 |
+| GreenSpot-app/kampo-report | feature/class-diagrams | 707f0b853683e07e89fa9796e9cebbcc1fa7ccab | feat(diagrams): add class diagrams for Field bounded context | Se agregaron los diagramas de clases frontend y backend del bounded context Field en formato .puml | 2026-05-07 |
+| GreenSpot-app/kampo-report | feature/class-diagrams | ef1d66dc7beabe88680b73f1ece931929b8ed8ef | feat(diagrams): add class diagrams for Organization bounded context | Se agregaron los diagramas de clases frontend y backend del bounded context Organization en formato .puml | 2026-05-08 |
+| GreenSpot-app/kampo-report | feature/class-diagrams | ef3f4b6404d6a7ff49f0f6d1fa1e28009ac93b19 | feat(diagrams): add class diagrams for Season bounded context | Se agregaron los diagramas de clases frontend y backend del bounded context Season en formato .puml | 2026-05-08 |
+| GreenSpot-app/kampo-report | feature/class-diagrams | 76828f875a5c2f298c7287f16099f0c8da9fe63e | feat(diagrams): add class diagrams for Profile & Access bounded context | Se agregaron los diagramas de clases frontend y backend del bounded context Profile & Access en formato .puml | 2026-05-09 |
+| GreenSpot-app/kampo-report | feature/class-diagrams | 77bc899384d9149afa5a81dc68ee907ab81c314a | feat(diagrams): add class diagrams for Alert bounded context | Se agregaron los diagramas de clases frontend y backend del bounded context Alert en formato .puml | 2026-05-09 |
+| GreenSpot-app/kampo-report | feature/class-diagrams | b2fe9a5421cdef0b633d950317518a32c0eca823 | feat(diagrams): add class diagrams for Employee bounded context | Se agregaron los diagramas de clases frontend y backend del bounded context Employee en formato .puml | 2026-05-10 |
+| GreenSpot-app/kampo-report | feature/class-diagrams | 03e578626b3a7c07213668439ef9ebf6faeaa557 | feat(diagrams): add class diagrams for Subscription bounded context | Se agregaron los diagramas de clases frontend y backend del bounded context Subscription en formato .puml | 2026-05-10 |
+| GreenSpot-app/Kampo-Frontend | feature/inventory | [Insertar hash] | feat(inventory): add inventory module initial structure | Se creó la estructura inicial del módulo Inventory con componentes, servicios y modelos en Angular | 2026-05-10 |
+| GreenSpot-app/Kampo-Frontend | feature/financial | [Insertar hash] | feat(financial): add financial module initial structure | Se creó la estructura inicial del módulo Financial con componentes, servicios y modelos en Angular | 2026-05-11 |
+| GreenSpot-app/Kampo-Frontend | feature/report | [Insertar hash] | feat(report): add report module initial structure | Se creó la estructura inicial del módulo Report con componentes, servicios y modelos en Angular | 2026-05-11 |
+| GreenSpot-app/Kampo-Frontend | feature/field | [Insertar hash] | feat(field): add field module initial structure | Se creó la estructura inicial del módulo Field con componentes, servicios y modelos en Angular | 2026-05-11 |
+| GreenSpot-app/Kampo-Frontend | feature/organization | [Insertar hash] | feat(organization): add organization module initial structure | Se creó la estructura inicial del módulo Organization con componentes, servicios y modelos en Angular | 2026-05-12 |
+| GreenSpot-app/Kampo-Frontend | feature/season | [Insertar hash] | feat(season): add season module initial structure | Se creó la estructura inicial del módulo Season con componentes, servicios y modelos en Angular | 2026-05-12 |
+| GreenSpot-app/Kampo-Frontend | feature/profile-access | [Insertar hash] | feat(profile): add profile and access module initial structure | Se creó la estructura inicial del módulo Profile & Access con componentes, servicios y modelos en Angular | 2026-05-12 |
+| GreenSpot-app/Kampo-Frontend | feature/alert | [Insertar hash] | feat(alert): add alert module initial structure | Se creó la estructura inicial del módulo Alert con componentes, servicios y modelos en Angular | 2026-05-12 |
+| GreenSpot-app/Kampo-Frontend | feature/employee | [Insertar hash] | feat(employee): add employee module initial structure | Se creó la estructura inicial del módulo Employee con componentes, servicios y modelos en Angular | 2026-05-13 |
+| GreenSpot-app/Kampo-Frontend | feature/subscription | [Insertar hash] | feat(subscription): add subscription module initial structure | Se creó la estructura inicial del módulo Subscription con componentes, servicios y modelos en Angular | 2026-05-13 |
+
+---
+
+###### 5.2.2.5. Execution Evidence for Sprint Review
+
+Durante el Sprint 2, el equipo GreenSpot completó la elaboración de
+los diagramas de clases para los 10 bounded contexts del sistema KAMPO,
+tanto para la capa frontend como para la capa backend, en formato .puml.
+Adicionalmente, se inició el desarrollo del Frontend Web Application en
+Angular, creando la estructura base de cada módulo por bounded context.
+
+**Diagramas de clases publicados en el repositorio:**
+Los diagramas de clases elaborados durante este sprint se encuentran
+documentados en la sección 4.8 Domain-Driven Software Architecture
+del presente informe, donde se presentan los diagramas frontend y
+backend de cada bounded context.
+
+**Frontend Web Application – Angular (módulos iniciales):**
+
+[Insertar screenshot del módulo Inventory]
+[Insertar screenshot del módulo Financial]
+[Insertar screenshot del módulo Report]
+[Insertar screenshot del módulo Field]
+[Insertar screenshot del módulo Organization]
+[Insertar screenshot del módulo Season]
+[Insertar screenshot del módulo Profile & Access]
+[Insertar screenshot del módulo Alert]
+[Insertar screenshot del módulo Employee]
+[Insertar screenshot del módulo Subscription]
+
+ **Video de demostración del Sprint 2:** [Insertar URL de Microsoft Stream aquí]
+---
+
+###### 5.2.2.6. Services Documentation Evidence for Sprint Review
+
+Durante el Sprint 2, el equipo GreenSpot se enfocó en el diseño
+arquitectónico mediante diagramas de clases y en el inicio del
+desarrollo del Frontend Web Application. No se realizó implementación
+ni documentación de Web Services con OpenAPI en esta etapa, ya que
+los servicios del backend serán implementados y documentados en el
+Sprint 3.
+
+Como parte del desarrollo inicial del Frontend, se definieron los
+siguientes servicios Angular que consumirán la API REST en sprints
+posteriores:
+
+| Service | Endpoint a consumir | HTTP Method | Descripción |
+|---|---|---|---|
+| InventoryService | /api/v1/inventory/supplies | GET | Listado de insumos registrados |
+| InventoryService | /api/v1/inventory/supplies | POST | Registro de nuevo insumo |
+| FinancialService | /api/v1/financial/transactions | GET | Listado de transacciones financieras |
+| FinancialService | /api/v1/financial/transactions | POST | Registro de nueva transacción |
+| ReportService | /api/v1/reports | GET | Listado de reportes generados |
+| FieldService | /api/v1/fields | GET | Listado de lotes registrados |
+| FieldService | /api/v1/fields | POST | Registro de nuevo lote |
+| OrganizationService | /api/v1/organizations | GET | Listado de unidades organizacionales |
+| SeasonService | /api/v1/seasons | GET | Listado de temporadas de cultivo |
+| SeasonService | /api/v1/seasons | POST | Registro de nueva temporada |
+| ProfileService | /api/v1/profiles | GET | Consulta de perfil de usuario |
+| ProfileService | /api/v1/profiles | PUT | Actualización de perfil de usuario |
+| AlertService | /api/v1/alerts/rules | GET | Listado de reglas de alerta configuradas |
+| AlertService | /api/v1/alerts/rules | POST | Configuración de nueva regla de alerta |
+| EmployeeService | /api/v1/employees | GET | Listado de empleados registrados |
+| EmployeeService | /api/v1/employees | POST | Registro de nuevo empleado |
+| SubscriptionService | /api/v1/subscriptions | GET | Consulta del plan de suscripción activo |
+| SubscriptionService | /api/v1/subscriptions | POST | Registro o actualización de suscripción |
+
+---
+
+###### 5.2.2.7. Software Deployment Evidence for Sprint Review
+Durante el Sprint 2, el equipo GreenSpot realizó las siguientes
+actividades de despliegue:
+
+---
+
+**1. Repositorio de diagramas de clases — GitHub**
+
+Los diagramas de clases en formato .puml e imagen fueron subidos
+directamente al repositorio del informe, siguiendo la convención
+de Conventional Commits.
+
+- Repositorio: https://github.com/GreenSpot-app/kampo-report
+![Screenshot Class Diagram](docs/assets/img/class-diagramsc.jpeg)
+
+**2. Frontend Web Application — GitHub + Vercel (configuración inicial)**
+
+Se inició el proceso de configuración del despliegue continuo del
+Frontend Web Application en Vercel, conectando el repositorio
+`Kampo-Frontend` a la plataforma.
+
+- Repositorio: https://github.com/GreenSpot-app/Kampo-Frontend
+- Framework Preset: Angular
+- Build Command: `ng build --configuration production`
+- Output Directory: `dist/kampo-frontend`
+
+[Insertar screenshot de la configuración de Vercel]
+
+- URL de producción: [Insertar URL de Vercel cuando esté desplegado]
+
+---
+
+###### 5.2.2.8. Team Collaboration Insights during Sprint
+
+Durante el Sprint 2, el equipo GreenSpot desarrolló las actividades de
+diseño e implementación de forma colaborativa a través de GitHub,
+aplicando GitFlow y Conventional Commits. Cada integrante trabajó en
+las ramas asignadas según los bounded contexts bajo su liderazgo.
+
+---
+
+**Distribución de contribuciones por integrante**
+
+| Integrante | Bounded contexts liderados | Entregable principal |
+|---|---|---|
+| Hurtado Balcazar, Rommel Daniel | Inventory, Financial, Report | Diagramas de clases (front + back) + módulos Angular iniciales |
+| Ramos Fuentes Rivera, Adriana Nicole | Field | Diagramas de clases (front + back) + módulo Angular inicial |
+| Tuesta Girón, Kiara Lucia | Alert, Employee | Diagramas de clases (front + back) + módulos Angular iniciales |
+| Arroyo Gonzales, Emily Juliette | Subscription | Diagramas de clases (front + back) + módulo Angular inicial |
+| Acuache Lucas, Mathias Joaquin | Organization, Season, Profile & Access | Diagramas de clases (front + back) + módulos Angular iniciales |
+
+---
+
+**Analíticos de colaboración en GitHub**
+
+ **Figura 1: Gráfico de contribuciones por autor (Contributors) — kampo-report**
+Captura obtenida desde:
+https://github.com/GreenSpot-app/kampo-report/graphs/contributors
+
+
+---
+
+ **Figura 2: Gráfico de contribuciones por autor (Contributors) — Kampo-Frontend**
+Captura obtenida desde:
+https://github.com/GreenSpot-app/Kampo-Frontend/graphs/contributors
+[Insertar screenshot del gráfico de Contributors]
+ ![Screeshot Contributors Kampo-Frontend](docs/assets/img/KampoFront%20ss.jpeg)
+---
+
+ **Figura 3: Network graph de ramas y merges — Kampo-Frontend**
+Captura obtenida desde:
+https://github.com/GreenSpot-app/Kampo-Frontend/network
+
+![Screeshot Network](docs/assets/img/network%20ss.jpeg)
+
+El network graph evidencia el flujo de trabajo GitFlow aplicado durante
+el sprint, con la creación de feature branches por bounded context y
+su integración a la rama `develop` mediante Pull Requests.
+
+---
+
+ **Figura 4: Pulse del repositorio durante el Sprint — Kampo-Frontend**
+Captura obtenida desde:
+https://github.com/GreenSpot-app/Kampo-Frontend/pulse
+![Screenshot Pulse](docs/assets/img/pulse%20ss.jpeg)
+
+El Pulse muestra el resumen de actividad del repositorio durante el
+periodo del Sprint 2 (2026-05-05 al 2026-05-13), incluyendo commits,
+Pull Requests abiertos y mergeados, y contribuciones por integrante.
+---
+
 ## 5.3. Validation Interviews
 ##### 5.3.1. Diseño de Entrevistas
 ##### 5.3.2. Registro de Entrevistas
