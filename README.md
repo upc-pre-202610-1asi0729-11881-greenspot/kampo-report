@@ -38,16 +38,18 @@
 
 # Registro de Versiones del Informe
 
-**TB1**
+**AV1**
 
-| Versión | Fecha      | Autor               | Descripción de modificación                                                                     |
-|---------|------------|---------------------|-------------------------------------------------------------------------------------------------|
+| Versión | Fecha      | Autor                                                                                                                                                                                  | Descripción de modificación                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+|---------|------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| AV1     | 25/04/2026 | • Acuache Lucas Mathias Joaquin <br> • Arroyo Gonzales Emily Juliette <br> • Hurtado Balcazar Rommel Daniel <br> • Ramos Fuentes Rivera Adriana Nicole <br> • Tuesta Girón Kiara Lucia | Indicar el timing de las entrevistas, mostrar las user stories en el formato de tabla indicado en el enunciado, los diagramas deben estar alineados a DDD y la nomenclatura de tablas incorrecta, Web Applications Prototyping en blanco, indicar el nombre del responsable de trabajar en la tarea del sprint, no se ubica url de lading page en el reporte, nombre de organización y repositorios github incorrectos, secciones en blanco y Student Outcome vacío. |
 
 
 **TP**
 
-| Versión | Fecha       | Autor               | Descripción de modificación                                       |
-|---------|-------------|---------------------|-------------------------------------------------------------------|
+| Versión | Fecha     | Autor               | Descripción de modificación |
+|--------|-----------|---------------------|-----------------------------|
+| TP     | 14/05/2026| • Acuache Lucas Mathias Joaquin <br> • Arroyo Gonzales Emily Juliette <br> • Hurtado Balcazar Rommel Daniel <br> • Ramos Fuentes Rivera Adriana Nicole <br> • Tuesta Girón Kiara Lucia|                             |
 
 
 **TB2**
