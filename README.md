@@ -2314,7 +2314,13 @@ Durante el Sprint 2, el equipo GreenSpot se enfocó en dos entregables
 principales: los diagramas de clases de todos los bounded contexts del
 sistema KAMPO (frontend y backend) y el inicio del desarrollo del
 Frontend Web Application en Angular. El seguimiento de tareas se
-realizó mediante el repositorio GitHub.
+realizó mediante un board de Trello.
+
+🔗 URL del Board: https://trello.com/invite/b/6a056630f9339aa724227a51/ATTI3f064655bc513b0d2ba0d0dbf2e48fc717D3CDA9/mi-tablero-de-trello
+
+
+![Trello screenshot](docs/assets/img/trello.jpeg)
+---
 
 | Sprint # | Sprint 2 |
 |---|---|
@@ -2341,17 +2347,16 @@ realizó mediante el repositorio GitHub.
 | TS09 | Diagrama de clases – Employee (front + back) | T18 | Elaborar class diagram Employee backend | Crear diagrama de clases .puml para el bounded context Employee en la capa backend | 2 | Tuesta Girón, Kiara Lucia | Done |
 | TS10 | Diagrama de clases – Subscription (front + back) | T19 | Elaborar class diagram Subscription frontend | Crear diagrama de clases .puml para el bounded context Subscription en la capa frontend | 2 | Arroyo Gonzales, Emily Juliette | Done |
 | TS10 | Diagrama de clases – Subscription (front + back) | T20 | Elaborar class diagram Subscription backend | Crear diagrama de clases .puml para el bounded context Subscription en la capa backend | 2 | Arroyo Gonzales, Emily Juliette | Done |
-| US01 | Frontend – Inventory bounded context | T21 | Implement Inventory frontend module | Desarrollar los componentes, servicios y modelos iniciales del bounded context Inventory en Angular | 4 | Hurtado Balcazar, Rommel Daniel | In Progress |
-| US02 | Frontend – Financial bounded context | T22 | Implement Financial frontend module | Desarrollar los componentes, servicios y modelos iniciales del bounded context Financial en Angular | 4 | Hurtado Balcazar, Rommel Daniel | In Progress |
-| US03 | Frontend – Report bounded context | T23 | Implement Report frontend module | Desarrollar los componentes, servicios y modelos iniciales del bounded context Report en Angular | 4 | Hurtado Balcazar, Rommel Daniel | In Progress |
-| US04 | Frontend – Field bounded context | T24 | Implement Field frontend module | Desarrollar los componentes, servicios y modelos iniciales del bounded context Field en Angular | 4 | Ramos Fuentes Rivera, Adriana Nicole | In Progress |
-| US05 | Frontend – Organization bounded context | T25 | Implement Organization frontend module | Desarrollar los componentes, servicios y modelos iniciales del bounded context Organization en Angular | 4 | Acuache Lucas, Mathias Joaquin | In Progress |
-| US06 | Frontend – Season bounded context | T26 | Implement Season frontend module | Desarrollar los componentes, servicios y modelos iniciales del bounded context Season en Angular | 4 | Acuache Lucas, Mathias Joaquin | In Progress |
-| US07 | Frontend – Profile & Access bounded context | T27 | Implement Profile & Access frontend module | Desarrollar los componentes, servicios y modelos iniciales del bounded context Profile & Access en Angular | 4 | Acuache Lucas, Mathias Joaquin | In Progress |
-| US08 | Frontend – Alert bounded context | T28 | Implement Alert frontend module | Desarrollar los componentes, servicios y modelos iniciales del bounded context Alert en Angular | 4 | Tuesta Girón, Kiara Lucia | In Progress |
-| US09 | Frontend – Employee bounded context | T29 | Implement Employee frontend module | Desarrollar los componentes, servicios y modelos iniciales del bounded context Employee en Angular | 4 | Tuesta Girón, Kiara Lucia | In Progress |
-| US10 | Frontend – Subscription bounded context | T30 | Implement Subscription frontend module | Desarrollar los componentes, servicios y modelos iniciales del bounded context Subscription en Angular | 4 | Arroyo Gonzales, Emily Juliette | In Progress |
-
+| US01 | Frontend – Inventory bounded context | T21 | Implement Inventory frontend module | Desarrollar los componentes, servicios y modelos iniciales del bounded context Inventory en Angular | 4 | Hurtado Balcazar, Rommel Daniel | In-Process |
+| US02 | Frontend – Financial bounded context | T22 | Implement Financial frontend module | Desarrollar los componentes, servicios y modelos iniciales del bounded context Financial en Angular | 4 | Hurtado Balcazar, Rommel Daniel | In-Process |
+| US03 | Frontend – Report bounded context | T23 | Implement Report frontend module | Desarrollar los componentes, servicios y modelos iniciales del bounded context Report en Angular | 4 | Hurtado Balcazar, Rommel Daniel | In-Process |
+| US04 | Frontend – Field bounded context | T24 | Implement Field frontend module | Desarrollar los componentes, servicios y modelos iniciales del bounded context Field en Angular | 4 | Ramos Fuentes Rivera, Adriana Nicole | In-Process |
+| US05 | Frontend – Organization bounded context | T25 | Implement Organization frontend module | Desarrollar los componentes, servicios y modelos iniciales del bounded context Organization en Angular | 4 | Acuache Lucas, Mathias Joaquin | In-Process |
+| US06 | Frontend – Season bounded context | T26 | Implement Season frontend module | Desarrollar los componentes, servicios y modelos iniciales del bounded context Season en Angular | 4 | Acuache Lucas, Mathias Joaquin | In-Process |
+| US07 | Frontend – Profile & Access bounded context | T27 | Implement Profile & Access frontend module | Desarrollar los componentes, servicios y modelos iniciales del bounded context Profile & Access en Angular | 4 | Acuache Lucas, Mathias Joaquin | In-Process |
+| US08 | Frontend – Alert bounded context | T28 | Implement Alert frontend module | Desarrollar los componentes, servicios y modelos iniciales del bounded context Alert en Angular | 4 | Tuesta Girón, Kiara Lucia | In-Process |
+| US09 | Frontend – Employee bounded context | T29 | Implement Employee frontend module | Desarrollar los componentes, servicios y modelos iniciales del bounded context Employee en Angular | 4 | Tuesta Girón, Kiara Lucia | In-Process |
+| US10 | Frontend – Subscription bounded context | T30 | Implement Subscription frontend module | Desarrollar los componentes, servicios y modelos iniciales del bounded context Subscription en Angular | 4 | Arroyo Gonzales, Emily Juliette | In-Process |
 ---
 
 ###### 5.2.2.4. Development Evidence for Sprint Review
@@ -2538,6 +2543,7 @@ su integración a la rama `develop` mediante Pull Requests.
 Captura obtenida desde:
 https://github.com/GreenSpot-app/Kampo-Frontend/pulse
 ![Screenshot Pulse](docs/assets/img/pulse%20ss.jpeg)
+
 
 El Pulse muestra el resumen de actividad del repositorio durante el
 periodo del Sprint 2 (2026-05-05 al 2026-05-13), incluyendo commits,
