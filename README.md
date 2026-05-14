@@ -1366,16 +1366,15 @@ El usuario puede manejar las diversas opciones que tiene cuando entra en su fund
 
 ##### 4.4.3. Web Applications Mock-ups
 
-Los mock-ups finales integran el Color System semántico de KAMPO:
-
-* **Semáforos de Estado:** Uso de Rojo (Crítico), Naranja (Alerta) y Verde (Óptimo) en las tarjetas de datos para permitir un escaneo visual rápido de más de 10 lotes simultáneamente.
-
-* **Accesibilidad:** Se respetó el tamaño de los elementos táctiles (Target Size 48x48px) en la versión móvil, asegurando que la aplicación sea usable incluso con manos húmedas o en movimiento.
+![Mockup](docs/assets/img/Mockup-front-1.png)
+![Mockup](docs/assets/img/Mockup-front-2.png)
+![Mockup](docs/assets/img/Mockup-front-3.png)
+![Mockup](docs/assets/img/Mockup-front-4.png)
 
 ##### 4.4.4. Web Applications User Flow Diagrams
 Para validar la experiencia de usuario (UX), se desarrolló un prototipo funcional e interactivo en Figma. Este prototipo permite simular el flujo real de un ingeniero agrónomo, desde la recepción de una alerta hídrica hasta el registro de una inspección en campo. Se implementaron transiciones de tipo 'Smart Animate' para representar de forma fluida el despliegue de menús laterales y el movimiento de los sliders de severidad, garantizando que la navegación sea intuitiva y eficiente.
 
-![Mockups](./docs/assets/img/Mockups.png)
+![Mockups](./docs/assets/img/Mockups-front.png)
 
 ## 4.5. Web Applications Prototyping
 ![Landing1](docs/assets/img/landing1.jpeg)
