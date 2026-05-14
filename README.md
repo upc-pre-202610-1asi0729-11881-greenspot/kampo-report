@@ -1432,7 +1432,7 @@ Para validar la experiencia de usuario (UX), se desarrolló un prototipo funcion
     En este quinto paso, el equipo añadió comandos que desencadenen eventos o el flujo de eventos, junto a sus actores.
 
 
-![Step4](docs/assets/img/event-storming/eventstorming-5.png)
+![Step5](docs/assets/img/event-storming/eventstorming-5.png)
 
 </div>
 
@@ -1442,7 +1442,7 @@ Para validar la experiencia de usuario (UX), se desarrolló un prototipo funcion
     En este sexto paso, el equipo añadió policies, que son reglas de negocio que hace que se ejecuten comandos sin la necesidad de un actor.
 
 
-![Step4](docs/assets/img/event-storming/eventstorming-6.png)
+![Step6](docs/assets/img/event-storming/eventstorming-6.png)
 
 </div>
 
@@ -1451,7 +1451,7 @@ Para validar la experiencia de usuario (UX), se desarrolló un prototipo funcion
     En este séptimo paso, el equipo añadió read models, que son como la vista de datos que el usuario usa para tomar la decisión de ejecutar un comando.
 
 
-![Step4](docs/assets/img/event-storming/eventstorming-7.png)
+![Step7](docs/assets/img/event-storming/eventstorming-7.png)
 
 </div>
 
@@ -1460,7 +1460,7 @@ Para validar la experiencia de usuario (UX), se desarrolló un prototipo funcion
     En este octavo paso, el equipo identifico sistemas externos, en este caso solo se tiene uno que es la API que usaremos para el consumo de datos climáticos.
 
 
-![Step4](docs/assets/img/event-storming/eventstorming-8.png)
+![Step8](docs/assets/img/event-storming/eventstorming-8.png)
 
 </div>
 
@@ -1470,7 +1470,7 @@ Para validar la experiencia de usuario (UX), se desarrolló un prototipo funcion
     En este noveno paso, el equipo antes de agregar los agregados, discutió bastantes cosas sobre pasos anteriores y se decidió hacer algunos cambios en los read models, policies, eventos y commands.
 
 
-![Step4](docs/assets/img/event-storming/eventstorming-9.png)
+![Step9](docs/assets/img/event-storming/eventstorming-9.png)
 
 </div>
 
@@ -1480,13 +1480,31 @@ Para validar la experiencia de usuario (UX), se desarrolló un prototipo funcion
     En el último paso, es buscar agregados que estén relacionados entre sí mediante policies para luego identificar bounded contexts y finalmente enmarco los eventos de dominio que fueron implementados.
 
 
-![Step4](docs/assets/img/event-storming/eventstorming-10.png)
+![Step10](docs/assets/img/event-storming/eventstorming-10.png)
 
 </div>
 
-- **Event Storming:**
+## - **Event Storming:**
 
+### Bounded context:
 
+![Alert](docs/assets/img/event-storming/alert.png)
+![Employee](docs/assets/img/event-storming/employee.png)
+![Field](docs/assets/img/event-storming/field.png)
+![Finantial](docs/assets/img/event-storming/finantial.png)
+![Inventory](docs/assets/img/event-storming/inventory.png)
+![IoT](docs/assets/img/event-storming/iot.png)
+![Organization](docs/assets/img/event-storming/organization.png)
+![Profile](docs/assets/img/event-storming/profile.png)
+![Report](docs/assets/img/event-storming/report.png)
+![Season](docs/assets/img/event-storming/season.png)
+![Subscription](docs/assets/img/event-storming/subscription.png)
+
+### **Event Storming completo:**
+
+![EventStorming](docs/assets/img/event-storming/event_storming.png)
+
+[Ver en Miro](https://miro.com/app/board/uXjVHecaRio=/?share_link_id=80187881554)
 
 ##### 4.6.2. Software Architecture Context Diagram
 <div align="justify">
