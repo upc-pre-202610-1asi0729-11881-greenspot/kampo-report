@@ -1342,6 +1342,12 @@ Para validar la experiencia de usuario (UX), se desarrolló un prototipo funcion
 ![Mockups](./docs/assets/img/Mockups.png)
 
 ## 4.5. Web Applications Prototyping
+![Landing1](docs/assets/img/landing1.jpeg)
+![Landing2](docs/assets/img/landing2.jpeg)
+![Landing3](docs/assets/img/landing3.jpeg)
+![Landing4](docs/assets/img/landing4.jpeg)
+
+**Url del video de la prueba del landing:**  https://upcedupe-my.sharepoint.com/:v:/g/personal/u202311469_upc_edu_pe/IQC3Aa-t5SkaRIfLSAEjwKB9AdL3AWh_9V-KZPTTfsqUM3I?e=IUrtDH&nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D
 ## 4.6. Domain-Driven Software Architecture
 ##### 4.6.1. Design-Level Event Storming
 <div align="justify">
@@ -2408,7 +2414,7 @@ backend de cada bounded context.
 [Insertar screenshot del módulo Employee]
 [Insertar screenshot del módulo Subscription]
 
-🎥 **Video de demostración del Sprint 2:** [Insertar URL de Microsoft Stream aquí]
+ **Video de demostración del Sprint 2:** [Insertar URL de Microsoft Stream aquí]
 ---
 
 ###### 5.2.2.6. Services Documentation Evidence for Sprint Review
@@ -2460,9 +2466,7 @@ directamente al repositorio del informe, siguiendo la convención
 de Conventional Commits.
 
 - Repositorio: https://github.com/GreenSpot-app/kampo-report
-
-![Screenshot Class Diagram](../Kampo-Report/docs/assets/img/class-diagramsc.jpeg)
----
+![Screenshot Class Diagram](docs/assets/img/class-diagramsc.jpeg)
 
 **2. Frontend Web Application — GitHub + Vercel (configuración inicial)**
 
@@ -2515,14 +2519,14 @@ https://github.com/GreenSpot-app/kampo-report/graphs/contributors
 Captura obtenida desde:
 https://github.com/GreenSpot-app/Kampo-Frontend/graphs/contributors
 [Insertar screenshot del gráfico de Contributors]
- ![Screeshot Contributors Kampo-Frontend](../Kampo-Report/docs/assets/img/KampoFront%20ss.jpeg)
+ ![Screeshot Contributors Kampo-Frontend](docs/assets/img/KampoFront%20ss.jpeg)
 ---
 
  **Figura 3: Network graph de ramas y merges — Kampo-Frontend**
 Captura obtenida desde:
 https://github.com/GreenSpot-app/Kampo-Frontend/network
 
-![Screeshot Network](../Kampo-Report/docs/assets/img/network%20ss.jpeg)
+![Screeshot Network](docs/assets/img/network%20ss.jpeg)
 
 El network graph evidencia el flujo de trabajo GitFlow aplicado durante
 el sprint, con la creación de feature branches por bounded context y
@@ -2533,7 +2537,7 @@ su integración a la rama `develop` mediante Pull Requests.
  **Figura 4: Pulse del repositorio durante el Sprint — Kampo-Frontend**
 Captura obtenida desde:
 https://github.com/GreenSpot-app/Kampo-Frontend/pulse
-![Screenshot Pulse](../Kampo-Report/docs/assets/img/pulse%20ss.jpeg)
+![Screenshot Pulse](docs/assets/img/pulse%20ss.jpeg)
 
 El Pulse muestra el resumen de actividad del repositorio durante el
 periodo del Sprint 2 (2026-05-05 al 2026-05-13), incluyendo commits,
