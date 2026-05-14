@@ -1388,67 +1388,105 @@ Para validar la experiencia de usuario (UX), se desarrolló un prototipo funcion
 <div align="justify">
     En esta sección se explica y evidencia el uso de Design-Level EventStorming, que nos sirvió para plantear una aproximación revisada y mejorada al modelado de nivel general para el dominio del problema.
 </div>
-<br>
+
 
 **Step 1: Unstructured Exploration**
 <div align="justify">
     En este paso, se realizó una lluvia de ideas de los eventos del dominio.
+     
+![Step1](docs/assets/img/event-storming/eventstorming-1.png) 
+
 </div>
-<br>
+
 
 **Step 2: Timelines**
 <div align="justify">
     En el segundo paso, el equipo ordeno los eventos de dominio según el orden que ocurren en el dominio empresarial.
+
+
+![Step2](docs/assets/img/event-storming/eventstorming-2.png)
+
 </div>
-<br>
 
 **Step 3: Pain Points**
 <div align="justify">
     En el tercer paso, el equipo colocó dudas sobre el dominio o documentación faltante en algunas partes del flujo que ya había sido ordenado anteriormente.
+
+
+![Step3](docs/assets/img/event-storming/eventstorming-3.png)
+
 </div>
-<br>
 
 **Step 4: Pivotal Points**
 <div align="justify">
     En el cuarto paso, el equipo buscó eventos comerciales importantes que indiquen un cambio en el contexto y los marcó con una línea.
+
+
+![Step4](docs/assets/img/event-storming/eventstorming-4.png)
+
 </div>
-<br>
+
 
 **Step 5: Commands**
 <div align="justify">
     En este quinto paso, el equipo añadió comandos que desencadenen eventos o el flujo de eventos, junto a sus actores.
+
+
+![Step4](docs/assets/img/event-storming/eventstorming-5.png)
+
 </div>
-<br>
+
 
 **Step 6: Policies**
 <div align="justify">
     En este sexto paso, el equipo añadió policies, que son reglas de negocio que hace que se ejecuten comandos sin la necesidad de un actor.
+
+
+![Step4](docs/assets/img/event-storming/eventstorming-6.png)
+
 </div>
-<br>
 
 **Step 7: Read Models**
 <div align="justify">
     En este séptimo paso, el equipo añadió read models, que son como la vista de datos que el usuario usa para tomar la decisión de ejecutar un comando.
+
+
+![Step4](docs/assets/img/event-storming/eventstorming-7.png)
+
 </div>
-<br>
 
 **Step 8: External Systems**
 <div align="justify">
     En este octavo paso, el equipo identifico sistemas externos, en este caso solo se tiene uno que es la API que usaremos para el consumo de datos climáticos.
+
+
+![Step4](docs/assets/img/event-storming/eventstorming-8.png)
+
 </div>
-<br>
+
 
 **Step 9: Aggregates**
 <div align="justify">
     En este noveno paso, el equipo antes de agregar los agregados, discutió bastantes cosas sobre pasos anteriores y se decidió hacer algunos cambios en los read models, policies, eventos y commands.
+
+
+![Step4](docs/assets/img/event-storming/eventstorming-9.png)
+
 </div>
-<br>
 
 
 **Step 10: Bounded Contexts**
 <div align="justify">
     En el último paso, es buscar agregados que estén relacionados entre sí mediante policies para luego identificar bounded contexts y finalmente enmarco los eventos de dominio que fueron implementados.
+
+
+![Step4](docs/assets/img/event-storming/eventstorming-10.png)
+
 </div>
+
+- **Event Storming:**
+
+
 
 ##### 4.6.2. Software Architecture Context Diagram
 <div align="justify">
