@@ -1383,6 +1383,7 @@ Para validar la experiencia de usuario (UX), se desarrolló un prototipo funcion
 ![Landing4](docs/assets/img/landing4.jpeg)
 
 **Url del video de la prueba del landing:**  https://upcedupe-my.sharepoint.com/:v:/g/personal/u202311469_upc_edu_pe/IQC3Aa-t5SkaRIfLSAEjwKB9AdL3AWh_9V-KZPTTfsqUM3I?e=IUrtDH&nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D
+**Url del video de la prueba del FrontEnd:** https://upcedupe-my.sharepoint.com/:v:/g/personal/u202314898_upc_edu_pe/IQCY561p2ofWTK5K7FV46QKWAaEccXIf4OBeD98yFxAPqqk?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXciLCJyZWZlcnJhbFZpZXciOiJNeUZpbGVzTGlua0NvcHkifX0&e=YVqshW
 ## 4.6. Domain-Driven Software Architecture
 ##### 4.6.1. Design-Level Event Storming
 <div align="justify">
