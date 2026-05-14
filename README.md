@@ -69,10 +69,35 @@
 
 # Project Report Collaboration Insights
 
+<div align="justify">
+Con el objetivo de trabajar de forma colaborativa y organizada durante el desarrollo de Kampo, se optó por emplear repositorios en GitHub como plataforma principal para la gestión y control de los distintos componentes del proyecto. Esta herramienta permitió centralizar el trabajo del equipo, mantener un historial de versiones, coordinar tareas entre los integrantes y facilitar el seguimiento de los avances realizados en cada sprint. Además, el uso de ramas, commits y pull requests contribuyó a mejorar la integración y control de cambios durante el desarrollo del sistema.
+
+Para organizar adecuadamente el proyecto, se crearon diferentes repositorios especializados según el propósito de cada componente. El repositorio report fue utilizado para almacenar y gestionar el Project Report y la documentación técnica; webapp para el desarrollo del frontend de la aplicación; website para la implementación de la landing page; platform para la integración y arquitectura general del sistema; y mockapi para la simulación de servicios y endpoints utilizados durante las pruebas y validaciones del frontend. A continuación, se presentan los enlaces correspondientes a cada uno de los repositorios utilizados durante el desarrollo del proyecto:
+</div>
+
+URL del repositorio del report:
+URL del repositorio del webapp:
+URL del repositorio del website:
+URL del repositorio del platform:
+URL del repositorio del mockapi:
+
 **TB1**
+<div align="justify">
+Para la primera entrega se presentó los antecedentes y problemática que se busca resolver, además del análisis del contexto del proyecto y de las necesidades identificadas en los segmentos objetivo mediante entrevistas y validaciones iniciales. Asimismo, se elaboró el Lean UX Canvas como herramienta para definir las hipótesis de negocio, los problemas principales de los usuarios, las propuestas de solución y el valor diferencial del sistema Kampo.
+
+Del mismo modo, se trabajó en la construcción del Ubiquitous Language con el fin de establecer un lenguaje común entre los miembros del equipo y el dominio del negocio, permitiendo una mejor comprensión de los procesos agrícolas y de monitoreo inteligente. A partir de ello, se definieron las user stories y criterios de aceptación, los cuales sirvieron para identificar las funcionalidades principales y priorizar los requerimientos del sistema.
+
+Además, se desarrollaron los bounded contexts para delimitar las responsabilidades de cada módulo dentro de la arquitectura basada en Domain-Driven Design (DDD), facilitando la organización y escalabilidad de la solución. También se elaboraron diagramas C4 para representar la arquitectura del sistema en distintos niveles de abstracción, permitiendo visualizar la interacción entre usuarios, contenedores, componentes y servicios externos. Finalmente, se realizaron los diagramas de clases y de base de datos, fundamentales para modelar la estructura lógica del sistema, definir las relaciones entre entidades y garantizar una adecuada organización de la información necesaria para el desarrollo e implementación de Kampo.
+
+Asimismo, durante el desarrollo del proyecto se trabajó el  Product Implementation y Validation & Deployment, en el cual se documentó la configuración del entorno de desarrollo, la gestión del código fuente mediante repositorios GitHub, las convenciones y guías de estilo utilizadas por el equipo, así como la configuración de despliegue del software. De igual manera, se registró la implementación de la landing page, incluyendo la planificación, backlog, roles de líderes y colaboradores, evidencias de desarrollo, ejecución, documentación de servicios, despliegue del sistema y las conclusiones de colaboración obtenidas durante el trabajo en equipo.
+</div>
 
 **TP**
+<div align="justify">
+Para el trabajo parcial, se levantaron las correcciones de la primera entrega con el objetivo de mejorar la estructura, consistencia y calidad general del proyecto Kampo. Se realizaron ajustes en los artefactos de análisis y diseño, refinando las user stories, bounded contexts, diagramas C4, diagramas de clases y el modelo de base de datos, permitiendo una mejor representación de la arquitectura y de los procesos del sistema. Asimismo, se fortaleció el Ubiquitous Language y la validación de requerimientos obtenidos a partir de las entrevistas realizadas a los segmentos objetivo.
 
+Además, durante esta etapa se desarrolló el frontend del sistema, incluyendo la implementación de la landing page y de las principales interfaces de usuario de la aplicación web. Para ello, se trabajó en el diseño de componentes visuales, navegación, formularios, vistas funcionales y experiencia de usuario, buscando garantizar una interfaz intuitiva, accesible y alineada con las necesidades del sector agrícola. También se documentaron los avances mediante evidencias de desarrollo, ejecución y despliegue correspondientes a cada sprint realizado por el equipo.
+</div>
 
 
 **TB2**
