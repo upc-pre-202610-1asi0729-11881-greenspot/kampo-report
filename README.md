@@ -2320,7 +2320,6 @@ realizó mediante un board de Trello.
 
 
 ![Trello screenshot](docs/assets/img/trello.jpeg)
----
 
 | Sprint # | Sprint 2 |
 |---|---|
