@@ -1724,9 +1724,9 @@ A continuación se detallan todas las herramientas y productos de software que l
 
 | Producto | Propósito | Tipo | Referencia |
 |---|---|---|---|
-| Railway | Despliegue del backend (Spring Boot) y base de datos (MySQL) | SaaS | https://railway.app |
+| Azure | Despliegue del backend (Spring Boot) y base de datos (MySQL) | SaaS | https://azure.microsoft.com/es-es/free/students |
 | GitHub Pages | Despliegue del Landing Page estático | SaaS | https://pages.github.com |
-| Vercel | Despliegue del frontend Angular (producción) | SaaS | https://vercel.com |
+| Azure | Despliegue del frontend Angular (producción) | SaaS | https://azure.microsoft.com/es-es/free/students |
 
 ---
 
@@ -1915,37 +1915,35 @@ de código fuente hasta la publicación en producción.
    en el repositorio `kampo-landing`, rama `main`.
 2. En el repositorio, ir a *Settings → Pages → Source: Deploy from
    branch → main → /root*.
-3. GitHub Pages publicará automáticamente el sitio en:
-   [URL]
+3. GitHub Pages publicará automáticamente el sitio en: https://greenspot-app.github.io/kampo-website
 4. Cada push a `main` desencadena un redespliegue automático.
 5. Para un dominio personalizado futuro (ej. `kampo.pe`), configurar
    el archivo `CNAME` en la raíz del repositorio.
 
 ---
 
-**Frontend Web Application (Angular) → Vercel**
+**Frontend Web Application (Angular) → Azure**
 
 1. El código fuente reside en el repositorio `kampo-frontend`.
-2. Crear cuenta en Vercel (https://vercel.com) e importar el repositorio
+2. Crear cuenta en Azure e importar el repositorio
    desde GitHub.
 3. Configurar el proyecto en Vercel:
     - Framework Preset: `Angular`
     - Build Command: `ng build --configuration production`
     - Output Directory: `dist/kampo-frontend`
-4. Configurar la variable de entorno en Vercel:
-    - `KAMPO_API_URL` → URL pública del backend en Railway
+4. Configurar la variable de entorno en Azure:
+    - `KAMPO_API_URL` → URL pública del backend en Azure
 5. Vercel desplegará automáticamente en cada push a `main`.
    Los Pull Requests generarán preview deployments automáticos para
    revisión antes de integrar a producción.
-6. URL de producción asignada por Vercel:
-   [URL]
+6. URL de producción asignada por Azure: https://witty-coast-0b3ee6c0f.7.azurestaticapps.net
 
 ---
 
-**RESTful Web Services (Spring Boot + MySQL) → Railway**
+**RESTful Web Services (Spring Boot + MySQL) → Azure**
 
 1. El código fuente reside en el repositorio `kampo-backend`.
-2. Crear cuenta en Railway (https://railway.app) y crear un nuevo
+2. Crear cuenta en Azure y crear un nuevo
    proyecto.
 3. Añadir un servicio de base de datos:
     - Seleccionar *Add Service → Database → MySQL*.
@@ -2129,21 +2127,21 @@ Software Configuration Management.
 
 | Repository                   | Branch | Commit Id | Commit Message | Commit Message Body | Committed on (Date) |
 |------------------------------|---|---|---|---|---|
-| greenspot-kampo/kampo-report | main | [hash] | docs(startup): add startup profile and team members | Se redactó la descripción de GreenSpot y los perfiles de los integrantes del equipo con códigos y carreras | YYYY-MM-DD |
-| greenspot-kampo/kampo-report | main | [hash] | docs(problem): add background and 5W2H analysis | Se elaboró la sección de antecedentes con fuentes estadísticas y el análisis completo de la problemática en 7 dimensiones | YYYY-MM-DD |
-| greenspot-kampo/kampo-report | main | [hash] | docs(lean-ux): add problem statements | Se redactaron los tres Lean UX Problem Statements con enfoque en riego, finanzas y decisiones técnicas del agricultor | YYYY-MM-DD |
-| greenspot-kampo/kampo-report | main | [hash] | docs(lean-ux): add assumptions business and user | Se definieron los Business Outcomes y User Outcomes como supuestos base del producto KAMPO | YYYY-MM-DD |
-| greenspot-kampo/kampo-report | main | [hash] | docs(lean-ux): add hypothesis statements | Se formularon dos hipótesis validables: reducción de desperdicio hídrico y adopción del módulo financiero | YYYY-MM-DD |
-| greenspot-kampo/kampo-report | main | [hash] | docs(lean-ux): add lean ux canvas v2 | Se completaron los 8 bloques del Lean UX Canvas ajustados a los dos segmentos objetivo definitivos | YYYY-MM-DD |
-| greenspot-kampo/kampo-report | main | [hash] | docs(segments): add target segments section | Se describieron los dos segmentos objetivo: ingenieros agrónomos y agroindustria mediana y grande | YYYY-MM-DD |
-| greenspot-kampo/kampo-report | main | [hash] | docs(interviews): add interview design guides | Se elaboraron las guías de entrevista por segmento con bloques demográfico, de problema y de validación | YYYY-MM-DD |
-| greenspot-kampo/kampo-report | main | [hash] | docs(user-stories): add epics EP01 to EP05 with user stories | Se redactaron US01–US16 con criterios de aceptación en formato Gherkin para los primeros cinco epics | YYYY-MM-DD |
-| greenspot-kampo/kampo-report | main | [hash] | docs(user-stories): add epics EP06 to EP10 with user and technical stories | Se redactaron US17–US25 y las Technical Stories TS01–TS02 para autenticación, alertas, landing y API | YYYY-MM-DD |
-| greenspot-kampo/kampo-report | main | [hash] | docs(scm): add software development environment configuration | Se especificaron todas las herramientas del entorno de desarrollo por tipo de actividad | YYYY-MM-DD |
-| greenspot-kampo/kampo-report | main | [hash] | docs(scm): add gitflow and branching conventions | Se definió el modelo GitFlow con convenciones de nomenclatura para feature, release y hotfix branches | YYYY-MM-DD |
-| greenspot-kampo/kampo-report | main | [hash] | docs(scm): add source code style guide and conventions | Se establecieron las guías de estilo para HTML, CSS, TypeScript, Angular, Java y Gherkin | YYYY-MM-DD |
-| greenspot-kampo/kampo-report | main | [hash] | docs(scm): add deployment configuration for landing, frontend and backend | Se documentaron los pasos de despliegue para GitHub Pages, Vercel y Railway | YYYY-MM-DD |
-| greenspot-kampo/kampo-report | main | [hash] | docs(sprint): add sprint planning 1 and sprint backlog 1 | Se registró el Sprint Planning Meeting y la tabla de Sprint Backlog con tasks descompuestos | YYYY-MM-DD |
+| greenspot-kampo/kampo-report | main | [e77ab0c22ea1de8112a07a7d1ab9d03e7f67e741] | docs(startup): add startup profile and team members | Se redactó la descripción de GreenSpot y los perfiles de los integrantes del equipo con códigos y carreras | YYYY-MM-DD |
+| greenspot-kampo/kampo-report | main | [77bc899384d9149afa5a81dc68ee907ab81c314a] | docs(problem): add background and 5W2H analysis | Se elaboró la sección de antecedentes con fuentes estadísticas y el análisis completo de la problemática en 7 dimensiones | YYYY-MM-DD |
+| greenspot-kampo/kampo-report | main | [707f0b853683e07e89fa9796e9cebbcc1fa7ccab] | docs(lean-ux): add problem statements | Se redactaron los tres Lean UX Problem Statements con enfoque en riego, finanzas y decisiones técnicas del agricultor | YYYY-MM-DD |
+| greenspot-kampo/kampo-report | main | [ef1d66dc7beabe88680b73f1ece931929b8ed8ef] | docs(lean-ux): add assumptions business and user | Se definieron los Business Outcomes y User Outcomes como supuestos base del producto KAMPO | YYYY-MM-DD |
+| greenspot-kampo/kampo-report | main | [76828f875a5c2f298c7287f16099f0c8da9fe63e] | docs(lean-ux): add hypothesis statements | Se formularon dos hipótesis validables: reducción de desperdicio hídrico y adopción del módulo financiero | YYYY-MM-DD |
+| greenspot-kampo/kampo-report | main | [ef3f4b6404d6a7ff49f0f6d1fa1e28009ac93b19] | docs(lean-ux): add lean ux canvas v2 | Se completaron los 8 bloques del Lean UX Canvas ajustados a los dos segmentos objetivo definitivos | YYYY-MM-DD |
+| greenspot-kampo/kampo-report | main | [03e578626b3a7c07213668439ef9ebf6faeaa557] | docs(segments): add target segments section | Se describieron los dos segmentos objetivo: ingenieros agrónomos y agroindustria mediana y grande | YYYY-MM-DD |
+| greenspot-kampo/kampo-report | main | [7933e8e0a642e86b083a4874b38b75fc0be90324] | docs(interviews): add interview design guides | Se elaboraron las guías de entrevista por segmento con bloques demográfico, de problema y de validación | YYYY-MM-DD |
+| greenspot-kampo/kampo-report | main | [03e578626b3a7c07213668439ef9ebf6faeaa557] | docs(user-stories): add epics EP01 to EP05 with user stories | Se redactaron US01–US16 con criterios de aceptación en formato Gherkin para los primeros cinco epics | YYYY-MM-DD |
+| greenspot-kampo/kampo-report | main | [7933e8e0a642e86b083a4874b38b75fc0be90324] | docs(user-stories): add epics EP06 to EP10 with user and technical stories | Se redactaron US17–US25 y las Technical Stories TS01–TS02 para autenticación, alertas, landing y API | YYYY-MM-DD |
+| greenspot-kampo/kampo-report | main | [3f5c44d14c480c1d23055189974458e20a6461e4] | docs(scm): add software development environment configuration | Se especificaron todas las herramientas del entorno de desarrollo por tipo de actividad | YYYY-MM-DD |
+| greenspot-kampo/kampo-report | main | [3f5c44d14c480c1d23055189974458e20a6461e4] | docs(scm): add gitflow and branching conventions | Se definió el modelo GitFlow con convenciones de nomenclatura para feature, release y hotfix branches | YYYY-MM-DD |
+| greenspot-kampo/kampo-report | main | [50c51c5b3395ff35c67eb941bf750c36facd1e9d] | docs(scm): add source code style guide and conventions | Se establecieron las guías de estilo para HTML, CSS, TypeScript, Angular, Java y Gherkin | YYYY-MM-DD |
+| greenspot-kampo/kampo-report | main | [8ada8740c4e067d8be188d406f422f42de348546] | docs(scm): add deployment configuration for landing, frontend and backend | Se documentaron los pasos de despliegue para GitHub Pages, Vercel y Railway | YYYY-MM-DD |
+| greenspot-kampo/kampo-report | main | [3a207f084201dec51f04c901eeda19eb6a4dc215] | docs(sprint): add sprint planning 1 and sprint backlog 1 | Se registró el Sprint Planning Meeting y la tabla de Sprint Backlog con tasks descompuestos | YYYY-MM-DD |
 
 ###### 5.2.1.5. Execution Evidence for Sprint Review
 
@@ -2469,16 +2467,16 @@ Angular, creando los módulos iniciales por bounded context.
 | GreenSpot-app/kampo-report | feature/class-diagrams | 77bc899384d9149afa5a81dc68ee907ab81c314a | feat(diagrams): add class diagrams for Alert bounded context | Se agregaron los diagramas de clases frontend y backend del bounded context Alert en formato .puml | 2026-05-09 |
 | GreenSpot-app/kampo-report | feature/class-diagrams | b2fe9a5421cdef0b633d950317518a32c0eca823 | feat(diagrams): add class diagrams for Employee bounded context | Se agregaron los diagramas de clases frontend y backend del bounded context Employee en formato .puml | 2026-05-10 |
 | GreenSpot-app/kampo-report | feature/class-diagrams | 03e578626b3a7c07213668439ef9ebf6faeaa557 | feat(diagrams): add class diagrams for Subscription bounded context | Se agregaron los diagramas de clases frontend y backend del bounded context Subscription en formato .puml | 2026-05-10 |
-| GreenSpot-app/Kampo-Frontend | feature/inventory | [Insertar hash] | feat(inventory): add inventory module initial structure | Se creó la estructura inicial del módulo Inventory con componentes, servicios y modelos en Angular | 2026-05-10 |
-| GreenSpot-app/Kampo-Frontend | feature/financial | [Insertar hash] | feat(financial): add financial module initial structure | Se creó la estructura inicial del módulo Financial con componentes, servicios y modelos en Angular | 2026-05-11 |
-| GreenSpot-app/Kampo-Frontend | feature/report | [Insertar hash] | feat(report): add report module initial structure | Se creó la estructura inicial del módulo Report con componentes, servicios y modelos en Angular | 2026-05-11 |
-| GreenSpot-app/Kampo-Frontend | feature/field | [Insertar hash] | feat(field): add field module initial structure | Se creó la estructura inicial del módulo Field con componentes, servicios y modelos en Angular | 2026-05-11 |
-| GreenSpot-app/Kampo-Frontend | feature/organization | [Insertar hash] | feat(organization): add organization module initial structure | Se creó la estructura inicial del módulo Organization con componentes, servicios y modelos en Angular | 2026-05-12 |
-| GreenSpot-app/Kampo-Frontend | feature/season | [Insertar hash] | feat(season): add season module initial structure | Se creó la estructura inicial del módulo Season con componentes, servicios y modelos en Angular | 2026-05-12 |
-| GreenSpot-app/Kampo-Frontend | feature/profile-access | [Insertar hash] | feat(profile): add profile and access module initial structure | Se creó la estructura inicial del módulo Profile & Access con componentes, servicios y modelos en Angular | 2026-05-12 |
-| GreenSpot-app/Kampo-Frontend | feature/alert | [Insertar hash] | feat(alert): add alert module initial structure | Se creó la estructura inicial del módulo Alert con componentes, servicios y modelos en Angular | 2026-05-12 |
-| GreenSpot-app/Kampo-Frontend | feature/employee | [Insertar hash] | feat(employee): add employee module initial structure | Se creó la estructura inicial del módulo Employee con componentes, servicios y modelos en Angular | 2026-05-13 |
-| GreenSpot-app/Kampo-Frontend | feature/subscription | [Insertar hash] | feat(subscription): add subscription module initial structure | Se creó la estructura inicial del módulo Subscription con componentes, servicios y modelos en Angular | 2026-05-13 |
+| GreenSpot-app/Kampo-Frontend | feature/inventory | [fa54ce94a7fce27f5996bb585fb2466ede0fcb96] | feat(inventory): add inventory module initial structure | Se creó la estructura inicial del módulo Inventory con componentes, servicios y modelos en Angular | 2026-05-10 |
+| GreenSpot-app/Kampo-Frontend | feature/financial | [c513d4cc04b56cac8baac85bb56210cae141bede] | feat(financial): add financial module initial structure | Se creó la estructura inicial del módulo Financial con componentes, servicios y modelos en Angular | 2026-05-11 |
+| GreenSpot-app/Kampo-Frontend | feature/report | [a06339d275625ee3973c5b9d7c0952c14c26146b] | feat(report): add report module initial structure | Se creó la estructura inicial del módulo Report con componentes, servicios y modelos en Angular | 2026-05-11 |
+| GreenSpot-app/Kampo-Frontend | feature/field | [d5ee7116d455b37d20103a7a9a869a2959191151] | feat(field): add field module initial structure | Se creó la estructura inicial del módulo Field con componentes, servicios y modelos en Angular | 2026-05-11 |
+| GreenSpot-app/Kampo-Frontend | feature/organization | [d5ee7116d455b37d20103a7a9a869a2959191151] | feat(organization): add organization module initial structure | Se creó la estructura inicial del módulo Organization con componentes, servicios y modelos en Angular | 2026-05-12 |
+| GreenSpot-app/Kampo-Frontend | feature/season | [e1d40e7b76d1ac66924dcd7b778e3f93cc41d28a] | feat(season): add season module initial structure | Se creó la estructura inicial del módulo Season con componentes, servicios y modelos en Angular | 2026-05-12 |
+| GreenSpot-app/Kampo-Frontend | feature/profile-access | [4cd12d081a10ebe7edd4cf6f1041959c785f7f01] | feat(profile): add profile and access module initial structure | Se creó la estructura inicial del módulo Profile & Access con componentes, servicios y modelos en Angular | 2026-05-12 |
+| GreenSpot-app/Kampo-Frontend | feature/alert | [49feb51d2d1ffe5b34ba59c8a2182271e99f335e] | feat(alert): add alert module initial structure | Se creó la estructura inicial del módulo Alert con componentes, servicios y modelos en Angular | 2026-05-12 |
+| GreenSpot-app/Kampo-Frontend | feature/employee | [91b0ebc539f1dd5d7d06556c8053e1f532ccd128] | feat(employee): add employee module initial structure | Se creó la estructura inicial del módulo Employee con componentes, servicios y modelos en Angular | 2026-05-13 |
+| GreenSpot-app/Kampo-Frontend | feature/subscription | [4cd12d081a10ebe7edd4cf6f1041959c785f7f01] | feat(subscription): add subscription module initial structure | Se creó la estructura inicial del módulo Subscription con componentes, servicios y modelos en Angular | 2026-05-13 |
 
 ---
 
@@ -2563,10 +2561,10 @@ de Conventional Commits.
 - Repositorio: https://github.com/GreenSpot-app/kampo-report
 ![Screenshot Class Diagram](docs/assets/img/class-diagramsc.jpeg)
 
-**2. Frontend Web Application — GitHub + Vercel (configuración inicial)**
+**2. Frontend Web Application — GitHub + Azure (configuración inicial)**
 
 Se inició el proceso de configuración del despliegue continuo del
-Frontend Web Application en Vercel, conectando el repositorio
+Frontend Web Application en Azure, conectando el repositorio
 `Kampo-Frontend` a la plataforma.
 
 - Repositorio: https://github.com/GreenSpot-app/Kampo-Frontend
@@ -2574,9 +2572,9 @@ Frontend Web Application en Vercel, conectando el repositorio
 - Build Command: `ng build --configuration production`
 - Output Directory: `dist/kampo-frontend`
 
-[Insertar screenshot de la configuración de Vercel]
+[Insertar screenshot de la configuración de Azure]
 
-- URL de producción: [Insertar URL de Vercel cuando esté desplegado]
+- URL de producción: https://witty-coast-0b3ee6c0f.7.azurestaticapps.net
 
 ---
 
