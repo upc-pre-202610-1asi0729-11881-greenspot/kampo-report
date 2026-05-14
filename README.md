@@ -689,6 +689,7 @@ Entrevista 01:
 - Nombre: Roberto
 - Apellido: Azato
 - Distrito: Lima
+- Time: Min 1:25:40 - 1:35:23
 - Resumen:
   El entrevistado se desempeña como asesor técnico independiente, brindando recomendaciones agronómicas a múltiples fundos de manera simultánea. Su trabajo implica visitas periódicas a campo, evaluación del estado de los cultivos y comunicación constante con los propietarios.
   En cuanto a herramientas, utiliza principalmente Excel para el registro de información y WhatsApp como canal principal de comunicación. Esto evidencia una dependencia de herramientas no especializadas, lo que genera dispersión de datos y dificulta la organización de la información.
@@ -701,6 +702,7 @@ Entrevista 02:
 - Apellido: Bocanegra
 - Edad: 52
 - Distrito: Chiclayo
+- Time: Min 1:00:00 - 1:25:34
 - Resumen:
   El entrevistado realiza labores de supervisión directa en campo, encargándose del seguimiento del estado de los cultivos y de la ejecución de actividades agrícolas.
   Su proceso de trabajo combina registros manuales, como libretas de campo, con herramientas digitales básicas. Esta combinación evidencia una baja integración tecnológica, lo que limita la disponibilidad de información en tiempo real.
@@ -713,6 +715,7 @@ Entrevista 02:
 - Apellidos: Hurtado Aguirre
 - Edad: 62
 - Distrito: Trujillo
+- Time: Min 1:35:25 - 1:57:32
 - Resumen:
   El entrevistado se encarga de la gestión de múltiples fundos, lo que implica coordinar actividades, supervisar cultivos y manejar información proveniente de diversas fuentes.
   Señala que actualmente no cuenta con un sistema que le permita visualizar de manera integrada el estado de los cultivos, lo que incrementa la complejidad en la organización de la información.
@@ -725,6 +728,7 @@ Entrevista 04:
 - Apellido: Ochoa
 - Edad: 54
 - Distrito: Lima
+- Time: Min 1:57:34 - 2:12:12
 - Resumen:
   El entrevistado participa en la gestión de operaciones agrícolas a escala, manejando información proveniente de distintos fundos o unidades productivas.
   Indica que utiliza principalmente Excel y reportes manuales para consolidar información, lo que refleja una alta dependencia de procesos manuales.
@@ -737,6 +741,7 @@ Entrevista 05:
 - Apellidos: Chunque Muñeco
 - Edad: 57
 - Distrito: Chiclayo
+- Time: 2:12:14 - 2:40:17
 - Resumen:
   El entrevistado participa en la gestión operativa de actividades agrícolas, dependiendo principalmente de reportes generados por el personal de campo para obtener información sobre los cultivos.
   Indica que la información suele llegar con retraso, lo que limita su capacidad de reacción ante cambios en las condiciones del cultivo y afecta la eficiencia de las operaciones.
@@ -1293,10 +1298,11 @@ El wireframe de la Landing Page se diseñó con un enfoque en la jerarquía de i
 
 * **Navegación:** Un menú superior fijo (Sticky Navbar) que permite el acceso rápido a las secciones de beneficios y precios.
 
-![WireFrame1](./docs/assets/img/Web-Wireframe1.png)
-![WireFrame2](./docs/assets/img/Web-Wireframe2.png)
-![WireFrame3](./docs/assets/img/Page-Wireframe.png)
-![WireFrame4](./docs/assets/img/Page-Wireframe1.png)
+![WireFrame1](./docs/assets/img/Wireframe1.png)
+![WireFrame2](./docs/assets/img/Wireframe2.png)
+![WireFrame3](./docs/assets/img/Wireframe3.png)
+![WireFrame4](./docs/assets/img/Wireframe4.png)
+![WireFrame5](./docs/assets/img/Wireframe5.png)
 
 ##### 4.3.2. Landing Page Mock-up
 
@@ -1308,10 +1314,10 @@ El mock-up aplica la identidad visual de la marca utilizando la paleta de colore
 
 * **Imágenes:** Se incluyeron fotografías de alta resolución del sector agrícola peruano para generar cercanía y confianza con el usuario final.
 
-![Mockup1](./docs/assets/img/Web-Mockup.png)
-![Mockup2](./docs/assets/img/Web-Mockup1.png)
-![Mockup3](./docs/assets/img/Page-Mockup.png)
-![Mockup4](./docs/assets/img/Page-Mockup1.png)
+![Mockup1](./docs/assets/img/Mockup1.png)
+![Mockup2](./docs/assets/img/Muckup2.png)
+![Mockup3](./docs/assets/img/Muckup3.png)
+![Mockup4](./docs/assets/img/Mockup4.png)
 
 ## 4.4. Web Applications UX/UI Design
 
