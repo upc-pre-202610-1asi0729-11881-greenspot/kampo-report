@@ -1355,7 +1355,10 @@ Los wireframes de la aplicación web se dividieron en dos vistas principales par
 
 * **Registro de Visita (Mobile):** Diseñado bajo el principio de "Thumb-Driven Design", ubicando los controles principales en la zona de fácil acceso para el pulgar. Se reemplazó el teclado por sliders y dropdowns para agilizar el registro bajo la luz del sol.
 
-![Wireframes](./docs/assets/img/WireFrames.png)
+![Wireframes](docs/assets/img/Wireframe-front-1.png)
+![Wireframes](docs/assets/img/Wireframe-front-2.png)
+![Wireframes](docs/assets/img/Wireframe-front-3.png)
+![Wireframes](docs/assets/img/Wireframe-front-4.png)
 
 ##### 4.4.2. Web Applications Wireflow Diagrams
 El usuario puede manejar las diversas opciones que tiene cuando entra en su fundo, de esta manera se tiene un flujo centrandose en todo lo que puede realizar de manera autonoma, por lo cual es una manera interactiva de poder realizar esto.
