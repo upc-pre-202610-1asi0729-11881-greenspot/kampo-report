@@ -1361,8 +1361,8 @@ Los wireframes de la aplicación web se dividieron en dos vistas principales par
 ![Wireframes](docs/assets/img/Wireframe-front-4.png)
 
 ##### 4.4.2. Web Applications Wireflow Diagrams
-El usuario puede manejar las diversas opciones que tiene cuando entra en su fundo, de esta manera se tiene un flujo centrandose en todo lo que puede realizar de manera autonoma, por lo cual es una manera interactiva de poder realizar esto.
-![Mockup4](./docs/assets/img/Page-Mockup1.png)
+
+![Mockup4](./docs/assets/img/Main-KAMPO.png)
 
 ##### 4.4.3. Web Applications Mock-ups
 
