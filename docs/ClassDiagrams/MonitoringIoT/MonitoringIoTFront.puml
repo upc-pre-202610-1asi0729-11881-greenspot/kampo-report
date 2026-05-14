@@ -1,0 +1,209 @@
+@startuml
+left to right direction
+title Class Diagram - Monitoring IoT (Frontend)
+
+package "application" {
+  class MonitoringStore <<Store>> {
+    -sensors: IoTSensor[]
+    -readings: Reading[]
+    -selectedSensor: IoTSensor
+    -isLoading: boolean
+
+    +getSensors(): void
+    +getReadings(): void
+    +registerSensor(sensor: IoTSensor): void
+    +configureSensor(sensorId: number, minThreshold: number, maxThreshold: number): void
+    +modifySensorConfiguration(sensorId: number, minThreshold: number, maxThreshold: number): void
+    +sendSensorData(sensorId: number, value: number): void
+    +registerManualData(fieldId: number, value: number, type: string): void
+    +selectSensor(sensorId: number): void
+  }
+}
+
+package "presentation" {
+  package "views" {
+    class SensorDeviceViewComponent <<Component>> {
+      -sensors: IoTSensor[]
+      -selectedSensor: IoTSensor
+      -isLoading: boolean
+
+      +ngOnInit(): void
+      +onRegisterSensor(): void
+      +onConfigureSensor(): void
+      +onModifySensorConfiguration(): void
+      +onSelectSensor(sensorId: number): void
+    }
+
+    class SensorFormComponent <<Component>> {
+      -sensor: IoTSensor
+
+      +ngOnInit(): void
+      +onRegisterSensor(): void
+      +onConfigureSensor(): void
+      +onModifySensorConfiguration(): void
+    }
+
+    class MonitoringDashboardComponent <<Component>> {
+      -sensors: IoTSensor[]
+      -readings: Reading[]
+      -isLoading: boolean
+
+      +ngOnInit(): void
+      +onSendSensorData(): void
+      +onRegisterManualData(): void
+      +showSensorStatus(): string
+    }
+
+    class ReadingListComponent <<Component>> {
+      -readings: Reading[]
+      -isLoading: boolean
+
+      +ngOnInit(): void
+      +showReadingSource(): string
+    }
+  }
+}
+
+package "infrastructure" {
+  class MonitoringApi {
+    -sensorsEndpoint: string
+    -readingsEndpoint: string
+    -manualDataEndpoint: string
+
+    +getSensors(): Observable<IoTSensor[]>
+    +getReadings(): Observable<Reading[]>
+    +registerSensor(sensor: IoTSensor): Observable<IoTSensor>
+    +configureSensor(sensorId: number, minThreshold: number, maxThreshold: number): Observable<IoTSensor>
+    +modifySensorConfiguration(sensorId: number, minThreshold: number, maxThreshold: number): Observable<IoTSensor>
+    +sendSensorData(sensorId: number, value: number): Observable<Reading>
+    +registerManualData(fieldId: number, value: number, type: string): Observable<Reading>
+  }
+
+  class IoTSensorAssembler {
+    +toEntityFromResponse(response: IoTSensorResponse): IoTSensor
+    +toResourceFromEntity(entity: IoTSensor): IoTSensorResource
+  }
+
+  class ReadingAssembler {
+    +toEntityFromResponse(response: ReadingResponse): Reading
+    +toResourceFromEntity(entity: Reading): ReadingResource
+  }
+
+  class IoTSensorResponse {
+    -id: number
+    -type: string
+    -location: string
+    -status: string
+    -minThreshold: number
+    -maxThreshold: number
+  }
+
+  class ReadingResponse {
+    -id: number
+    -sensorId: number
+    -value: number
+    -type: string
+    -source: string
+    -recordedAt: Date
+  }
+
+  class IoTSensorResource {
+    -type: string
+    -location: string
+    -minThreshold: number
+    -maxThreshold: number
+  }
+
+  class ReadingResource {
+    -sensorId: number
+    -value: number
+    -type: string
+  }
+}
+
+package "domain" {
+  package "model" {
+    package "entities" {
+      class IoTSensor <<Entity>> {
+        -id: number
+        -type: SensorType
+        -location: string
+        -status: SensorStatus
+        -minThreshold: number
+        -maxThreshold: number
+
+        +getId(): number
+        +getType(): SensorType
+        +getLocation(): string
+        +getStatus(): SensorStatus
+        +getMinThreshold(): number
+        +getMaxThreshold(): number
+      }
+
+      class Reading <<Entity>> {
+        -id: number
+        -sensorId: number
+        -value: number
+        -type: ReadingType
+        -source: ReadingSource
+        -recordedAt: Date
+
+        +getId(): number
+        +getSensorId(): number
+        +getValue(): number
+        +getType(): ReadingType
+        +getSource(): ReadingSource
+        +getRecordedAt(): Date
+      }
+    }
+
+    package "enums" {
+      enum SensorType {
+        HUMIDITY
+        TEMPERATURE
+        PH
+      }
+      enum SensorStatus {
+        ACTIVE
+        INACTIVE
+        MAINTENANCE
+      }
+      enum ReadingType {
+        HUMIDITY
+        TEMPERATURE
+        PH
+      }
+      enum ReadingSource {
+        IOT
+        MANUAL
+      }
+    }
+  }
+}
+
+MonitoringStore -down-> MonitoringApi : delegates to
+MonitoringStore -right-> IoTSensor
+MonitoringStore -right-> Reading
+
+MonitoringApi ..down..> IoTSensorAssembler : uses for conversion
+MonitoringApi ..down..> ReadingAssembler : uses for conversion
+
+IoTSensorAssembler ..right..> IoTSensorResponse
+IoTSensorAssembler ..right..> IoTSensorResource
+IoTSensorAssembler ..right..> IoTSensor
+
+ReadingAssembler ..right..> ReadingResponse
+ReadingAssembler ..right..> ReadingResource
+ReadingAssembler ..right..> Reading
+
+SensorDeviceViewComponent ..down..> MonitoringStore : uses
+SensorFormComponent ..down..> MonitoringStore : uses
+MonitoringDashboardComponent ..down..> MonitoringStore : uses
+ReadingListComponent ..down..> MonitoringStore : uses
+
+IoTSensor --> SensorType
+IoTSensor --> SensorStatus
+Reading --> ReadingType
+Reading --> ReadingSource
+
+@enduml

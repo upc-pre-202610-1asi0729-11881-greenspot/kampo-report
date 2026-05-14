@@ -1,0 +1,101 @@
+@startuml
+left to right direction
+title Class Diagram - Employee Management (Backend)
+
+package "domain" {
+  package "services" {
+    interface EmployeeDomainService {
+      +validateEmployee(employee: Employee): void
+      +validateRoleAndPermissions(employee: Employee): boolean
+      +createEmployee(employee: Employee): Employee
+      +modifyEmployee(employee: Employee): Employee
+      +deleteEmployee(employeeId: EmployeeId): void
+    }
+  }
+
+  package "commands" {
+    class CreateEmployeeCommand {
+      -name: String
+      -email: String
+      -role: EmployeeRole
+      -fieldId: Long
+    }
+    class ModifyEmployeeCommand {
+      -employeeId: EmployeeId
+      -name: String
+      -email: String
+      -role: EmployeeRole
+    }
+    class DeleteEmployeeCommand {
+      -employeeId: EmployeeId
+    }
+
+    CreateEmployeeCommand -[hidden]down- ModifyEmployeeCommand
+    ModifyEmployeeCommand -[hidden]down- DeleteEmployeeCommand
+  }
+
+  package "model" {
+    package "aggregate" {
+      class Employee {
+        -id: EmployeeId
+        -name: String
+        -email: Email
+        -role: EmployeeRole
+        -status: EmployeeStatus
+        -fieldId: Long
+        -createdAt: LocalDateTime
+        +create(command: CreateEmployeeCommand): Employee
+        +modify(command: ModifyEmployeeCommand): void
+        +delete(command: DeleteEmployeeCommand): void
+        +activate(): void
+        +deactivate(): void
+        +getId(): EmployeeId
+        +getRole(): EmployeeRole
+        +getStatus(): EmployeeStatus
+      }
+    }
+
+    package "valueobject" {
+      class EmployeeId {
+        -value: Long
+        +of(value: Long): EmployeeId
+        +getValue(): Long
+      }
+      class Email {
+        -value: String
+        +of(value: String): Email
+        +getValue(): String
+      }
+
+      EmployeeId -[hidden]down- Email
+    }
+
+    package "enums" {
+      enum EmployeeRole {
+        AGRONOMIST
+        TECHNICIAN
+        SUPERVISOR
+        OPERATOR
+      }
+      enum EmployeeStatus {
+        ACTIVE
+        INACTIVE
+      }
+
+      EmployeeRole -[hidden]right- EmployeeStatus
+    }
+  }
+}
+
+CreateEmployeeCommand ..> Employee
+ModifyEmployeeCommand ..> Employee
+DeleteEmployeeCommand ..> Employee
+
+Employee --> EmployeeId
+Employee --> Email
+Employee --> EmployeeRole
+Employee --> EmployeeStatus
+
+EmployeeDomainService ..> Employee
+
+@enduml

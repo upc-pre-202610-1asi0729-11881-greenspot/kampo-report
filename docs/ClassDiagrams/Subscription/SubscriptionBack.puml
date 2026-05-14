@@ -1,0 +1,126 @@
+@startuml
+
+left to right direction
+
+title Class Diagram - Subscription (Backend - Spring Boot)
+
+package "domain" {
+
+  package "services" {
+
+    interface SubscriptionDomainService {
+      +validateSubscription(subscription: Subscription): void
+      +renewSubscription(subscription: Subscription): Subscription
+      +cancelSubscription(subscription: Subscription): void
+    }
+
+  }
+
+  package "model" {
+
+    package "aggregate" {
+
+      class Subscription {
+        -id: SubscriptionId
+        -name: String
+        -description: String
+        -price: Money
+        -startDate: LocalDateTime
+        -endDate: LocalDateTime
+        -status: SubscriptionStatus
+        -userId: UserId
+
+        +create(command: PurchaseSubscriptionCommand): Subscription
+        +renew(command: RenewSubscriptionCommand): void
+        +cancel(command: CancelSubscriptionCommand): void
+        +isActive(): boolean
+        +getId(): SubscriptionId
+        +getName(): String
+        +getDescription(): String
+        +getPrice(): Money
+        +getStartDate(): LocalDateTime
+        +getEndDate(): LocalDateTime
+        +getStatus(): SubscriptionStatus
+        +getUserId(): UserId
+      }
+
+    }
+
+    package "enums" {
+
+      enum SubscriptionStatus {
+        STARTED
+        RENEWED
+        CANCELLED
+      }
+
+      enum SubscriptionPlan {
+        MONTHLY
+        QUARTERLY
+        ANNUAL
+      }
+
+    }
+
+    package "valueobject" {
+
+      class SubscriptionId {
+        -value: Long
+        +of(value: Long): SubscriptionId
+        +getValue(): Long
+      }
+
+      class UserId {
+        -value: Long
+        +of(value: Long): UserId
+        +getValue(): Long
+      }
+
+      class Money {
+        -amount: BigDecimal
+        -currency: String
+
+        +of(amount: BigDecimal): Money
+        +isPositive(): boolean
+        +getAmount(): BigDecimal
+      }
+
+    }
+
+  }
+
+  package "commands" {
+
+    class PurchaseSubscriptionCommand {
+      -name: String
+      -description: String
+      -price: Money
+      -plan: SubscriptionPlan
+      -userId: UserId
+    }
+
+    class RenewSubscriptionCommand {
+      -subscriptionId: SubscriptionId
+    }
+
+    class CancelSubscriptionCommand {
+      -subscriptionId: SubscriptionId
+    }
+
+  }
+
+}
+
+SubscriptionDomainService --> Subscription
+
+Subscription --> SubscriptionId
+Subscription --> UserId
+Subscription --> Money
+Subscription --> SubscriptionStatus
+Subscription --> SubscriptionPlan
+
+PurchaseSubscriptionCommand --> Subscription
+RenewSubscriptionCommand --> Subscription
+CancelSubscriptionCommand --> Subscription
+
+@enduml

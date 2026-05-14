@@ -1,0 +1,145 @@
+@startuml
+left to right direction
+title Class Diagram - Employee Management (Frontend)
+
+package "application" {
+  class EmployeeStore <<Store>> {
+    -employees: Employee[]
+    -selectedEmployee: Employee
+    -isLoading: boolean
+
+    +getEmployees(): void
+    +createEmployee(employee: Employee): void
+    +modifyEmployee(employee: Employee): void
+    +deleteEmployee(employeeId: number): void
+    +selectEmployee(employeeId: number): void
+  }
+}
+
+package "presentation" {
+  package "views" {
+    class EmployeeViewComponent <<Component>> {
+      -employees: Employee[]
+      -selectedEmployee: Employee
+      -isLoading: boolean
+
+      +ngOnInit(): void
+      +onCreateEmployee(): void
+      +onModifyEmployee(): void
+      +onDeleteEmployee(employeeId: number): void
+      +onSelectEmployee(employeeId: number): void
+    }
+
+    class EmployeeFormComponent <<Component>> {
+      -employee: Employee
+
+      +ngOnInit(): void
+      +onCreateEmployee(): void
+      +onModifyEmployee(): void
+    }
+
+    class EmployeeListComponent <<Component>> {
+      -employees: Employee[]
+      -isLoading: boolean
+
+      +ngOnInit(): void
+      +onSelectEmployee(employeeId: number): void
+      +onDeleteEmployee(employeeId: number): void
+    }
+
+    class EmployeeDetailComponent <<Component>> {
+      -employee: Employee
+
+      +ngOnInit(): void
+      +showRole(): string
+      +showStatus(): string
+    }
+  }
+}
+
+package "infrastructure" {
+  class EmployeeApi {
+    -employeesEndpoint: string
+
+    +getEmployees(): Observable<Employee[]>
+    +createEmployee(employee: Employee): Observable<Employee>
+    +modifyEmployee(employee: Employee): Observable<Employee>
+    +deleteEmployee(employeeId: number): Observable<void>
+  }
+
+  class EmployeeAssembler {
+    +toEntityFromResponse(response: EmployeeResponse): Employee
+    +toResourceFromEntity(entity: Employee): EmployeeResource
+  }
+
+  class EmployeeResponse {
+    -id: number
+    -name: string
+    -email: string
+    -role: string
+    -status: string
+  }
+
+  class EmployeeResource {
+    -name: string
+    -email: string
+    -role: string
+    -fieldId: number
+  }
+}
+
+package "domain" {
+  package "model" {
+    package "entities" {
+      class Employee <<Entity>> {
+        -id: number
+        -name: string
+        -email: string
+        -role: EmployeeRole
+        -status: EmployeeStatus
+        -fieldId: number
+
+        +getId(): number
+        +getName(): string
+        +getEmail(): string
+        +getRole(): EmployeeRole
+        +getStatus(): EmployeeStatus
+        +setName(name: string): void
+        +setEmail(email: string): void
+        +setRole(role: EmployeeRole): void
+      }
+    }
+
+    package "enums" {
+      enum EmployeeRole {
+        AGRONOMIST
+        TECHNICIAN
+        SUPERVISOR
+        OPERATOR
+      }
+      enum EmployeeStatus {
+        ACTIVE
+        INACTIVE
+      }
+    }
+  }
+}
+
+EmployeeStore -down-> EmployeeApi : delegates to
+EmployeeStore -right-> Employee
+
+EmployeeApi ..down..> EmployeeAssembler : uses for conversion
+
+EmployeeAssembler ..right..> EmployeeResponse
+EmployeeAssembler ..right..> EmployeeResource
+EmployeeAssembler ..right..> Employee
+
+EmployeeViewComponent ..down..> EmployeeStore : uses
+EmployeeFormComponent ..down..> EmployeeStore : uses
+EmployeeListComponent ..down..> EmployeeStore : uses
+EmployeeDetailComponent ..down..> EmployeeStore : uses
+
+Employee --> EmployeeRole
+Employee --> EmployeeStatus
+
+@enduml

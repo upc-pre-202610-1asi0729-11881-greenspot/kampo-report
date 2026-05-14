@@ -1,0 +1,80 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+LAYOUT_TOP_DOWN()
+HIDE_STEREOTYPE()
+
+title Component Diagram – Inventory Management Bounded Context
+
+Container_Ext(spa, "Web Application", "Angular", "Calls inventory management endpoints")
+Container_Ext(orgBC, "Organization Management BC", "Internal", "Provides fundo context for inventory")
+Container_Ext(financialBC, "Financial Management BC", "Internal", "Listens to InputPurchased events")
+ContainerDb_Ext(db, "Database", "MySQL", "Persistent storage")
+
+Container_Boundary(inventoryBC, "Inventory Management – Bounded Context") {
+
+    Component(inventoryController,  "InventoryController",         "REST Controller",     "Handles /inventory endpoints: view stock, update stock")
+    Component(supplierController,   "SupplierController",          "REST Controller",     "Handles /suppliers endpoints: add, list, contact")
+    Component(orderController,      "OrderInputController",        "REST Controller",     "Handles /orders endpoints: create order, receive input")
+    Component(inputController,      "InputController",             "REST Controller",     "Handles /inputs endpoints: register, list, categorize")
+
+    Component(updateStockUC,        "UpdateStockUseCase",          "Application Service", "Validates and updates current stock levels")
+    Component(addSupplierUC,        "AddSupplierUseCase",          "Application Service", "Registers a new supplier with contact details")
+    Component(orderInputUC,         "OrderInputUseCase",           "Application Service", "Creates a purchase order for a specific input")
+    Component(receiveInputUC,       "ReceiveInputUseCase",         "Application Service", "Confirms input receipt and updates stock")
+    Component(evaluateStockUC,      "EvaluateStockUseCase",        "Application Service", "Checks stock levels against minimum thresholds")
+    Component(registerInputUC,      "RegisterInputUseCase",        "Application Service", "Registers a new input type with category")
+
+    Component(inventoryDomainSvc,   "InventoryDomainService",      "Domain Service",      "Business rules: stock validation, minimum thresholds and reorder logic")
+    Component(orderDomainSvc,       "OrderDomainService",          "Domain Service",      "Business rules: order validation and supplier selection rules")
+
+    Component(inventoryRepo,        "InventoryRepository",         "Repository",          "CRUD for Inventory aggregate and stock levels")
+    Component(supplierRepo,         "SupplierRepository",          "Repository",          "CRUD for Supplier aggregate")
+    Component(orderRepo,            "OrderRepository",             "Repository",          "CRUD for OrderInput aggregate")
+    Component(inputRepo,            "InputRepository",             "Repository",          "CRUD for Input aggregate and categories")
+
+    Component(inputPurchasedPub,    "InputPurchasedEventPublisher","Event Publisher",     "Publishes InputPurchased event to Financial Management BC")
+    Component(stockAlertPub,        "StockAlertEventPublisher",    "Event Publisher",     "Publishes LowStockDetected event to Alert Management BC")
+}
+
+Rel(spa, inventoryController, "GET|PUT /inventory",    "HTTPS/JSON")
+Rel(spa, supplierController,  "GET|POST /suppliers",   "HTTPS/JSON")
+Rel(spa, orderController,     "GET|POST /orders",      "HTTPS/JSON")
+Rel(spa, inputController,     "GET|POST /inputs",      "HTTPS/JSON")
+
+Rel(inventoryController, updateStockUC,    "Calls")
+Rel(inventoryController, evaluateStockUC,  "Calls")
+Rel(supplierController,  addSupplierUC,    "Calls")
+Rel(orderController,     orderInputUC,     "Calls")
+Rel(orderController,     receiveInputUC,   "Calls")
+Rel(inputController,     registerInputUC,  "Calls")
+
+Rel(updateStockUC,    inventoryDomainSvc,  "Validates stock rules")
+Rel(updateStockUC,    inventoryRepo,       "Updates stock levels")
+Rel(updateStockUC,    evaluateStockUC,     "Triggers evaluation after update")
+Rel(addSupplierUC,    orderDomainSvc,      "Validates supplier data")
+Rel(addSupplierUC,    supplierRepo,        "Persists supplier")
+Rel(orderInputUC,     orderDomainSvc,      "Validates order rules")
+Rel(orderInputUC,     supplierRepo,        "Queries supplier data")
+Rel(orderInputUC,     inputRepo,           "Queries input data")
+Rel(orderInputUC,     orderRepo,           "Persists order")
+Rel(receiveInputUC,   inventoryDomainSvc,  "Validates receipt")
+Rel(receiveInputUC,   orderRepo,           "Updates order as received")
+Rel(receiveInputUC,   inventoryRepo,       "Updates stock on receipt")
+Rel(receiveInputUC,   inputPurchasedPub,   "Publishes InputPurchased event")
+Rel(evaluateStockUC,  inventoryDomainSvc,  "Checks minimum thresholds")
+Rel(evaluateStockUC,  inventoryRepo,       "Queries current stock")
+Rel(evaluateStockUC,  stockAlertPub,       "Publishes LowStockDetected if below threshold")
+Rel(registerInputUC,  inventoryDomainSvc,  "Validates input category")
+Rel(registerInputUC,  inputRepo,           "Persists input")
+Rel(registerInputUC,  inventoryRepo,       "Initializes stock entry")
+
+Rel(inventoryRepo, db, "Reads/Writes", "JDBC")
+Rel(supplierRepo,  db, "Reads/Writes", "JDBC")
+Rel(orderRepo,     db, "Reads/Writes", "JDBC")
+Rel(inputRepo,     db, "Reads/Writes", "JDBC")
+
+Rel(inputPurchasedPub, financialBC, "InputPurchased event",    "Internal")
+Rel(stockAlertPub,     orgBC,       "Validates fundo context", "Internal call")
+
+@enduml

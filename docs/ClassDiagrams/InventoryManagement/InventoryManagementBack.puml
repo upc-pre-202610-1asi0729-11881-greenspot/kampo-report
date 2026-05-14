@@ -1,0 +1,151 @@
+@startuml
+left to right direction
+title Class Diagram - Inventory Management (Backend)
+
+package "domain" {
+  package "services" {
+    interface InventoryDomainService {
+      +validateInventory(inventory: Inventory): void
+      +evaluateMinStock(inventory: Inventory): boolean
+      +registerInput(input: Input): Input
+      +updateStock(inventory: Inventory): void
+    }
+  }
+
+  package "commands" {
+    class UpdateStockCommand {
+      -inventoryId: InventoryId
+      -quantity: Integer
+    }
+    class AddSupplierCommand {
+      -name: String
+      -contact: String
+      -email: String
+    }
+    class OrderInputCommand {
+      -inventoryId: InventoryId
+      -supplierId: SupplierId
+      -quantity: Integer
+    }
+    class ReceiveInputCommand {
+      -orderId: OrderId
+      -quantity: Integer
+      -receivedAt: LocalDateTime
+    }
+    class RegisterInputCommand {
+      -inventoryId: InventoryId
+      -name: String
+      -quantity: Integer
+      -unit: String
+    }
+
+    UpdateStockCommand -[hidden]down- AddSupplierCommand
+    AddSupplierCommand -[hidden]down- OrderInputCommand
+    OrderInputCommand -[hidden]down- ReceiveInputCommand
+    ReceiveInputCommand -[hidden]down- RegisterInputCommand
+  }
+
+  package "model" {
+    package "aggregate" {
+      class Inventory {
+        -id: InventoryId
+        -name: String
+        -quantity: Integer
+        -unit: String
+        -minStock: Integer
+        -status: InventoryStatus
+        +create(command: RegisterInputCommand): Inventory
+        +updateStock(command: UpdateStockCommand): void
+        +evaluateMinStock(): boolean
+        +getId(): InventoryId
+        +getQuantity(): Integer
+        +getStatus(): InventoryStatus
+      }
+
+      class Supplier {
+        -id: SupplierId
+        -name: String
+        -contact: String
+        -email: String
+        +create(command: AddSupplierCommand): Supplier
+        +getId(): SupplierId
+        +getName(): String
+        +getContact(): String
+        +getEmail(): String
+      }
+
+      class OrderInput {
+        -id: OrderId
+        -inventoryId: InventoryId
+        -supplierId: SupplierId
+        -quantity: Integer
+        -status: OrderStatus
+        -orderedAt: LocalDateTime
+        -receivedAt: LocalDateTime
+        +create(command: OrderInputCommand): OrderInput
+        +receive(command: ReceiveInputCommand): void
+        +getId(): OrderId
+        +getStatus(): OrderStatus
+      }
+
+      Inventory -[hidden]right- Supplier
+      Supplier -[hidden]right- OrderInput
+    }
+
+    package "valueobject" {
+      class InventoryId {
+        -value: Long
+        +of(value: Long): InventoryId
+        +getValue(): Long
+      }
+      class SupplierId {
+        -value: Long
+        +of(value: Long): SupplierId
+        +getValue(): Long
+      }
+      class OrderId {
+        -value: Long
+        +of(value: Long): OrderId
+        +getValue(): Long
+      }
+
+      InventoryId -[hidden]down- SupplierId
+      SupplierId -[hidden]down- OrderId
+    }
+
+    package "enums" {
+      enum InventoryStatus {
+        AVAILABLE
+        LOW_STOCK
+        OUT_OF_STOCK
+      }
+      enum OrderStatus {
+        PENDING
+        RECEIVED
+        CANCELLED
+      }
+
+      InventoryStatus -[hidden]right- OrderStatus
+    }
+  }
+}
+
+UpdateStockCommand ..> Inventory
+RegisterInputCommand ..> Inventory
+AddSupplierCommand ..> Supplier
+OrderInputCommand ..> OrderInput
+ReceiveInputCommand ..> OrderInput
+
+Inventory --> InventoryId
+Inventory --> InventoryStatus
+Supplier --> SupplierId
+OrderInput --> OrderId
+OrderInput --> InventoryId
+OrderInput --> SupplierId
+OrderInput --> OrderStatus
+
+InventoryDomainService ..> Inventory
+InventoryDomainService ..> Supplier
+InventoryDomainService ..> OrderInput
+
+@enduml
