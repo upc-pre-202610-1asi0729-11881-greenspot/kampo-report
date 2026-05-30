@@ -14,35 +14,44 @@ ContainerDb_Ext(db, "Database", "MySQL", "Persistent storage")
 
 Container_Boundary(orgBC, "Organization Management – Bounded Context") {
 
-    Component(orgController,        "OrganizationController",      "REST Controller",     "Handles /organizations endpoints: register, update, list")
-    Component(fundoController,      "FundoController",             "REST Controller",     "Handles /fundos endpoints: register, list, modify")
-    Component(fieldController,      "FieldController",             "REST Controller",     "Handles /fields endpoints: register, modify, list")
-    Component(cropController,       "CropController",              "REST Controller",     "Handles /crops endpoints: register, assign to field")
+    Boundary(interfaces, "interfaces/rest", "REST Controllers & Event Publishers") {
+        Component(orgController,   "OrganizationController", "REST Controller", "Handles /organizations endpoints: register, update, list")
+        Component(fundoController, "FundoController",        "REST Controller", "Handles /fundos endpoints: register, list, modify")
+        Component(fieldController, "FieldController",        "REST Controller", "Handles /fields endpoints: register, modify, list")
+        Component(cropController,  "CropController",         "REST Controller", "Handles /crops endpoints: register, assign to field")
+        Component(orgEventPub,     "OrganizationEventPublisher", "Event Publisher", "Publishes OrganizationRegistered and FieldRegistered events")
+    }
 
-    Component(registerOrgUC,        "RegisterOrganizationUseCase", "Application Service", "Validates and creates a new organization linked to a user")
-    Component(updateOrgUC,          "UpdateOrganizationUseCase",   "Application Service", "Updates organization data and settings")
-    Component(registerFundoUC,      "RegisterFundoUseCase",        "Application Service", "Validates and creates a fundo under an organization")
-    Component(registerFieldUC,      "RegisterFieldUseCase",        "Application Service", "Validates GPS data and registers a field under a fundo")
-    Component(modifyFieldUC,        "ModifyFieldUseCase",          "Application Service", "Updates field boundaries and metadata")
-    Component(registerCropUC,       "RegisterCropUseCase",         "Application Service", "Registers a crop type and assigns it to a field")
+    Boundary(application, "application", "Use Cases / Application Services") {
+        Component(registerOrgUC,   "RegisterOrganizationUseCase", "Application Service", "Validates and creates a new organization linked to a user")
+        Component(updateOrgUC,     "UpdateOrganizationUseCase",   "Application Service", "Updates organization data and settings")
+        Component(registerFundoUC, "RegisterFundoUseCase",        "Application Service", "Validates and creates a fundo under an organization")
+        Component(registerFieldUC, "RegisterFieldUseCase",        "Application Service", "Validates GPS data and registers a field under a fundo")
+        Component(modifyFieldUC,   "ModifyFieldUseCase",          "Application Service", "Updates field boundaries and metadata")
+        Component(registerCropUC,  "RegisterCropUseCase",         "Application Service", "Registers a crop type and assigns it to a field")
+    }
 
-    Component(orgDomainSvc,         "OrganizationDomainService",   "Domain Service",      "Business rules: organization structure validation and ownership rules")
-    Component(fieldDomainSvc,       "FieldDomainService",          "Domain Service",      "Business rules: field boundary validation and GPS constraints")
-    Component(cropDomainSvc,        "CropDomainService",           "Domain Service",      "Business rules: crop compatibility with field type and season")
+    Boundary(domain, "domain/model", "Domain Services & Aggregates") {
+        Component(orgDomainSvc,   "OrganizationDomainService", "Domain Service", "Organization structure validation and ownership rules")
+        Component(fieldDomainSvc, "FieldDomainService",        "Domain Service", "Field boundary validation and GPS constraints")
+        Component(cropDomainSvc,  "CropDomainService",         "Domain Service", "Crop compatibility with field type and season")
+    }
 
-    Component(orgRepo,              "OrganizationRepository",      "Repository",          "CRUD for Organization aggregate")
-    Component(fundoRepo,            "FundoRepository",             "Repository",          "CRUD for Fundo aggregate")
-    Component(fieldRepo,            "FieldRepository",             "Repository",          "CRUD for Field aggregate")
-    Component(cropRepo,             "CropRepository",              "Repository",          "CRUD for Crop aggregate")
-
-    Component(orgEventPub,          "OrganizationEventPublisher",  "Event Publisher",     "Publishes OrganizationRegistered and FieldRegistered events")
+    Boundary(infrastructure, "infrastructure/persistence/jpa", "Repositories") {
+        Component(orgRepo,   "OrganizationRepository", "Repository", "CRUD for Organization aggregate")
+        Component(fundoRepo, "FundoRepository",         "Repository", "CRUD for Fundo aggregate")
+        Component(fieldRepo, "FieldRepository",         "Repository", "CRUD for Field aggregate")
+        Component(cropRepo,  "CropRepository",          "Repository", "CRUD for Crop aggregate")
+    }
 }
 
+' === External → Interface ===
 Rel(spa, orgController,   "GET|POST|PUT /organizations", "HTTPS/JSON")
 Rel(spa, fundoController, "GET|POST|PUT /fundos",        "HTTPS/JSON")
 Rel(spa, fieldController, "GET|POST|PUT /fields",        "HTTPS/JSON")
 Rel(spa, cropController,  "GET|POST /crops",             "HTTPS/JSON")
 
+' === Interface → Application ===
 Rel(orgController,   registerOrgUC,   "Calls")
 Rel(orgController,   updateOrgUC,     "Calls")
 Rel(fundoController, registerFundoUC, "Calls")
@@ -50,37 +59,41 @@ Rel(fieldController, registerFieldUC, "Calls")
 Rel(fieldController, modifyFieldUC,   "Calls")
 Rel(cropController,  registerCropUC,  "Calls")
 
-Rel(registerOrgUC,   orgDomainSvc,    "Validates organization rules")
-Rel(registerOrgUC,   orgRepo,         "Persists organization")
-Rel(registerOrgUC,   profileBC,       "Validates user ownership",    "Internal call")
-Rel(registerOrgUC,   orgEventPub,     "Publishes OrganizationRegistered event")
+' === Application → Domain ===
+Rel(registerOrgUC,   orgDomainSvc,   "Validates organization rules")
+Rel(updateOrgUC,     orgDomainSvc,   "Validates update constraints")
+Rel(registerFundoUC, orgDomainSvc,   "Validates fundo belongs to org")
+Rel(registerFieldUC, fieldDomainSvc, "Validates GPS boundaries")
+Rel(modifyFieldUC,   fieldDomainSvc, "Validates boundary changes")
+Rel(registerCropUC,  cropDomainSvc,  "Validates crop compatibility")
 
-Rel(updateOrgUC,     orgDomainSvc,    "Validates update constraints")
-Rel(updateOrgUC,     orgRepo,         "Updates organization data")
+' === Application → Infrastructure ===
+Rel(registerOrgUC,   orgRepo,   "Persists organization")
+Rel(updateOrgUC,     orgRepo,   "Updates organization data")
+Rel(registerFundoUC, orgRepo,   "Queries organization data")
+Rel(registerFundoUC, fundoRepo, "Persists fundo")
+Rel(registerFieldUC, fundoRepo, "Queries fundo data")
+Rel(registerFieldUC, fieldRepo, "Persists field")
+Rel(modifyFieldUC,   fieldRepo, "Updates field data")
+Rel(registerCropUC,  fieldRepo, "Queries field type")
+Rel(registerCropUC,  cropRepo,  "Persists crop")
 
-Rel(registerFundoUC, orgDomainSvc,    "Validates fundo belongs to org")
-Rel(registerFundoUC, orgRepo,         "Queries organization data")
-Rel(registerFundoUC, fundoRepo,       "Persists fundo")
-Rel(registerFundoUC, orgEventPub,     "Publishes FundoRegistered event")
+' === Application → Interface (events) ===
+Rel(registerOrgUC,   orgEventPub, "Publishes OrganizationRegistered event")
+Rel(registerFundoUC, orgEventPub, "Publishes FundoRegistered event")
+Rel(registerFieldUC, orgEventPub, "Publishes FieldRegistered event")
 
-Rel(registerFieldUC, fieldDomainSvc,  "Validates GPS boundaries")
-Rel(registerFieldUC, gpsService,      "Fetches geolocation data",    "HTTPS/JSON")
-Rel(registerFieldUC, fundoRepo,       "Queries fundo data")
-Rel(registerFieldUC, fieldRepo,       "Persists field")
-Rel(registerFieldUC, orgEventPub,     "Publishes FieldRegistered event")
+' === Application → External ===
+Rel(registerOrgUC,   profileBC,  "Validates user ownership", "Internal call")
+Rel(registerFieldUC, gpsService, "Fetches geolocation data", "HTTPS/JSON")
 
-Rel(modifyFieldUC,   fieldDomainSvc,  "Validates boundary changes")
-Rel(modifyFieldUC,   fieldRepo,       "Updates field data")
+' === Interface → External BC ===
+Rel(orgEventPub, seasonBC, "OrganizationRegistered event", "Internal")
 
-Rel(registerCropUC,  cropDomainSvc,   "Validates crop compatibility")
-Rel(registerCropUC,  fieldRepo,       "Queries field type")
-Rel(registerCropUC,  cropRepo,        "Persists crop")
-
+' === Infrastructure → DB ===
 Rel(orgRepo,   db, "Reads/Writes", "JDBC")
 Rel(fundoRepo, db, "Reads/Writes", "JDBC")
 Rel(fieldRepo, db, "Reads/Writes", "JDBC")
 Rel(cropRepo,  db, "Reads/Writes", "JDBC")
-
-Rel(orgEventPub, seasonBC, "OrganizationRegistered event", "Internal")
 
 @enduml

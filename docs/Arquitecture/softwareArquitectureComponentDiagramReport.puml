@@ -12,91 +12,96 @@ ContainerDb_Ext(db, "Database", "MySQL", "Persistent storage")
 
 Container_Boundary(reportBC, "Report – Bounded Context") {
 
-    Component(reportController,       "ReportController",              "REST Controller",     "Handles /reports endpoints: request, list, download")
-    Component(financialRptController, "FinancialReportController",     "REST Controller",     "Handles /reports/financial endpoints: generate and view")
-    Component(iotRptController,       "IoTReportController",           "REST Controller",     "Handles /reports/iot endpoints: generate and view")
-    Component(fieldRptController,     "FieldReportController",         "REST Controller",     "Handles /reports/field endpoints: generate and view")
-    Component(inventoryRptController, "InventoryReportController",     "REST Controller",     "Handles /reports/inventory endpoints: generate and view")
+    Boundary(interfaces, "interfaces/rest", "REST Controllers & Event Consumers") {
+        Component(reportController,         "ReportController",          "REST Controller", "Handles /reports endpoints: request, list, download")
+        Component(financialRptController,   "FinancialReportController", "REST Controller", "Handles /reports/financial endpoints: generate and view")
+        Component(iotRptController,         "IoTReportController",       "REST Controller", "Handles /reports/iot endpoints: generate and view")
+        Component(fieldRptController,       "FieldReportController",     "REST Controller", "Handles /reports/field endpoints: generate and view")
+        Component(inventoryRptController,   "InventoryReportController", "REST Controller", "Handles /reports/inventory endpoints: generate and view")
+        Component(reportEventConsumer,      "ReportEventConsumer",       "Event Consumer",  "Listens to ProfitabilityCalculated to auto-trigger financial report")
+    }
 
-    Component(requestReportUC,        "RequestReportUseCase",          "Application Service", "Validates report type and parameters, queues generation")
-    Component(generateFinancialRptUC, "GenerateFinancialReportUseCase","Application Service", "Aggregates income, expenses and profitability data into report")
-    Component(generateIoTRptUC,       "GenerateIoTReportUseCase",      "Application Service", "Aggregates sensor readings and alerts into IoT report")
-    Component(generateFieldRptUC,     "GenerateFieldReportUseCase",    "Application Service", "Aggregates field visits, observations and evidence into report")
-    Component(generateInventoryRptUC, "GenerateInventoryReportUseCase","Application Service", "Aggregates stock levels, purchases and supplier data into report")
-    Component(listReportsUC,          "ListReportsUseCase",            "Application Service", "Retrieves report history with filters by type, date and status")
-    Component(downloadReportUC,       "DownloadReportUseCase",         "Application Service", "Retrieves generated report file for download")
+    Boundary(application, "application", "Use Cases / Application Services") {
+        Component(requestReportUC,          "RequestReportUseCase",           "Application Service", "Validates report type and parameters, queues generation")
+        Component(generateFinancialRptUC,   "GenerateFinancialReportUseCase", "Application Service", "Aggregates income, expenses and profitability data into report")
+        Component(generateIoTRptUC,         "GenerateIoTReportUseCase",       "Application Service", "Aggregates sensor readings and alerts into IoT report")
+        Component(generateFieldRptUC,       "GenerateFieldReportUseCase",     "Application Service", "Aggregates field visits, observations and evidence into report")
+        Component(generateInventoryRptUC,   "GenerateInventoryReportUseCase", "Application Service", "Aggregates stock levels, purchases and supplier data into report")
+        Component(listReportsUC,            "ListReportsUseCase",             "Application Service", "Retrieves report history with filters by type, date and status")
+        Component(downloadReportUC,         "DownloadReportUseCase",          "Application Service", "Retrieves generated report file for download")
+    }
 
-    Component(reportDomainSvc,        "ReportDomainService",           "Domain Service",      "Business rules: report type validation, date range constraints and format rules")
-    Component(reportBuilderSvc,       "ReportBuilderService",          "Domain Service",      "Assembles report sections, applies filters and formats output data")
+    Boundary(domain, "domain/model", "Domain Services & Aggregates") {
+        Component(reportDomainSvc,  "ReportDomainService",  "Domain Service", "Report type validation, date range constraints and format rules")
+        Component(reportBuilderSvc, "ReportBuilderService", "Domain Service", "Assembles report sections, applies filters and formats output data")
+    }
 
-    Component(reportRepo,             "ReportRepository",              "Repository",          "CRUD for Report aggregate and metadata")
-    Component(financialDataRepo,      "FinancialDataRepository",       "Repository",          "Reads aggregated financial data for report generation")
-    Component(iotDataRepo,            "IoTDataRepository",             "Repository",          "Reads aggregated sensor and alert data for report generation")
-    Component(fieldDataRepo,          "FieldDataRepository",           "Repository",          "Reads aggregated visit and observation data for report generation")
-    Component(inventoryDataRepo,      "InventoryDataRepository",       "Repository",          "Reads aggregated stock and purchase data for report generation")
-
-    Component(reportEventConsumer,    "ReportEventConsumer",           "Event Consumer",      "Listens to ProfitabilityCalculated to auto-trigger financial report")
-    Component(reportExporter,         "ReportExporter",                "Infrastructure",      "Exports report data to PDF or Excel format for download")
+    Boundary(infrastructure, "infrastructure/persistence/jpa", "Repositories & Exporter") {
+        Component(reportRepo,          "ReportRepository",          "Repository",     "CRUD for Report aggregate and metadata")
+        Component(financialDataRepo,   "FinancialDataRepository",   "Repository",     "Reads aggregated financial data for report generation")
+        Component(iotDataRepo,         "IoTDataRepository",         "Repository",     "Reads aggregated sensor and alert data for report generation")
+        Component(fieldDataRepo,       "FieldDataRepository",       "Repository",     "Reads aggregated visit and observation data for report generation")
+        Component(inventoryDataRepo,   "InventoryDataRepository",   "Repository",     "Reads aggregated stock and purchase data for report generation")
+        Component(reportExporter,      "ReportExporter",            "Infrastructure", "Exports report data to PDF or Excel format for download")
+    }
 }
 
-Rel(spa, reportController,         "GET /reports",                   "HTTPS/JSON")
-Rel(spa, financialRptController,   "GET|POST /reports/financial",    "HTTPS/JSON")
-Rel(spa, iotRptController,         "GET|POST /reports/iot",          "HTTPS/JSON")
-Rel(spa, fieldRptController,       "GET|POST /reports/field",        "HTTPS/JSON")
-Rel(spa, inventoryRptController,   "GET|POST /reports/inventory",    "HTTPS/JSON")
+' === External → Interface ===
+Rel(spa,         reportController,       "GET /reports",                "HTTPS/JSON")
+Rel(spa,         financialRptController, "GET|POST /reports/financial", "HTTPS/JSON")
+Rel(spa,         iotRptController,       "GET|POST /reports/iot",       "HTTPS/JSON")
+Rel(spa,         fieldRptController,     "GET|POST /reports/field",     "HTTPS/JSON")
+Rel(spa,         inventoryRptController, "GET|POST /reports/inventory", "HTTPS/JSON")
+Rel(financialBC, reportEventConsumer,    "ProfitabilityCalculated event","Internal")
 
-Rel(financialBC, reportEventConsumer, "ProfitabilityCalculated event", "Internal")
+' === Interface → Application ===
+Rel(reportController,       listReportsUC,          "Calls")
+Rel(reportController,       downloadReportUC,       "Calls")
+Rel(financialRptController, requestReportUC,        "Calls")
+Rel(financialRptController, generateFinancialRptUC, "Calls")
+Rel(iotRptController,       requestReportUC,        "Calls")
+Rel(iotRptController,       generateIoTRptUC,       "Calls")
+Rel(fieldRptController,     requestReportUC,        "Calls")
+Rel(fieldRptController,     generateFieldRptUC,     "Calls")
+Rel(inventoryRptController, requestReportUC,        "Calls")
+Rel(inventoryRptController, generateInventoryRptUC, "Calls")
+Rel(reportEventConsumer,    generateFinancialRptUC, "Auto-triggers financial report generation")
 
-Rel(reportController,         listReportsUC,            "Calls")
-Rel(reportController,         downloadReportUC,         "Calls")
-Rel(financialRptController,   requestReportUC,          "Calls")
-Rel(financialRptController,   generateFinancialRptUC,   "Calls")
-Rel(iotRptController,         requestReportUC,          "Calls")
-Rel(iotRptController,         generateIoTRptUC,         "Calls")
-Rel(fieldRptController,       requestReportUC,          "Calls")
-Rel(fieldRptController,       generateFieldRptUC,       "Calls")
-Rel(inventoryRptController,   requestReportUC,          "Calls")
-Rel(inventoryRptController,   generateInventoryRptUC,   "Calls")
+' === Application → Domain ===
+Rel(requestReportUC,        reportDomainSvc,  "Validates report parameters and date range")
+Rel(generateFinancialRptUC, reportDomainSvc,  "Validates financial report rules")
+Rel(generateFinancialRptUC, reportBuilderSvc, "Assembles financial report sections")
+Rel(generateIoTRptUC,       reportDomainSvc,  "Validates IoT report rules")
+Rel(generateIoTRptUC,       reportBuilderSvc, "Assembles IoT report sections")
+Rel(generateFieldRptUC,     reportDomainSvc,  "Validates field report rules")
+Rel(generateFieldRptUC,     reportBuilderSvc, "Assembles field report sections")
+Rel(generateInventoryRptUC, reportDomainSvc,  "Validates inventory report rules")
+Rel(generateInventoryRptUC, reportBuilderSvc, "Assembles inventory report sections")
+Rel(listReportsUC,          reportDomainSvc,  "Applies filter and visibility rules")
 
-Rel(reportEventConsumer,      generateFinancialRptUC,   "Auto-triggers financial report generation")
+' === Application → Infrastructure ===
+Rel(requestReportUC,        reportRepo,        "Persists report request with pending status")
+Rel(generateFinancialRptUC, financialDataRepo, "Queries income, expenses and profitability")
+Rel(generateFinancialRptUC, reportRepo,        "Updates report status to generated")
+Rel(generateFinancialRptUC, reportExporter,    "Exports to PDF or Excel")
+Rel(generateIoTRptUC,       iotDataRepo,       "Queries sensor readings and alerts")
+Rel(generateIoTRptUC,       reportRepo,        "Updates report status to generated")
+Rel(generateIoTRptUC,       reportExporter,    "Exports to PDF or Excel")
+Rel(generateFieldRptUC,     fieldDataRepo,     "Queries visits, observations and evidence")
+Rel(generateFieldRptUC,     reportRepo,        "Updates report status to generated")
+Rel(generateFieldRptUC,     reportExporter,    "Exports to PDF or Excel")
+Rel(generateInventoryRptUC, inventoryDataRepo, "Queries stock levels and purchases")
+Rel(generateInventoryRptUC, reportRepo,        "Updates report status to generated")
+Rel(generateInventoryRptUC, reportExporter,    "Exports to PDF or Excel")
+Rel(listReportsUC,          reportRepo,        "Queries report history")
+Rel(downloadReportUC,       reportRepo,        "Queries report metadata")
+Rel(downloadReportUC,       reportExporter,    "Retrieves exported file")
 
-Rel(requestReportUC,          reportDomainSvc,          "Validates report parameters and date range")
-Rel(requestReportUC,          reportRepo,               "Persists report request with pending status")
-
-Rel(generateFinancialRptUC,   reportDomainSvc,          "Validates financial report rules")
-Rel(generateFinancialRptUC,   reportBuilderSvc,         "Assembles financial report sections")
-Rel(generateFinancialRptUC,   financialDataRepo,        "Queries income, expenses and profitability")
-Rel(generateFinancialRptUC,   reportRepo,               "Updates report status to generated")
-Rel(generateFinancialRptUC,   reportExporter,           "Exports to PDF or Excel")
-
-Rel(generateIoTRptUC,         reportDomainSvc,          "Validates IoT report rules")
-Rel(generateIoTRptUC,         reportBuilderSvc,         "Assembles IoT report sections")
-Rel(generateIoTRptUC,         iotDataRepo,              "Queries sensor readings and alerts")
-Rel(generateIoTRptUC,         reportRepo,               "Updates report status to generated")
-Rel(generateIoTRptUC,         reportExporter,           "Exports to PDF or Excel")
-
-Rel(generateFieldRptUC,       reportDomainSvc,          "Validates field report rules")
-Rel(generateFieldRptUC,       reportBuilderSvc,         "Assembles field report sections")
-Rel(generateFieldRptUC,       fieldDataRepo,            "Queries visits, observations and evidence")
-Rel(generateFieldRptUC,       reportRepo,               "Updates report status to generated")
-Rel(generateFieldRptUC,       reportExporter,           "Exports to PDF or Excel")
-
-Rel(generateInventoryRptUC,   reportDomainSvc,          "Validates inventory report rules")
-Rel(generateInventoryRptUC,   reportBuilderSvc,         "Assembles inventory report sections")
-Rel(generateInventoryRptUC,   inventoryDataRepo,        "Queries stock levels and purchases")
-Rel(generateInventoryRptUC,   reportRepo,               "Updates report status to generated")
-Rel(generateInventoryRptUC,   reportExporter,           "Exports to PDF or Excel")
-
-Rel(listReportsUC,            reportDomainSvc,          "Applies filter and visibility rules")
-Rel(listReportsUC,            reportRepo,               "Queries report history")
-
-Rel(downloadReportUC,         reportRepo,               "Queries report metadata")
-Rel(downloadReportUC,         reportExporter,           "Retrieves exported file")
-
-Rel(reportRepo,          db, "Reads/Writes", "JDBC")
-Rel(financialDataRepo,   db, "Reads",        "JDBC")
-Rel(iotDataRepo,         db, "Reads",        "JDBC")
-Rel(fieldDataRepo,       db, "Reads",        "JDBC")
-Rel(inventoryDataRepo,   db, "Reads",        "JDBC")
+' === Infrastructure → DB ===
+Rel(reportRepo,        db, "Reads/Writes", "JDBC")
+Rel(financialDataRepo, db, "Reads",        "JDBC")
+Rel(iotDataRepo,       db, "Reads",        "JDBC")
+Rel(fieldDataRepo,     db, "Reads",        "JDBC")
+Rel(inventoryDataRepo, db, "Reads",        "JDBC")
 
 @enduml

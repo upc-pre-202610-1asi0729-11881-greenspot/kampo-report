@@ -14,40 +14,49 @@ ContainerDb_Ext(db, "Database", "MySQL", "Persistent storage")
 
 Container_Boundary(profileBC, "Profile & Access – Bounded Context") {
 
-    Component(authController,       "AuthController",              "REST Controller",     "Handles /auth endpoints: login, logout, refresh token")
-    Component(userController,       "UserController",              "REST Controller",     "Handles /users endpoints: register, list, assign role")
-    Component(profileController,    "ProfileController",           "REST Controller",     "Handles /profile endpoints: view, modify profile")
-    Component(roleController,       "RoleController",              "REST Controller",     "Handles /roles endpoints: create, assign, list")
-    Component(permissionController, "PermissionController",        "REST Controller",     "Handles /permissions endpoints: assign, list per role")
+    Boundary(interfaces, "interfaces/rest", "REST Controllers & Event Publishers") {
+        Component(authController,       "AuthController",       "REST Controller", "Handles /auth endpoints: login, logout, refresh token")
+        Component(userController,       "UserController",       "REST Controller", "Handles /users endpoints: register, list, assign role")
+        Component(profileController,    "ProfileController",    "REST Controller", "Handles /profile endpoints: view, modify profile")
+        Component(roleController,       "RoleController",       "REST Controller", "Handles /roles endpoints: create, assign, list")
+        Component(permissionController, "PermissionController", "REST Controller", "Handles /permissions endpoints: assign, list per role")
+        Component(userEventPub,         "UserEventPublisher",   "Event Publisher", "Publishes UserRegistered and RoleAssigned events")
+    }
 
-    Component(loginUC,              "LoginUseCase",                "Application Service", "Validates credentials and issues JWT token")
-    Component(logoutUC,             "LogoutUseCase",               "Application Service", "Invalidates active session and token")
-    Component(registerUserUC,       "RegisterUserUseCase",         "Application Service", "Validates and creates a new user account")
-    Component(modifyProfileUC,      "ModifyProfileUseCase",        "Application Service", "Updates user personal data and preferences")
-    Component(assignRoleUC,         "AssignRoleUseCase",           "Application Service", "Assigns a role to a user within an organization")
-    Component(assignPermissionUC,   "AssignPermissionUseCase",     "Application Service", "Assigns specific permissions to a role")
-    Component(validateTokenUC,      "ValidateTokenUseCase",        "Application Service", "Validates JWT token on every protected request")
+    Boundary(application, "application", "Use Cases / Application Services") {
+        Component(loginUC,            "LoginUseCase",            "Application Service", "Validates credentials and issues JWT token")
+        Component(logoutUC,           "LogoutUseCase",           "Application Service", "Invalidates active session and token")
+        Component(registerUserUC,     "RegisterUserUseCase",     "Application Service", "Validates and creates a new user account")
+        Component(modifyProfileUC,    "ModifyProfileUseCase",    "Application Service", "Updates user personal data and preferences")
+        Component(assignRoleUC,       "AssignRoleUseCase",       "Application Service", "Assigns a role to a user within an organization")
+        Component(assignPermissionUC, "AssignPermissionUseCase", "Application Service", "Assigns specific permissions to a role")
+        Component(validateTokenUC,    "ValidateTokenUseCase",    "Application Service", "Validates JWT token on every protected request")
+    }
 
-    Component(authDomainSvc,        "AuthDomainService",           "Domain Service",      "Business rules: password hashing, token generation and expiration")
-    Component(roleDomainSvc,        "RoleDomainService",           "Domain Service",      "Business rules: role hierarchy, permission inheritance and constraints")
-    Component(userDomainSvc,        "UserDomainService",           "Domain Service",      "Business rules: user validation, uniqueness and status transitions")
+    Boundary(domain, "domain/model", "Domain Services & Aggregates") {
+        Component(authDomainSvc, "AuthDomainService", "Domain Service", "Password hashing, token generation and expiration")
+        Component(roleDomainSvc, "RoleDomainService", "Domain Service", "Role hierarchy, permission inheritance and constraints")
+        Component(userDomainSvc, "UserDomainService", "Domain Service", "User validation, uniqueness and status transitions")
+    }
 
-    Component(userRepo,             "UserRepository",              "Repository",          "CRUD for User aggregate")
-    Component(roleRepo,             "RoleRepository",              "Repository",          "CRUD for Role aggregate")
-    Component(permissionRepo,       "PermissionRepository",        "Repository",          "CRUD for Permission aggregate")
-    Component(sessionRepo,          "SessionRepository",           "Repository",          "Stores and invalidates active user sessions")
-
-    Component(tokenService,         "TokenService",                "Infrastructure",      "Generates, signs and validates JWT tokens")
-    Component(userEventPub,         "UserEventPublisher",          "Event Publisher",     "Publishes UserRegistered and RoleAssigned events")
+    Boundary(infrastructure, "infrastructure/persistence/jpa", "Repositories & Token Service") {
+        Component(userRepo,       "UserRepository",       "Repository",       "CRUD for User aggregate")
+        Component(roleRepo,       "RoleRepository",       "Repository",       "CRUD for Role aggregate")
+        Component(permissionRepo, "PermissionRepository", "Repository",       "CRUD for Permission aggregate")
+        Component(sessionRepo,    "SessionRepository",    "Repository",       "Stores and invalidates active user sessions")
+        Component(tokenService,   "TokenService",         "Infrastructure",   "Generates, signs and validates JWT tokens")
+    }
 }
 
-Rel(landingPage, authController,       "POST /auth/login",              "HTTPS/JSON")
-Rel(spa,         authController,       "POST /auth/logout|refresh",     "HTTPS/JSON")
-Rel(spa,         userController,       "GET|POST /users",               "HTTPS/JSON")
-Rel(spa,         profileController,    "GET|PUT /profile",              "HTTPS/JSON")
-Rel(spa,         roleController,       "GET|POST /roles",               "HTTPS/JSON")
-Rel(spa,         permissionController, "GET|POST /permissions",         "HTTPS/JSON")
+' === External → Interface ===
+Rel(landingPage, authController,       "POST /auth/login",          "HTTPS/JSON")
+Rel(spa,         authController,       "POST /auth/logout|refresh", "HTTPS/JSON")
+Rel(spa,         userController,       "GET|POST /users",           "HTTPS/JSON")
+Rel(spa,         profileController,    "GET|PUT /profile",          "HTTPS/JSON")
+Rel(spa,         roleController,       "GET|POST /roles",           "HTTPS/JSON")
+Rel(spa,         permissionController, "GET|POST /permissions",     "HTTPS/JSON")
 
+' === Interface → Application ===
 Rel(authController,       loginUC,            "Calls")
 Rel(authController,       logoutUC,           "Calls")
 Rel(authController,       validateTokenUC,    "Calls on each request")
@@ -57,41 +66,43 @@ Rel(profileController,    modifyProfileUC,    "Calls")
 Rel(roleController,       assignRoleUC,       "Calls")
 Rel(permissionController, assignPermissionUC, "Calls")
 
-Rel(loginUC,           authDomainSvc,   "Validates credentials and generates token")
-Rel(loginUC,           userRepo,        "Queries user by email")
-Rel(loginUC,           sessionRepo,     "Creates active session")
-Rel(loginUC,           tokenService,    "Issues JWT token")
+' === Application → Domain ===
+Rel(loginUC,            authDomainSvc, "Validates credentials and generates token")
+Rel(registerUserUC,     userDomainSvc, "Validates uniqueness and password rules")
+Rel(registerUserUC,     authDomainSvc, "Hashes password")
+Rel(modifyProfileUC,    userDomainSvc, "Validates profile update rules")
+Rel(assignRoleUC,       roleDomainSvc, "Validates role assignment constraints")
+Rel(assignPermissionUC, roleDomainSvc, "Validates permission compatibility")
 
-Rel(logoutUC,          sessionRepo,     "Invalidates session")
-Rel(logoutUC,          tokenService,    "Revokes token")
-
-Rel(validateTokenUC,   tokenService,    "Verifies JWT signature and expiration")
-Rel(validateTokenUC,   sessionRepo,     "Checks session is still active")
-
-Rel(registerUserUC,    userDomainSvc,   "Validates uniqueness and password rules")
-Rel(registerUserUC,    authDomainSvc,   "Hashes password")
-Rel(registerUserUC,    userRepo,        "Persists user")
-Rel(registerUserUC,    subscriptionBC,  "Validates plan allows new user", "Internal call")
-Rel(registerUserUC,    userEventPub,    "Publishes UserRegistered event")
-
-Rel(modifyProfileUC,   userDomainSvc,   "Validates profile update rules")
-Rel(modifyProfileUC,   userRepo,        "Updates user profile data")
-
-Rel(assignRoleUC,      roleDomainSvc,   "Validates role assignment constraints")
-Rel(assignRoleUC,      userRepo,        "Queries user data")
-Rel(assignRoleUC,      roleRepo,        "Queries role data")
-Rel(assignRoleUC,      userRepo,        "Updates user role")
-Rel(assignRoleUC,      userEventPub,    "Publishes RoleAssigned event")
-
-Rel(assignPermissionUC, roleDomainSvc,  "Validates permission compatibility")
+' === Application → Infrastructure ===
+Rel(loginUC,            userRepo,       "Queries user by email")
+Rel(loginUC,            sessionRepo,    "Creates active session")
+Rel(loginUC,            tokenService,   "Issues JWT token")
+Rel(logoutUC,           sessionRepo,    "Invalidates session")
+Rel(logoutUC,           tokenService,   "Revokes token")
+Rel(validateTokenUC,    tokenService,   "Verifies JWT signature and expiration")
+Rel(validateTokenUC,    sessionRepo,    "Checks session is still active")
+Rel(registerUserUC,     userRepo,       "Persists user")
+Rel(modifyProfileUC,    userRepo,       "Updates user profile data")
+Rel(assignRoleUC,       userRepo,       "Queries and updates user role")
+Rel(assignRoleUC,       roleRepo,       "Queries role data")
 Rel(assignPermissionUC, roleRepo,       "Queries role data")
 Rel(assignPermissionUC, permissionRepo, "Persists permission assignment")
 
+' === Application → Interface (events) ===
+Rel(registerUserUC, userEventPub, "Publishes UserRegistered event")
+Rel(assignRoleUC,   userEventPub, "Publishes RoleAssigned event")
+
+' === Application → External BC ===
+Rel(registerUserUC, subscriptionBC, "Validates plan allows new user", "Internal call")
+
+' === Interface → External BC ===
+Rel(userEventPub, orgBC, "UserRegistered event", "Internal")
+
+' === Infrastructure → DB ===
 Rel(userRepo,       db, "Reads/Writes", "JDBC")
 Rel(roleRepo,       db, "Reads/Writes", "JDBC")
 Rel(permissionRepo, db, "Reads/Writes", "JDBC")
 Rel(sessionRepo,    db, "Reads/Writes", "JDBC")
-
-Rel(userEventPub, orgBC, "UserRegistered event", "Internal")
 
 @enduml

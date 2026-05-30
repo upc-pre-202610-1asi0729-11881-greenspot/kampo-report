@@ -13,60 +13,76 @@ ContainerDb_Ext(db, "Database", "MySQL", "Persistent storage")
 
 Container_Boundary(fieldOperationBC, "Field Operation – Bounded Context") {
 
-    Component(fieldController,       "FieldController",             "REST Controller",     "Handles /fields endpoints: register, list, modify")
-    Component(visitController,       "FieldVisitController",        "REST Controller",     "Handles /visits endpoints: schedule, execute, complete")
-    Component(observationController, "ObservationController",       "REST Controller",     "Handles /observations endpoints: register, list")
-    Component(evidenceController,    "EvidenceController",          "REST Controller",     "Handles /evidence endpoints: upload, list")
+    Boundary(interfaces, "interfaces/rest", "REST Controllers & Event Publishers") {
+        Component(fieldController,       "FieldController",          "REST Controller", "Handles /fields endpoints: register, list, modify")
+        Component(visitController,       "FieldVisitController",     "REST Controller", "Handles /visits endpoints: schedule, execute, complete")
+        Component(observationController, "ObservationController",    "REST Controller", "Handles /observations endpoints: register, list")
+        Component(evidenceController,    "EvidenceController",       "REST Controller", "Handles /evidence endpoints: upload, list")
+        Component(visitEventPub,         "FieldVisitEventPublisher", "Event Publisher", "Publishes VisitCompleted and ObservationRegistered events")
+    }
 
-    Component(scheduleVisitUC,       "ScheduleFieldVisitUseCase",   "Application Service", "Validates season and field, creates scheduled visit")
-    Component(doVisitUC,             "DoFieldVisitUseCase",         "Application Service", "Marks visit as in-progress and records start data")
-    Component(completeVisitUC,       "CompleteFieldVisitUseCase",   "Application Service", "Closes visit and publishes VisitCompleted event")
-    Component(registerObsUC,         "RegisterObservationUseCase",  "Application Service", "Validates and persists a field observation")
-    Component(uploadEvidenceUC,      "UploadEvidenceUseCase",       "Application Service", "Stores evidence file reference and links to observation")
+    Boundary(application, "application", "Use Cases / Application Services") {
+        Component(scheduleVisitUC,  "ScheduleFieldVisitUseCase",  "Application Service", "Validates season and field, creates scheduled visit")
+        Component(doVisitUC,        "DoFieldVisitUseCase",        "Application Service", "Marks visit as in-progress and records start data")
+        Component(completeVisitUC,  "CompleteFieldVisitUseCase",  "Application Service", "Closes visit and publishes VisitCompleted event")
+        Component(registerObsUC,    "RegisterObservationUseCase", "Application Service", "Validates and persists a field observation")
+        Component(uploadEvidenceUC, "UploadEvidenceUseCase",      "Application Service", "Stores evidence file reference and links to observation")
+    }
 
-    Component(visitDomainService,    "FieldVisitDomainService",     "Domain Service",      "Business rules: visit scheduling constraints and status transitions")
-    Component(observationDomainSvc,  "ObservationDomainService",    "Domain Service",      "Business rules: observation validation and categorization")
+    Boundary(domain, "domain/model", "Domain Services & Aggregates") {
+        Component(visitDomainService,   "FieldVisitDomainService",   "Domain Service", "Visit scheduling constraints and status transitions")
+        Component(observationDomainSvc, "ObservationDomainService",  "Domain Service", "Observation validation and categorization")
+    }
 
-    Component(fieldRepo,             "FieldRepository",             "Repository",          "CRUD for Field aggregate")
-    Component(visitRepo,             "FieldVisitRepository",        "Repository",          "CRUD for FieldVisit aggregate")
-    Component(observationRepo,       "ObservationRepository",       "Repository",          "CRUD for Observation aggregate")
-    Component(evidenceRepo,          "EvidenceRepository",          "Repository",          "Stores evidence metadata and file references")
-
-    Component(visitEventPub,         "FieldVisitEventPublisher",    "Event Publisher",     "Publishes VisitCompleted and ObservationRegistered events")
+    Boundary(infrastructure, "infrastructure/persistence/jpa", "Repositories") {
+        Component(fieldRepo,       "FieldRepository",       "Repository", "CRUD for Field aggregate")
+        Component(visitRepo,       "FieldVisitRepository",  "Repository", "CRUD for FieldVisit aggregate")
+        Component(observationRepo, "ObservationRepository", "Repository", "CRUD for Observation aggregate")
+        Component(evidenceRepo,    "EvidenceRepository",    "Repository", "Stores evidence metadata and file references")
+    }
 }
 
-Rel(spa, fieldController,       "GET|POST|PUT /fields",       "HTTPS/JSON")
-Rel(spa, visitController,       "GET|POST|PUT /visits",       "HTTPS/JSON")
-Rel(spa, observationController, "GET|POST /observations",     "HTTPS/JSON")
-Rel(spa, evidenceController,    "POST /evidence",             "HTTPS/JSON")
+' === External → Interface ===
+Rel(spa, fieldController,       "GET|POST|PUT /fields",   "HTTPS/JSON")
+Rel(spa, visitController,       "GET|POST|PUT /visits",   "HTTPS/JSON")
+Rel(spa, observationController, "GET|POST /observations", "HTTPS/JSON")
+Rel(spa, evidenceController,    "POST /evidence",         "HTTPS/JSON")
 
-Rel(fieldController,       scheduleVisitUC,    "Register field context")
-Rel(visitController,       scheduleVisitUC,    "Calls")
-Rel(visitController,       doVisitUC,          "Calls")
-Rel(visitController,       completeVisitUC,    "Calls")
-Rel(observationController, registerObsUC,      "Calls")
-Rel(evidenceController,    uploadEvidenceUC,   "Calls")
+' === Interface → Application ===
+Rel(fieldController,       scheduleVisitUC,  "Register field context")
+Rel(visitController,       scheduleVisitUC,  "Calls")
+Rel(visitController,       doVisitUC,        "Calls")
+Rel(visitController,       completeVisitUC,  "Calls")
+Rel(observationController, registerObsUC,    "Calls")
+Rel(evidenceController,    uploadEvidenceUC, "Calls")
 
+' === Application → Domain ===
 Rel(scheduleVisitUC,  visitDomainService,   "Validates scheduling rules")
-Rel(scheduleVisitUC,  fieldRepo,            "Queries field data")
-Rel(scheduleVisitUC,  visitRepo,            "Persists scheduled visit")
 Rel(doVisitUC,        visitDomainService,   "Validates status transition")
-Rel(doVisitUC,        visitRepo,            "Updates visit status")
 Rel(completeVisitUC,  visitDomainService,   "Validates completion rules")
-Rel(completeVisitUC,  visitRepo,            "Updates visit as completed")
-Rel(completeVisitUC,  visitEventPub,        "Publishes VisitCompleted event")
 Rel(registerObsUC,    observationDomainSvc, "Validates observation")
-Rel(registerObsUC,    observationRepo,      "Persists observation")
-Rel(registerObsUC,    visitEventPub,        "Publishes ObservationRegistered event")
-Rel(uploadEvidenceUC, evidenceRepo,         "Saves evidence metadata")
-Rel(uploadEvidenceUC, observationRepo,      "Links evidence to observation")
 
+' === Application → Infrastructure ===
+Rel(scheduleVisitUC,  fieldRepo,       "Queries field data")
+Rel(scheduleVisitUC,  visitRepo,       "Persists scheduled visit")
+Rel(doVisitUC,        visitRepo,       "Updates visit status")
+Rel(completeVisitUC,  visitRepo,       "Updates visit as completed")
+Rel(registerObsUC,    observationRepo, "Persists observation")
+Rel(uploadEvidenceUC, evidenceRepo,    "Saves evidence metadata")
+Rel(uploadEvidenceUC, observationRepo, "Links evidence to observation")
+
+' === Application → Interface (events) ===
+Rel(completeVisitUC, visitEventPub, "Publishes VisitCompleted event")
+Rel(registerObsUC,   visitEventPub, "Publishes ObservationRegistered event")
+
+' === Application → External BC ===
+Rel(scheduleVisitUC, seasonBC, "Validates active season",          "Internal call")
+Rel(scheduleVisitUC, orgBC,    "Validates field belongs to fundo", "Internal call")
+
+' === Infrastructure → DB ===
 Rel(fieldRepo,       db, "Reads/Writes", "JDBC")
 Rel(visitRepo,       db, "Reads/Writes", "JDBC")
 Rel(observationRepo, db, "Reads/Writes", "JDBC")
 Rel(evidenceRepo,    db, "Reads/Writes", "JDBC")
-
-Rel(scheduleVisitUC, seasonBC, "Validates active season", "Internal call")
-Rel(scheduleVisitUC, orgBC,    "Validates field belongs to fundo", "Internal call")
 
 @enduml

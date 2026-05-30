@@ -1,30 +1,35 @@
 @startuml
-!include  https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 LAYOUT_LEFT_RIGHT()
 AddContainerTag("v1.1", $bgColor="#d73027")
 AddContainerTag("v1.2", $bgColor="#155DFC")
 
 AddRelTag("Asincronico",$lineStyle=DashedLine())
 HIDE_STEREOTYPE()
+
 Person(agronomist, "Agronomist Engineer", "User who provides technical crop advice")
 Person(agroindustry, "Agroindustry", "User who uses field data to manage production, supply and crop traceability")
 
 System_Boundary(c3,"KAMPO"){
-Container(landingPage,"Landing Application","Container","Initial entry point for users. Shows value proposition and subscription plans.")
-Rel(agronomist,landingPage,"Access Platform",Https/Json,$tags="Asincronico")
-Rel(agroindustry,landingPage,"Access Platform",Https/Json,$tags="Asincronico")
 
-Container(containerSPA,"Web App","Container: Angular,TyScript","Web application for managing crops monitoring, inventory and reports")
-Rel(landingPage,containerSPA,"Access Platform",Https/Json,$tags="Asincronico")
+  Container(landingPage, "Single-Page Application", "Container: Angular, TypeScript", "Single Page Application. Initial entry point for users. Shows value proposition and subscription plans.")
+  Rel(agronomist, landingPage, "Access Platform", "HTTPS", $tags="Asincronico")
+  Rel(agroindustry, landingPage, "Access Platform", "HTTPS", $tags="Asincronico")
 
-Container(restfull,"RESTful API","Container","Bacend that exposes business capabilities using bounded contexts and clean arquitecture")
-Rel(containerSPA,restfull,"Sends requests",Https/Json,$tags="Asincronico")
+  Container(containerSPA, "Web Application", "Container: Angular, TypeScript", "Single Page Application for managing crops monitoring, inventory and reports")
+  Rel(landingPage, containerSPA, "Redirects after login", "HTTPS/JSON", $tags="Asincronico")
 
-ContainerDb(db,"Database",Myqsl,"Stores all system data including users, crops, monitoring data, inventory and reports",$tags="v1.1")
-Rel(restfull,db,"Reads and writes presisten data",JDBC,$tags="Asincronico")
+  Container(restfull, "RESTful API", "Container: Java, Spring Boot", "Backend that exposes business capabilities using bounded contexts and clean architecture")
+  Rel(containerSPA, restfull, "Sends requests", "HTTPS/JSON", $tags="Asincronico")
+
+  ContainerDb(db, "Database", "MySQL", "Stores all system data including users, crops, monitoring data, inventory and reports", $tags="v1.1")
+  Rel(restfull, db, "Reads and writes persistent data", "JDBC", $tags="Asincronico")
 }
-Container(weatherApi,"Weather API", Software System,"Provides weather data such as temperature, humidity, and forecasts",$tags=v1.2)
-Container(IotSensors,"IoT Sensors", Software System,"Send real-time field data such as soil humidity, temperature and pH",$tags=v1.2)
-Rel(restfull,weatherApi,"Fetches weather data",Https/json,$tags="Asincronico")
-Rel(restfull,IotSensors,"Receives sensor data",Https/json,$tags="Asincronico")
+
+Container(weatherApi, "Weather API", "Software System", "Provides weather data such as temperature, humidity, and forecasts", $tags="v1.2")
+Container(IotSensors, "IoT Sensors", "Software System", "Send real-time field data such as soil humidity, temperature and pH", $tags="v1.2")
+
+Rel(restfull, weatherApi, "Fetches weather data", "HTTPS/JSON", $tags="Asincronico")
+Rel(IotSensors, restfull, "Sends sensor data", "HTTPS/JSON", $tags="Asincronico")
+
 @enduml
