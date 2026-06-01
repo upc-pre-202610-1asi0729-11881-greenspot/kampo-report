@@ -87,6 +87,8 @@ URL del repositorio del platform: https://github.com/upc-pre-202610-1asi0729-118
 
 URL del repositorio del mockapi: https://github.com/upc-pre-202610-1asi0729-11881-greenspot/kampo-mockapi
 
+<img src="docs\assets\img\Capítulo 1\report_collaboration_organization.png"/>
+
 
 **AV1**
 <div align="justify">
