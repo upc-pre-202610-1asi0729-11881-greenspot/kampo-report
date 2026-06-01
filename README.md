@@ -110,6 +110,7 @@ Para el trabajo parcial, se levantaron las correcciones de la primera entrega co
 Además, durante esta etapa se desarrolló el frontend del sistema, incluyendo la implementación de la landing page y de las principales interfaces de usuario de la aplicación web. Para ello, se trabajó en el diseño de componentes visuales, navegación, formularios, vistas funcionales y experiencia de usuario, buscando garantizar una interfaz intuitiva, accesible y alineada con las necesidades del sector agrícola. También se documentaron los avances mediante evidencias de desarrollo, ejecución y despliegue correspondientes a cada sprint realizado por el equipo.
 </div>
 
+<img src="docs\assets\img\Capítulo 1\report_collaboration_contributors_tb1.png"/>
 
 **AV2**
 
