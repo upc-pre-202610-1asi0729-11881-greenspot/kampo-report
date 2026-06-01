@@ -126,19 +126,19 @@ package "domain" {
   }
 }
 
-ScheduleFieldVisitCommand        ..> FieldVisit
-CompleteFieldVisitCommand        ..> FieldVisit
-RegisterObservationCommand       ..> FieldVisit
-UploadEvidenceCommand            ..> FieldVisit
-ImplementRecommendationCommand   ..> FieldVisit
+ScheduleFieldVisitCommand      ..> FieldVisit
+CompleteFieldVisitCommand      ..> FieldVisit
+RegisterObservationCommand     ..> FieldVisit
+UploadEvidenceCommand          ..> Observation
+ImplementRecommendationCommand ..> Observation
 
-FieldVisit   "1" *--> "many" Observation : contains
-FieldVisit   --> FieldVisitId
-FieldVisit   --> FieldId
-FieldVisit   --> FieldVisitStatus
-Observation  --> ObservationId
-Observation  --> FieldVisitId
-Observation  --> Severity
+FieldVisit  "1" *--> "many" Observation : contains
+FieldVisit  --> FieldVisitId
+FieldVisit  --> FieldId
+FieldVisit  --> FieldVisitStatus
+Observation --> ObservationId
+Observation --> FieldVisitId
+Observation --> Severity
 
 FieldOperationDomainService ..> FieldVisit
 FieldOperationDomainService ..> Observation
