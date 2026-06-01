@@ -139,8 +139,6 @@ Alert --> AlertPriority
 Alert --> FieldId
 Alert --> AlertRuleId
 
-Alert --> AlertRule
-
 ConfigureAlertRuleCommand --> AlertRule
 EvaluateConditionCommand --> AlertRule
 SendAlertCommand --> Alert

@@ -199,10 +199,7 @@ AlertRuleAssembler ..right..> AlertRule
 AlertStore ..right..> Alert
 AlertStore ..right..> AlertRule
 
-Alert --> AlertRule
-
 Alert --> AlertPriority
-
 AlertRule --> ReadingType
 AlertRule --> ConditionOperator
 AlertRule --> SeverityLevel
