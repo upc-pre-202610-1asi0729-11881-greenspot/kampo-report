@@ -18,7 +18,7 @@ package "domain" {
       -name: String
       -email: String
       -role: EmployeeRole
-      -fieldId: Long
+      -fieldId: FieldId
     }
     class ModifyEmployeeCommand {
       -employeeId: EmployeeId
@@ -42,7 +42,7 @@ package "domain" {
         -email: Email
         -role: EmployeeRole
         -status: EmployeeStatus
-        -fieldId: Long
+        -fieldId: FieldId
         -createdAt: LocalDateTime
         +create(command: CreateEmployeeCommand): Employee
         +modify(command: ModifyEmployeeCommand): void
@@ -52,6 +52,7 @@ package "domain" {
         +getId(): EmployeeId
         +getRole(): EmployeeRole
         +getStatus(): EmployeeStatus
+        +getFieldId(): FieldId
       }
     }
 
@@ -66,8 +67,14 @@ package "domain" {
         +of(value: String): Email
         +getValue(): String
       }
+      class FieldId {
+        -value: Long
+        +of(value: Long): FieldId
+        +getValue(): Long
+      }
 
       EmployeeId -[hidden]down- Email
+      Email -[hidden]down- FieldId
     }
 
     package "enums" {
@@ -91,10 +98,13 @@ CreateEmployeeCommand ..> Employee
 ModifyEmployeeCommand ..> Employee
 DeleteEmployeeCommand ..> Employee
 
+CreateEmployeeCommand --> FieldId
+
 Employee --> EmployeeId
 Employee --> Email
 Employee --> EmployeeRole
 Employee --> EmployeeStatus
+Employee --> FieldId
 
 EmployeeDomainService ..> Employee
 

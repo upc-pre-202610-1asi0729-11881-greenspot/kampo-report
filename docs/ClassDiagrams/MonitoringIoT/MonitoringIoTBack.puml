@@ -16,7 +16,7 @@ package "domain" {
     class RegisterSensorCommand {
       -type: SensorType
       -location: String
-      -fieldId: Long
+      -fieldId: FieldId
     }
     class ConfigureSensorCommand {
       -sensorId: SensorId
@@ -34,7 +34,7 @@ package "domain" {
       -recordedAt: LocalDateTime
     }
     class RegisterManualDataCommand {
-      -fieldId: Long
+      -fieldId: FieldId
       -value: Double
       -type: ReadingType
       -recordedAt: LocalDateTime
@@ -55,7 +55,7 @@ package "domain" {
         -status: SensorStatus
         -minThreshold: Double
         -maxThreshold: Double
-        -fieldId: Long
+        -fieldId: FieldId
         +create(command: RegisterSensorCommand): IoTSensor
         +configure(command: ConfigureSensorCommand): void
         +modifyConfiguration(command: ModifySensorConfigurationCommand): void
@@ -64,6 +64,7 @@ package "domain" {
         +getId(): SensorId
         +getStatus(): SensorStatus
         +getType(): SensorType
+        +getFieldId(): FieldId
       }
 
       class Reading {
@@ -96,8 +97,14 @@ package "domain" {
         +of(value: Long): ReadingId
         +getValue(): Long
       }
+      class FieldId {
+        -value: Long
+        +of(value: Long): FieldId
+        +getValue(): Long
+      }
 
       SensorId -[hidden]down- ReadingId
+      ReadingId -[hidden]down- FieldId
     }
 
     package "enums" {
@@ -136,10 +143,15 @@ RegisterManualDataCommand ..> Reading
 IoTSensor --> SensorId
 IoTSensor --> SensorType
 IoTSensor --> SensorStatus
+IoTSensor --> FieldId
+
 Reading --> ReadingId
 Reading --> SensorId
 Reading --> ReadingType
 Reading --> ReadingSource
+
+RegisterSensorCommand --> FieldId
+RegisterManualDataCommand --> FieldId
 
 MonitoringDomainService ..> IoTSensor
 MonitoringDomainService ..> Reading
