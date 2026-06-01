@@ -14,38 +14,47 @@ ContainerDb_Ext(db, "Database", "MySQL", "Persistent storage")
 
 Container_Boundary(subscriptionBC, "Subscription – Bounded Context") {
 
-    Component(planController,         "PlanController",              "REST Controller",     "Handles /plans endpoints: list available plans and features")
-    Component(subscriptionController, "SubscriptionController",      "REST Controller",     "Handles /subscriptions endpoints: purchase, cancel, renew")
-    Component(paymentController,      "PaymentController",           "REST Controller",     "Handles /payments endpoints: process, list payment history")
-    Component(invoiceController,      "InvoiceController",           "REST Controller",     "Handles /invoices endpoints: generate, download, list")
+    Boundary(interfaces, "interfaces/rest", "REST Controllers & Event Publishers") {
+        Component(planController,         "PlanController",             "REST Controller", "Handles /plans endpoints: list available plans and features")
+        Component(subscriptionController, "SubscriptionController",     "REST Controller", "Handles /subscriptions endpoints: purchase, cancel, renew")
+        Component(paymentController,      "PaymentController",          "REST Controller", "Handles /payments endpoints: process, list payment history")
+        Component(invoiceController,      "InvoiceController",          "REST Controller", "Handles /invoices endpoints: generate, download, list")
+        Component(subscriptionEventPub,   "SubscriptionEventPublisher", "Event Publisher", "Publishes SubscriptionActivated, Cancelled and Renewed events")
+    }
 
-    Component(listPlansUC,            "ListPlansUseCase",            "Application Service", "Retrieves all available subscription plans with features")
-    Component(purchaseSubscriptionUC, "PurchaseSubscriptionUseCase", "Application Service", "Validates plan selection and initiates payment flow")
-    Component(cancelSubscriptionUC,   "CancelSubscriptionUseCase",   "Application Service", "Cancels active subscription and schedules end date")
-    Component(renewSubscriptionUC,    "RenewSubscriptionUseCase",    "Application Service", "Renews an expiring subscription and processes payment")
-    Component(processPaymentUC,       "ProcessPaymentUseCase",       "Application Service", "Coordinates payment with gateway and records result")
-    Component(generateInvoiceUC,      "GenerateInvoiceUseCase",      "Application Service", "Creates invoice record after successful payment")
-    Component(validatePlanLimitsUC,   "ValidatePlanLimitsUseCase",   "Application Service", "Checks if organization is within plan feature limits")
+    Boundary(application, "application", "Use Cases / Application Services") {
+        Component(listPlansUC,            "ListPlansUseCase",            "Application Service", "Retrieves all available subscription plans with features")
+        Component(purchaseSubscriptionUC, "PurchaseSubscriptionUseCase", "Application Service", "Validates plan selection and initiates payment flow")
+        Component(cancelSubscriptionUC,   "CancelSubscriptionUseCase",   "Application Service", "Cancels active subscription and schedules end date")
+        Component(renewSubscriptionUC,    "RenewSubscriptionUseCase",    "Application Service", "Renews an expiring subscription and processes payment")
+        Component(processPaymentUC,       "ProcessPaymentUseCase",       "Application Service", "Coordinates payment with gateway and records result")
+        Component(generateInvoiceUC,      "GenerateInvoiceUseCase",      "Application Service", "Creates invoice record after successful payment")
+        Component(validatePlanLimitsUC,   "ValidatePlanLimitsUseCase",   "Application Service", "Checks if organization is within plan feature limits")
+    }
 
-    Component(subscriptionDomainSvc,  "SubscriptionDomainService",   "Domain Service",      "Business rules: plan transitions, renewal windows and cancellation policies")
-    Component(paymentDomainSvc,       "PaymentDomainService",        "Domain Service",      "Business rules: payment validation, retry logic and refund rules")
-    Component(planDomainSvc,          "PlanDomainService",           "Domain Service",      "Business rules: feature limits per plan and upgrade constraints")
+    Boundary(domain, "domain/model", "Domain Services & Aggregates") {
+        Component(subscriptionDomainSvc, "SubscriptionDomainService", "Domain Service", "Plan transitions, renewal windows and cancellation policies")
+        Component(paymentDomainSvc,      "PaymentDomainService",      "Domain Service", "Payment validation, retry logic and refund rules")
+        Component(planDomainSvc,         "PlanDomainService",         "Domain Service", "Feature limits per plan and upgrade constraints")
+    }
 
-    Component(planRepo,               "PlanRepository",              "Repository",          "CRUD for Plan aggregate with features and pricing")
-    Component(subscriptionRepo,       "SubscriptionRepository",      "Repository",          "CRUD for Subscription aggregate")
-    Component(paymentRepo,            "PaymentRepository",           "Repository",          "CRUD for Payment aggregate and transaction records")
-    Component(invoiceRepo,            "InvoiceRepository",           "Repository",          "CRUD for Invoice aggregate")
-
-    Component(paymentGatewayAdapter,  "PaymentGatewayAdapter",       "Infrastructure",      "Adapts internal payment requests to external gateway API")
-    Component(subscriptionEventPub,   "SubscriptionEventPublisher",  "Event Publisher",     "Publishes SubscriptionActivated, Cancelled and Renewed events")
+    Boundary(infrastructure, "infrastructure/persistence/jpa", "Repositories & Adapters") {
+        Component(planRepo,              "PlanRepository",          "Repository",     "CRUD for Plan aggregate with features and pricing")
+        Component(subscriptionRepo,      "SubscriptionRepository",  "Repository",     "CRUD for Subscription aggregate")
+        Component(paymentRepo,           "PaymentRepository",       "Repository",     "CRUD for Payment aggregate and transaction records")
+        Component(invoiceRepo,           "InvoiceRepository",       "Repository",     "CRUD for Invoice aggregate")
+        Component(paymentGatewayAdapter, "PaymentGatewayAdapter",   "Infrastructure", "Adapts internal payment requests to external gateway API")
+    }
 }
 
-Rel(landingPage, planController,         "GET /plans",                    "HTTPS/JSON")
-Rel(landingPage, subscriptionController, "POST /subscriptions",           "HTTPS/JSON")
-Rel(spa,         subscriptionController, "GET|DELETE /subscriptions",     "HTTPS/JSON")
-Rel(spa,         paymentController,      "GET|POST /payments",            "HTTPS/JSON")
-Rel(spa,         invoiceController,      "GET /invoices",                 "HTTPS/JSON")
+' === External → Interface ===
+Rel(landingPage, planController,         "GET /plans",                "HTTPS/JSON")
+Rel(landingPage, subscriptionController, "POST /subscriptions",       "HTTPS/JSON")
+Rel(spa,         subscriptionController, "GET|DELETE /subscriptions", "HTTPS/JSON")
+Rel(spa,         paymentController,      "GET|POST /payments",        "HTTPS/JSON")
+Rel(spa,         invoiceController,      "GET /invoices",             "HTTPS/JSON")
 
+' === Interface → Application ===
 Rel(planController,         listPlansUC,            "Calls")
 Rel(subscriptionController, purchaseSubscriptionUC, "Calls")
 Rel(subscriptionController, cancelSubscriptionUC,   "Calls")
@@ -53,44 +62,48 @@ Rel(subscriptionController, renewSubscriptionUC,    "Calls")
 Rel(paymentController,      processPaymentUC,       "Calls")
 Rel(invoiceController,      generateInvoiceUC,      "Calls")
 
-Rel(listPlansUC,            planDomainSvc,           "Applies feature visibility rules")
-Rel(listPlansUC,            planRepo,                "Queries available plans")
+' === Application → Domain ===
+Rel(listPlansUC,            planDomainSvc,          "Applies feature visibility rules")
+Rel(purchaseSubscriptionUC, subscriptionDomainSvc,  "Validates plan selection rules")
+Rel(cancelSubscriptionUC,   subscriptionDomainSvc,  "Validates cancellation policy")
+Rel(renewSubscriptionUC,    subscriptionDomainSvc,  "Validates renewal window")
+Rel(processPaymentUC,       paymentDomainSvc,       "Validates payment data and retry rules")
+Rel(validatePlanLimitsUC,   planDomainSvc,          "Checks feature limits")
 
-Rel(purchaseSubscriptionUC, subscriptionDomainSvc,   "Validates plan selection rules")
-Rel(purchaseSubscriptionUC, planRepo,                "Queries selected plan")
-Rel(purchaseSubscriptionUC, subscriptionRepo,        "Persists new subscription")
-Rel(purchaseSubscriptionUC, processPaymentUC,        "Triggers payment flow")
-Rel(purchaseSubscriptionUC, subscriptionEventPub,    "Publishes SubscriptionActivated event")
+' === Application → Infrastructure ===
+Rel(listPlansUC,            planRepo,              "Queries available plans")
+Rel(purchaseSubscriptionUC, planRepo,              "Queries selected plan")
+Rel(purchaseSubscriptionUC, subscriptionRepo,      "Persists new subscription")
+Rel(cancelSubscriptionUC,   subscriptionRepo,      "Updates subscription status")
+Rel(renewSubscriptionUC,    subscriptionRepo,      "Updates subscription dates")
+Rel(processPaymentUC,       paymentRepo,           "Persists payment result")
+Rel(processPaymentUC,       paymentGatewayAdapter, "Sends payment request",  "HTTPS/JSON")
+Rel(generateInvoiceUC,      planRepo,              "Queries plan details for invoice")
+Rel(generateInvoiceUC,      subscriptionRepo,      "Queries subscription data")
+Rel(generateInvoiceUC,      invoiceRepo,           "Persists invoice record")
+Rel(validatePlanLimitsUC,   subscriptionRepo,      "Queries active subscription")
+Rel(validatePlanLimitsUC,   planRepo,              "Queries plan feature limits")
 
-Rel(cancelSubscriptionUC,   subscriptionDomainSvc,   "Validates cancellation policy")
-Rel(cancelSubscriptionUC,   subscriptionRepo,        "Updates subscription status")
-Rel(cancelSubscriptionUC,   subscriptionEventPub,    "Publishes SubscriptionCancelled event")
+' === Application → Application ===
+Rel(purchaseSubscriptionUC, processPaymentUC,   "Triggers payment flow")
+Rel(renewSubscriptionUC,    processPaymentUC,   "Triggers payment flow")
+Rel(processPaymentUC,       generateInvoiceUC,  "Triggers invoice generation on success")
 
-Rel(renewSubscriptionUC,    subscriptionDomainSvc,   "Validates renewal window")
-Rel(renewSubscriptionUC,    subscriptionRepo,        "Updates subscription dates")
-Rel(renewSubscriptionUC,    processPaymentUC,        "Triggers payment flow")
-Rel(renewSubscriptionUC,    subscriptionEventPub,    "Publishes SubscriptionRenewed event")
+' === Application → Interface (events) ===
+Rel(purchaseSubscriptionUC, subscriptionEventPub, "Publishes SubscriptionActivated event")
+Rel(cancelSubscriptionUC,   subscriptionEventPub, "Publishes SubscriptionCancelled event")
+Rel(renewSubscriptionUC,    subscriptionEventPub, "Publishes SubscriptionRenewed event")
 
-Rel(processPaymentUC,       paymentDomainSvc,        "Validates payment data and retry rules")
-Rel(processPaymentUC,       paymentGatewayAdapter,   "Sends payment request",               "HTTPS/JSON")
-Rel(processPaymentUC,       paymentRepo,             "Persists payment result")
-Rel(processPaymentUC,       generateInvoiceUC,       "Triggers invoice generation on success")
+' === Infrastructure → External ===
+Rel(paymentGatewayAdapter, paymentGateway, "POST /charge", "HTTPS/JSON")
 
-Rel(generateInvoiceUC,      planRepo,                "Queries plan details for invoice")
-Rel(generateInvoiceUC,      subscriptionRepo,        "Queries subscription data")
-Rel(generateInvoiceUC,      invoiceRepo,             "Persists invoice record")
+' === Interface → External BC ===
+Rel(subscriptionEventPub, profileBC, "SubscriptionActivated event", "Internal")
 
-Rel(validatePlanLimitsUC,   planDomainSvc,           "Checks feature limits")
-Rel(validatePlanLimitsUC,   subscriptionRepo,        "Queries active subscription")
-Rel(validatePlanLimitsUC,   planRepo,                "Queries plan feature limits")
-
-Rel(paymentGatewayAdapter,  paymentGateway,          "POST /charge",                        "HTTPS/JSON")
-
+' === Infrastructure → DB ===
 Rel(planRepo,         db, "Reads/Writes", "JDBC")
 Rel(subscriptionRepo, db, "Reads/Writes", "JDBC")
 Rel(paymentRepo,      db, "Reads/Writes", "JDBC")
 Rel(invoiceRepo,      db, "Reads/Writes", "JDBC")
-
-Rel(subscriptionEventPub, profileBC, "SubscriptionActivated event", "Internal")
 
 @enduml

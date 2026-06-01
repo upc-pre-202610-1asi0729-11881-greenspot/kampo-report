@@ -13,43 +13,60 @@ ContainerDb_Ext(db, "Database", "MySQL", "Persistent storage")
 
 Container_Boundary(monitoringBC, "Monitoring IoT – Bounded Context") {
 
-    Component(sensorController,   "SensorController",        "REST Controller",      "Handles /sensors endpoints: register, configure, list")
-    Component(readingController,  "ReadingController",       "REST Controller",      "Handles /readings endpoints: receive and query")
-    Component(dashboardController,"DashboardController",     "REST Controller",      "Handles /dashboard endpoint: aggregated view")
+    Boundary(interfaces, "interfaces/rest", "REST Controllers & Event Publishers") {
+        Component(sensorController,    "SensorController",      "REST Controller", "Handles /sensors endpoints: register, configure, list")
+        Component(readingController,   "ReadingController",     "REST Controller", "Handles /readings endpoints: receive and query")
+        Component(dashboardController, "DashboardController",   "REST Controller", "Handles /dashboard endpoint: aggregated view")
+        Component(readingEventPub,     "ReadingEventPublisher", "Event Publisher", "Publishes ReadingRegistered to Alert Management")
+    }
 
-    Component(registerSensorUC,   "RegisterSensorUseCase",   "Application Service",  "Validates and persists a new sensor")
-    Component(recordReadingUC,    "RecordReadingUseCase",    "Application Service",  "Processes incoming reading and publishes event")
-    Component(getDashboardUC,     "GetDashboardUseCase",     "Application Service",  "Aggregates readings for monitoring view")
-    Component(fetchWeatherUC,     "FetchWeatherUseCase",     "Application Service",  "Calls Weather API and stores result")
+    Boundary(application, "application", "Use Cases / Application Services") {
+        Component(registerSensorUC, "RegisterSensorUseCase", "Application Service", "Validates and persists a new sensor")
+        Component(recordReadingUC,  "RecordReadingUseCase",  "Application Service", "Processes incoming reading and publishes event")
+        Component(getDashboardUC,   "GetDashboardUseCase",   "Application Service", "Aggregates readings for monitoring view")
+        Component(fetchWeatherUC,   "FetchWeatherUseCase",   "Application Service", "Calls Weather API and stores result")
+    }
 
-    Component(sensorDomainService,"SensorDomainService",     "Domain Service",       "Business rules: sensor validation and status logic")
+    Boundary(domain, "domain/model", "Domain Services & Aggregates") {
+        Component(sensorDomainService, "SensorDomainService", "Domain Service", "Sensor validation and status logic")
+    }
 
-    Component(sensorRepo,         "SensorRepository",        "Repository",           "CRUD for Sensor aggregate")
-    Component(readingRepo,        "ReadingRepository",       "Repository",           "Store and query sensor readings")
-    Component(weatherRepo,        "WeatherRepository",       "Repository",           "Stores fetched weather data")
-
-    Component(readingEventPub,    "ReadingEventPublisher",   "Event Publisher",      "Publishes ReadingRegistered to Alert Management")
+    Boundary(infrastructure, "infrastructure/persistence/jpa", "Repositories") {
+        Component(sensorRepo,  "SensorRepository",  "Repository", "CRUD for Sensor aggregate")
+        Component(readingRepo, "ReadingRepository", "Repository", "Store and query sensor readings")
+        Component(weatherRepo, "WeatherRepository", "Repository", "Stores fetched weather data")
+    }
 }
 
-Rel(iotSensors,        readingController,  "POST /readings",           "HTTPS/JSON")
-Rel(spa,               sensorController,   "GET|POST /sensors",        "HTTPS/JSON")
-Rel(spa,               dashboardController,"GET /dashboard",           "HTTPS/JSON")
+' === External → Interface ===
+Rel(iotSensors, readingController,  "POST /readings",    "HTTPS/JSON")
+Rel(spa,        sensorController,   "GET|POST /sensors", "HTTPS/JSON")
+Rel(spa,        dashboardController,"GET /dashboard",    "HTTPS/JSON")
 
-Rel(sensorController,  registerSensorUC,   "Calls")
-Rel(readingController, recordReadingUC,    "Calls")
+' === Interface → Application ===
+Rel(sensorController,    registerSensorUC, "Calls")
+Rel(readingController,   recordReadingUC,  "Calls")
 Rel(dashboardController, getDashboardUC,   "Calls")
 
-Rel(registerSensorUC,  sensorDomainService,"Validates with")
-Rel(registerSensorUC,  sensorRepo,         "Persists sensor")
-Rel(recordReadingUC,   readingRepo,        "Saves reading")
-Rel(recordReadingUC,   readingEventPub,    "Publishes event")
-Rel(getDashboardUC,    readingRepo,        "Queries readings")
-Rel(getDashboardUC,    weatherRepo,        "Queries weather")
-Rel(fetchWeatherUC,    weatherApi,         "GET /weather",             "HTTPS/JSON")
-Rel(fetchWeatherUC,    weatherRepo,        "Saves weather data")
+' === Application → Domain ===
+Rel(registerSensorUC, sensorDomainService, "Validates with")
 
-Rel(sensorRepo,        db,                 "Reads/Writes",             "JDBC")
-Rel(readingRepo,       db,                 "Reads/Writes",             "JDBC")
-Rel(weatherRepo,       db,                 "Reads/Writes",             "JDBC")
+' === Application → Infrastructure ===
+Rel(registerSensorUC, sensorRepo,  "Persists sensor")
+Rel(recordReadingUC,  readingRepo, "Saves reading")
+Rel(getDashboardUC,   readingRepo, "Queries readings")
+Rel(getDashboardUC,   weatherRepo, "Queries weather")
+Rel(fetchWeatherUC,   weatherRepo, "Saves weather data")
+
+' === Application → Interface (events) ===
+Rel(recordReadingUC, readingEventPub, "Publishes event")
+
+' === Application → External ===
+Rel(fetchWeatherUC, weatherApi, "GET /weather", "HTTPS/JSON")
+
+' === Infrastructure → DB ===
+Rel(sensorRepo,  db, "Reads/Writes", "JDBC")
+Rel(readingRepo, db, "Reads/Writes", "JDBC")
+Rel(weatherRepo, db, "Reads/Writes", "JDBC")
 
 @enduml
