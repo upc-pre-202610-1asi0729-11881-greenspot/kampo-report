@@ -101,6 +101,8 @@ Además, se desarrollaron los bounded contexts para delimitar las responsabilida
 Asimismo, durante el desarrollo del proyecto se trabajó el  Product Implementation y Validation & Deployment, en el cual se documentó la configuración del entorno de desarrollo, la gestión del código fuente mediante repositorios GitHub, las convenciones y guías de estilo utilizadas por el equipo, así como la configuración de despliegue del software. De igual manera, se registró la implementación de la landing page, incluyendo la planificación, backlog, roles de líderes y colaboradores, evidencias de desarrollo, ejecución, documentación de servicios, despliegue del sistema y las conclusiones de colaboración obtenidas durante el trabajo en equipo.
 </div>
 
+<img src="docs\assets\img\Capítulo 1\report_collaboration_contributors_av1.png"/>
+
 **TB1**
 <div align="justify">
 Para el trabajo parcial, se levantaron las correcciones de la primera entrega con el objetivo de mejorar la estructura, consistencia y calidad general del proyecto Kampo. Se realizaron ajustes en los artefactos de análisis y diseño, refinando las user stories, bounded contexts, diagramas C4, diagramas de clases y el modelo de base de datos, permitiendo una mejor representación de la arquitectura y de los procesos del sistema. Asimismo, se fortaleció el Ubiquitous Language y la validación de requerimientos obtenidos a partir de las entrevistas realizadas a los segmentos objetivo.
