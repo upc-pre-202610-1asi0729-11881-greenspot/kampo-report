@@ -13,57 +13,71 @@ ContainerDb_Ext(db, "Database", "MySQL", "Persistent storage")
 
 Container_Boundary(employeeBC, "Employee Management – Bounded Context") {
 
-    Component(employeeController,   "EmployeeController",          "REST Controller",     "Handles /employees endpoints: create, modify, delete, list")
-    Component(expenseController,    "EmployeeExpenseController",   "REST Controller",     "Handles /employee-expenses endpoints: register, list")
+    Boundary(interfaces, "interfaces/rest", "REST Controllers & Event Publishers") {
+        Component(employeeController,  "EmployeeController",           "REST Controller", "Handles /employees endpoints: create, modify, delete, list")
+        Component(expenseController,   "EmployeeExpenseController",    "REST Controller", "Handles /employee-expenses endpoints: register, list")
+        Component(employeeExpensePub,  "EmployeeExpenseEventPublisher","Event Publisher", "Publishes EmployeeExpense event to Financial Management BC")
+        Component(employeeEventPub,    "EmployeeEventPublisher",       "Event Publisher", "Publishes EmployeeCreated and EmployeeDeleted events")
+    }
 
-    Component(createEmployeeUC,     "CreateEmployeeUseCase",       "Application Service", "Validates and registers a new employee")
-    Component(modifyEmployeeUC,     "ModifyEmployeeUseCase",       "Application Service", "Updates employee personal and role data")
-    Component(deleteEmployeeUC,     "DeleteEmployeeUseCase",       "Application Service", "Soft deletes an employee record")
-    Component(listEmployeesUC,      "ListEmployeesUseCase",        "Application Service", "Retrieves employee list with filters by fundo or role")
-    Component(registerExpenseUC,    "RegisterEmployeeExpenseUseCase","Application Service","Registers a labor or service expense linked to an employee")
+    Boundary(application, "application", "Use Cases / Application Services") {
+        Component(createEmployeeUC,  "CreateEmployeeUseCase",          "Application Service", "Validates and registers a new employee")
+        Component(modifyEmployeeUC,  "ModifyEmployeeUseCase",          "Application Service", "Updates employee personal and role data")
+        Component(deleteEmployeeUC,  "DeleteEmployeeUseCase",          "Application Service", "Soft deletes an employee record")
+        Component(listEmployeesUC,   "ListEmployeesUseCase",           "Application Service", "Retrieves employee list with filters by fundo or role")
+        Component(registerExpenseUC, "RegisterEmployeeExpenseUseCase", "Application Service", "Registers a labor or service expense linked to an employee")
+    }
 
-    Component(employeeDomainSvc,    "EmployeeDomainService",       "Domain Service",      "Business rules: employee validation, role constraints and status transitions")
-    Component(expenseDomainSvc,     "EmployeeExpenseDomainService","Domain Service",      "Business rules: expense type validation and amount rules")
+    Boundary(domain, "domain/model", "Domain Services & Aggregates") {
+        Component(employeeDomainSvc, "EmployeeDomainService",          "Domain Service", "Employee validation, role constraints and status transitions")
+        Component(expenseDomainSvc,  "EmployeeExpenseDomainService",   "Domain Service", "Expense type validation and amount rules")
+    }
 
-    Component(employeeRepo,         "EmployeeRepository",          "Repository",          "CRUD for Employee aggregate")
-    Component(expenseRepo,          "EmployeeExpenseRepository",   "Repository",          "CRUD for EmployeeExpense aggregate")
-
-    Component(employeeExpensePub,   "EmployeeExpenseEventPublisher","Event Publisher",    "Publishes EmployeeExpense event to Financial Management BC")
-    Component(employeeEventPub,     "EmployeeEventPublisher",      "Event Publisher",     "Publishes EmployeeCreated and EmployeeDeleted events")
+    Boundary(infrastructure, "infrastructure/persistence/jpa", "Repositories") {
+        Component(employeeRepo, "EmployeeRepository",      "Repository", "CRUD for Employee aggregate")
+        Component(expenseRepo,  "EmployeeExpenseRepository","Repository", "CRUD for EmployeeExpense aggregate")
+    }
 }
 
-Rel(spa, employeeController,  "GET|POST|PUT|DELETE /employees",         "HTTPS/JSON")
-Rel(spa, expenseController,   "GET|POST /employee-expenses",            "HTTPS/JSON")
+' === External → Interface ===
+Rel(spa, employeeController, "GET|POST|PUT|DELETE /employees",  "HTTPS/JSON")
+Rel(spa, expenseController,  "GET|POST /employee-expenses",     "HTTPS/JSON")
 
+' === Interface → Application ===
 Rel(employeeController, createEmployeeUC,  "Calls")
 Rel(employeeController, modifyEmployeeUC,  "Calls")
 Rel(employeeController, deleteEmployeeUC,  "Calls")
 Rel(employeeController, listEmployeesUC,   "Calls")
 Rel(expenseController,  registerExpenseUC, "Calls")
 
-Rel(createEmployeeUC,  employeeDomainSvc,  "Validates employee rules")
-Rel(createEmployeeUC,  employeeRepo,       "Persists employee")
+' === Application → Domain ===
+Rel(createEmployeeUC,  employeeDomainSvc, "Validates employee rules")
+Rel(modifyEmployeeUC,  employeeDomainSvc, "Validates update rules")
+Rel(deleteEmployeeUC,  employeeDomainSvc, "Validates deletion constraints")
+Rel(registerExpenseUC, expenseDomainSvc,  "Validates expense type and amount")
+
+' === Application → Infrastructure ===
+Rel(createEmployeeUC,  employeeRepo, "Persists employee")
+Rel(modifyEmployeeUC,  employeeRepo, "Updates employee data")
+Rel(deleteEmployeeUC,  employeeRepo, "Soft deletes employee")
+Rel(listEmployeesUC,   employeeRepo, "Queries with filters")
+Rel(registerExpenseUC, employeeRepo, "Queries employee data")
+Rel(registerExpenseUC, expenseRepo,  "Persists expense record")
+
+' === Application → Interface (events) ===
 Rel(createEmployeeUC,  employeeEventPub,   "Publishes EmployeeCreated event")
-Rel(createEmployeeUC,  orgBC,              "Validates fundo assignment", "Internal call")
-
-Rel(modifyEmployeeUC,  employeeDomainSvc,  "Validates update rules")
-Rel(modifyEmployeeUC,  employeeRepo,       "Updates employee data")
-
-Rel(deleteEmployeeUC,  employeeDomainSvc,  "Validates deletion constraints")
-Rel(deleteEmployeeUC,  employeeRepo,       "Soft deletes employee")
 Rel(deleteEmployeeUC,  employeeEventPub,   "Publishes EmployeeDeleted event")
-
-Rel(listEmployeesUC,   employeeRepo,       "Queries with filters")
-Rel(listEmployeesUC,   orgBC,              "Filters by fundo context", "Internal call")
-
-Rel(registerExpenseUC, expenseDomainSvc,   "Validates expense type and amount")
-Rel(registerExpenseUC, employeeRepo,       "Queries employee data")
-Rel(registerExpenseUC, expenseRepo,        "Persists expense record")
 Rel(registerExpenseUC, employeeExpensePub, "Publishes EmployeeExpense event")
 
+' === Application → External BC ===
+Rel(createEmployeeUC, orgBC, "Validates fundo assignment", "Internal call")
+Rel(listEmployeesUC,  orgBC, "Filters by fundo context",  "Internal call")
+
+' === Infrastructure → DB ===
 Rel(employeeRepo, db, "Reads/Writes", "JDBC")
 Rel(expenseRepo,  db, "Reads/Writes", "JDBC")
 
+' === Interface → External BC ===
 Rel(employeeExpensePub, financialBC, "EmployeeExpense event", "Internal")
 
 @enduml

@@ -30,7 +30,7 @@
  Acuache Lucas Mathias Joaquin     u202314898 
 
 
-<strong>26 de Abril de 2026</strong><br>
+<strong>26 de Junio de 2026</strong><br>
 </div>
 
 
@@ -77,11 +77,16 @@ Con el objetivo de trabajar de forma colaborativa y organizada durante el desarr
 Para organizar adecuadamente el proyecto, se crearon diferentes repositorios especializados según el propósito de cada componente. El repositorio report fue utilizado para almacenar y gestionar el Project Report y la documentación técnica; webapp para el desarrollo del frontend de la aplicación; website para la implementación de la landing page; platform para la integración y arquitectura general del sistema; y mockapi para la simulación de servicios y endpoints utilizados durante las pruebas y validaciones del frontend. A continuación, se presentan los enlaces correspondientes a cada uno de los repositorios utilizados durante el desarrollo del proyecto:
 </div>
 
-URL del repositorio del report:
-URL del repositorio del webapp:
-URL del repositorio del website:
-URL del repositorio del platform:
-URL del repositorio del mockapi:
+URL del repositorio del report: https://github.com/upc-pre-202610-1asi0729-11881-greenspot/kampo-report
+
+URL del repositorio del webapp: https://github.com/upc-pre-202610-1asi0729-11881-greenspot/kampo-webapp
+
+URL del repositorio del website: https://github.com/upc-pre-202610-1asi0729-11881-greenspot/kampo-website
+
+URL del repositorio del platform: https://github.com/upc-pre-202610-1asi0729-11881-greenspot/kampo-platform
+
+URL del repositorio del mockapi: https://github.com/upc-pre-202610-1asi0729-11881-greenspot/kampo-mockapi
+
 
 **TB1**
 <div align="justify">
@@ -1524,36 +1529,47 @@ Para validar la experiencia de usuario (UX), se desarrolló un prototipo funcion
 ![Container-Diagram](docs/Arquitecture/img/ComponentDiagram.png)
 
 **Alerts Component Diagram - Alerts Bounded Context**
+
 ![Alerts-Component-Diagram](docs/Arquitecture/img/ComponentDiagramAlerts.png)
 
 **Field Operation Component Diagram - Field Operation Bounded Context**
+
 ![Field-Component-Diagram](docs/Arquitecture/img/ComponentDiagramField.png)
 
 **IoT Component Diagram - Monitoring IoT Bounded Context**
+
 ![IoT-Component-Diagram](docs/Arquitecture/img/ComponentDiagramIOT.png)
 
 **Employee Management Component Diagram - Employee Management Bounded Context**
+
 ![Employee-Component-Diagram](docs/Arquitecture/img/ComponentDiagramEmployee.png)
 
 **Finantial Management Component Diagram - Finantial Management Bounded Context** 
+
 ![Finantial-Component-Diagram](docs/Arquitecture/img/ComponentDiagramFinancial.png)
 
 **Inventory Management Component Diagram - Inventory Management Bounded Context**
+
 ![Inventory-Component-Diagram](docs/Arquitecture/img/ComponentDiagramInventory.png)
 
 **Organization Management Component Diagram - Organization Management Bounded Context**
+
 ![Organization-Component-Diagram](docs/Arquitecture/img/ComponentDiagramOrganization.png)
 
 **Profile & Access Component Diagram - Profile & Access Bounded Context**
+
 ![Profile-Component-Diagram](docs/Arquitecture/img/ComponentDiagramProfile.png)
 
 **Report Component Diagram - Report Bounded Context**
+
 ![Report-Component-Diagram](docs/Arquitecture/img/ComponentDiagramReport.png)
 
 **Season Management Component Diagram - Season Bounded Context**
+
 ![Season-Component-Diagram](docs/Arquitecture/img/ComponentDiagramSeason.png)
 
 **Subscription Component Diagram - Subscription Bounded Context**
+
 ![Subscription-Component-Diagram](docs/Arquitecture/img/ComponentDiagramSubscription.png)
 
 ## 4.7. Software Object-Oriented Design
