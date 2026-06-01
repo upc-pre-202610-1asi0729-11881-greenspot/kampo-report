@@ -832,6 +832,7 @@ USER PERSONA 02 - Agroindustria mediana y grande
   <img src="docs/assets/img/cap-ii/Luis Ramos.png" width="500"/>
   <br/>
 </p>
+
 ##### 2.3.2. User Task Matrix
 En esta sección se presenta el User Task Matrix considerando los dos segmentos objetivo identificados: ingenieros agrónomos asesores y supervisores, representados por Calor Mendoza, y gestores del sector agroindustrial, representados por Luis Ramos. Las tareas listadas corresponden a actividades que ambos segmentos realizan en su trabajo cotidiano, independientemente de la existencia de la solución propuesta.
 
@@ -941,10 +942,6 @@ USER PERSONA 02
 ![big_picture_event_storming_step3_1](docs/assets/img/event-storming/big_picture_event_storming_step3_1.png)
 
 ![big_picture_event_storming_step3_2](docs/assets/img/event-storming/big_picture_event_storming_step3_2.png)
-
-
-**Paso 10: Bounded Context**
-![Bounded-Context](docs/assets/img/event-storming/BoundedContext.png)
 
 ## 2.5. Ubiquitous Language
 <div align="justify">
