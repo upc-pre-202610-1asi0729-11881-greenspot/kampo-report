@@ -45,20 +45,20 @@
 | AV1     | 25/04/2026 | • Acuache Lucas Mathias Joaquin <br> • Arroyo Gonzales Emily Juliette <br> • Hurtado Balcazar Rommel Daniel <br> • Ramos Fuentes Rivera Adriana Nicole <br> • Tuesta Girón Kiara Lucia | Indicar el timing de las entrevistas, mostrar las user stories en el formato de tabla indicado en el enunciado, los diagramas deben estar alineados a DDD y la nomenclatura de tablas incorrecta, Web Applications Prototyping en blanco, indicar el nombre del responsable de trabajar en la tarea del sprint, no se ubica url de lading page en el reporte, nombre de organización y repositorios github incorrectos, secciones en blanco y Student Outcome vacío. |
 
 
-**TP**
+**TB1**
 
 | Versión | Fecha     | Autor               | Descripción de modificación |
 |--------|-----------|---------------------|-----------------------------|
-| TP     | 14/05/2026| • Acuache Lucas Mathias Joaquin <br> • Arroyo Gonzales Emily Juliette <br> • Hurtado Balcazar Rommel Daniel <br> • Ramos Fuentes Rivera Adriana Nicole <br> • Tuesta Girón Kiara Lucia|                             |
+| TB1     | 14/05/2026| • Acuache Lucas Mathias Joaquin <br> • Arroyo Gonzales Emily Juliette <br> • Hurtado Balcazar Rommel Daniel <br> • Ramos Fuentes Rivera Adriana Nicole <br> • Tuesta Girón Kiara Lucia|                             |
 
 
-**TB2**
+**AV2**
 
 | Versión | Fecha      | Autor               | Descripción de modificación                                                                |
 |---------|------------|---------------------|--------------------------------------------------------------------------------------------|
 
 
-**TF**
+**TB2**
 
 | Versión | Fecha      | Autor               | Descripción de modificación                                                                                                           |
 |---------|------------|---------------------|---------------------------------------------------------------------------------------------------------------------------------------|
@@ -88,7 +88,7 @@ URL del repositorio del platform: https://github.com/upc-pre-202610-1asi0729-118
 URL del repositorio del mockapi: https://github.com/upc-pre-202610-1asi0729-11881-greenspot/kampo-mockapi
 
 
-**TB1**
+**AV1**
 <div align="justify">
 Para la primera entrega se presentó los antecedentes y problemática que se busca resolver, además del análisis del contexto del proyecto y de las necesidades identificadas en los segmentos objetivo mediante entrevistas y validaciones iniciales. Asimismo, se elaboró el Lean UX Canvas como herramienta para definir las hipótesis de negocio, los problemas principales de los usuarios, las propuestas de solución y el valor diferencial del sistema Kampo.
 
@@ -99,7 +99,7 @@ Además, se desarrollaron los bounded contexts para delimitar las responsabilida
 Asimismo, durante el desarrollo del proyecto se trabajó el  Product Implementation y Validation & Deployment, en el cual se documentó la configuración del entorno de desarrollo, la gestión del código fuente mediante repositorios GitHub, las convenciones y guías de estilo utilizadas por el equipo, así como la configuración de despliegue del software. De igual manera, se registró la implementación de la landing page, incluyendo la planificación, backlog, roles de líderes y colaboradores, evidencias de desarrollo, ejecución, documentación de servicios, despliegue del sistema y las conclusiones de colaboración obtenidas durante el trabajo en equipo.
 </div>
 
-**TP**
+**TB1**
 <div align="justify">
 Para el trabajo parcial, se levantaron las correcciones de la primera entrega con el objetivo de mejorar la estructura, consistencia y calidad general del proyecto Kampo. Se realizaron ajustes en los artefactos de análisis y diseño, refinando las user stories, bounded contexts, diagramas C4, diagramas de clases y el modelo de base de datos, permitiendo una mejor representación de la arquitectura y de los procesos del sistema. Asimismo, se fortaleció el Ubiquitous Language y la validación de requerimientos obtenidos a partir de las entrevistas realizadas a los segmentos objetivo.
 
@@ -107,21 +107,7 @@ Además, durante esta etapa se desarrolló el frontend del sistema, incluyendo l
 </div>
 
 
-**TB2**
-
-
-**TF**
-
-
-
-
-**TB1**
-
-
-
-**TP1**
-
-
+**AV2**
 
 
 **TB2**
@@ -129,7 +115,8 @@ Además, durante esta etapa se desarrolló el frontend del sistema, incluyendo l
 
 
 
-**TF**
+
+
 
 <div style="page-break-after: always;"></div>
 
