@@ -42,13 +42,6 @@ package "domain" {
                 MAINTENANCE
                 OTHER
             }
-
-            enum FinancialPeriod {
-                MONTHLY
-                QUARTERLY
-                SEASONAL
-                ANNUAL
-            }
         }
 
         package "events" {
@@ -175,6 +168,7 @@ package "domain" {
             Expense --> ExpenseCategory
             Expense --> FundoId
             Expense --> Money
+            Expense --> ExpenseId
             Income --> FundoId
             Income --> Money
             Sale --> FundoId
@@ -307,13 +301,13 @@ package "application" {
             +handle(command: CalculateProfitabilityCommand): Profitability
         }
 
-        ExpenseQueryServiceImpl      ..|> ExpenseQueryService
-        IncomeQueryServiceImpl       ..|> IncomeQueryService
-        SaleQueryServiceImpl         ..|> SaleQueryService
-        ProfitabilityQueryServiceImpl ..|> ProfitabilityQueryService
-        ExpenseCommandServiceImpl    ..|> ExpenseCommandService
-        IncomeCommandServiceImpl     ..|> IncomeCommandService
-        SaleCommandServiceImpl       ..|> SaleCommandService
+        ExpenseQueryServiceImpl        ..|> ExpenseQueryService
+        IncomeQueryServiceImpl         ..|> IncomeQueryService
+        SaleQueryServiceImpl           ..|> SaleQueryService
+        ProfitabilityQueryServiceImpl  ..|> ProfitabilityQueryService
+        ExpenseCommandServiceImpl      ..|> ExpenseCommandService
+        IncomeCommandServiceImpl       ..|> IncomeCommandService
+        SaleCommandServiceImpl         ..|> SaleCommandService
         ProfitabilityCommandServiceImpl ..|> ProfitabilityCommandService
     }
 }
@@ -388,31 +382,24 @@ package "interfaces" {
         class RegisterExpenseCommandFromResourceAssembler {
             +toCommandFromResource(resource: CreateExpenseResource): RegisterExpenseCommand
         }
-
         class ExpenseResourceFromEntityAssembler {
             +toResourceFromEntity(entity: Expense): ExpenseResource
         }
-
         class RegisterIncomeCommandFromResourceAssembler {
             +toCommandFromResource(resource: CreateIncomeResource): RegisterIncomeCommand
         }
-
         class IncomeResourceFromEntityAssembler {
             +toResourceFromEntity(entity: Income): IncomeResource
         }
-
         class RegisterSaleCommandFromResourceAssembler {
             +toCommandFromResource(resource: CreateSaleResource): RegisterSaleCommand
         }
-
         class SaleResourceFromEntityAssembler {
             +toResourceFromEntity(entity: Sale): SaleResource
         }
-
         class CalculateProfitabilityCommandFromResourceAssembler {
             +toCommandFromResource(resource: CalculateProfitabilityResource): CalculateProfitabilityCommand
         }
-
         class ProfitabilityResourceFromEntityAssembler {
             +toResourceFromEntity(entity: Profitability): ProfitabilityResource
         }
@@ -426,7 +413,6 @@ package "interfaces" {
             +fundoId: Long
             +date: LocalDate
         }
-
         class ExpenseResource {
             +id: Long
             +description: String
@@ -435,14 +421,12 @@ package "interfaces" {
             +fundoId: Long
             +date: LocalDate
         }
-
         class CreateIncomeResource {
             +description: String
             +amount: BigDecimal
             +fundoId: Long
             +date: LocalDate
         }
-
         class IncomeResource {
             +id: Long
             +description: String
@@ -450,7 +434,6 @@ package "interfaces" {
             +fundoId: Long
             +date: LocalDate
         }
-
         class CreateSaleResource {
             +cropName: String
             +quantity: Double
@@ -458,7 +441,6 @@ package "interfaces" {
             +fundoId: Long
             +date: LocalDate
         }
-
         class SaleResource {
             +id: Long
             +cropName: String
@@ -467,12 +449,10 @@ package "interfaces" {
             +totalAmount: BigDecimal
             +fundoId: Long
         }
-
         class CalculateProfitabilityResource {
             +fundoId: Long
             +seasonId: Long
         }
-
         class ProfitabilityResource {
             +fundoId: Long
             +seasonId: Long
@@ -483,22 +463,61 @@ package "interfaces" {
         }
     }
 
-    ExpenseController     --> ExpenseCommandService
-    ExpenseController     --> ExpenseQueryService
-    ExpenseController     --> RegisterExpenseCommandFromResourceAssembler
-    ExpenseController     --> ExpenseResourceFromEntityAssembler
-    IncomeController      --> IncomeCommandService
-    IncomeController      --> IncomeQueryService
-    IncomeController      --> RegisterIncomeCommandFromResourceAssembler
-    IncomeController      --> IncomeResourceFromEntityAssembler
-    SaleController        --> SaleCommandService
-    SaleController        --> SaleQueryService
-    SaleController        --> RegisterSaleCommandFromResourceAssembler
-    SaleController        --> SaleResourceFromEntityAssembler
+    ExpenseController       --> ExpenseCommandService
+    ExpenseController       --> ExpenseQueryService
+    ExpenseController       --> RegisterExpenseCommandFromResourceAssembler
+    ExpenseController       --> ExpenseResourceFromEntityAssembler
+    IncomeController        --> IncomeCommandService
+    IncomeController        --> IncomeQueryService
+    IncomeController        --> RegisterIncomeCommandFromResourceAssembler
+    IncomeController        --> IncomeResourceFromEntityAssembler
+    SaleController          --> SaleCommandService
+    SaleController          --> SaleQueryService
+    SaleController          --> RegisterSaleCommandFromResourceAssembler
+    SaleController          --> SaleResourceFromEntityAssembler
     ProfitabilityController --> ProfitabilityCommandService
     ProfitabilityController --> ProfitabilityQueryService
     ProfitabilityController --> CalculateProfitabilityCommandFromResourceAssembler
     ProfitabilityController --> ProfitabilityResourceFromEntityAssembler
 }
+
+ExpenseCommandServiceImpl      ..> ExpenseRegisteredEvent
+ProfitabilityCommandServiceImpl ..> ProfitabilityCalculatedEvent
+
+ExpenseRegisteredEvent     --> ExpenseId
+ExpenseRegisteredEvent     --> FundoId
+ExpenseRegisteredEvent     --> Money
+ProfitabilityCalculatedEvent --> FundoId
+ProfitabilityCalculatedEvent --> SeasonId
+ProfitabilityCalculatedEvent --> Money
+
+RegisterExpenseCommand     ..> Expense
+RegisterIncomeCommand      ..> Income
+RegisterSaleCommand        ..> Sale
+CalculateProfitabilityCommand ..> Profitability
+
+FinancialDomainService ..> Expense
+FinancialDomainService ..> Income
+FinancialDomainService ..> Profitability
+SaleDomainService      ..> Sale
+SaleDomainService      ..> Income
+
+ExpenseCommandServiceImpl      ..> ExpenseRepository
+ExpenseCommandServiceImpl      ..> CategoryRepository
+IncomeCommandServiceImpl       ..> IncomeRepository
+SaleCommandServiceImpl         ..> SaleRepository
+ProfitabilityCommandServiceImpl ..> ExpenseRepository
+ProfitabilityCommandServiceImpl ..> IncomeRepository
+ProfitabilityCommandServiceImpl ..> SaleRepository
+
+ExpenseQueryServiceImpl        ..> ExpenseRepository
+ExpenseQueryServiceImpl        ..> CategoryRepository
+IncomeQueryServiceImpl         ..> IncomeRepository
+SaleQueryServiceImpl           ..> SaleRepository
+ProfitabilityQueryServiceImpl  ..> ExpenseRepository
+ProfitabilityQueryServiceImpl  ..> IncomeRepository
+ProfitabilityQueryServiceImpl  ..> SaleRepository
+
+FinancialEventHandler ..> ExpenseCommandService
 
 @enduml

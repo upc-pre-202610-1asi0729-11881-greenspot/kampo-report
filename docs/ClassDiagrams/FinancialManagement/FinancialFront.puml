@@ -80,37 +80,31 @@ package "domain" {
                 +getValue(): number
                 +equals(other: FinancialRecordId): boolean
             }
-
             class FundoId <<Value Object>> {
                 -value: number
                 +getValue(): number
                 +equals(other: FundoId): boolean
             }
-
             class SeasonId <<Value Object>> {
                 -value: number
                 +getValue(): number
                 +equals(other: SeasonId): boolean
             }
-
             class ExpenseId <<Value Object>> {
                 -value: number
                 +getValue(): number
                 +equals(other: ExpenseId): boolean
             }
-
             class IncomeId <<Value Object>> {
                 -value: number
                 +getValue(): number
                 +equals(other: IncomeId): boolean
             }
-
             class SaleId <<Value Object>> {
                 -value: number
                 +getValue(): number
                 +equals(other: SaleId): boolean
             }
-
             class Money <<Value Object>> {
                 -amount: number
                 -currency: string
@@ -120,7 +114,6 @@ package "domain" {
                 +subtract(other: Money): Money
                 +equals(other: Money): boolean
             }
-
             class Profitability <<Value Object>> {
                 -totalIncome: Money
                 -totalExpenses: Money
@@ -153,17 +146,9 @@ package "domain" {
                 MAINTENANCE
                 OTHER
             }
-
-            enum FinancialPeriod {
-                MONTHLY
-                QUARTERLY
-                SEASONAL
-                ANNUAL
-            }
         }
     }
 
-    ' Domain relationships
     FinancialRecord "1" *-down-> "many" Expense   : contains
     FinancialRecord "1" *-down-> "many" Income     : contains
     FinancialRecord "1" *-down-> "many" Sale       : contains
@@ -224,17 +209,14 @@ package "infrastructure" {
         +toEntityFromResponse(response: FinancialRecordResponse): FinancialRecord
         +toResourceFromEntity(entity: FinancialRecord): FinancialRecordResource
     }
-
     class ExpenseAssembler {
         +toEntityFromResponse(response: ExpenseResponse): Expense
         +toResourceFromEntity(entity: Expense): ExpenseResource
     }
-
     class IncomeAssembler {
         +toEntityFromResponse(response: IncomeResponse): Income
         +toResourceFromEntity(entity: Income): IncomeResource
     }
-
     class SaleAssembler {
         +toEntityFromResponse(response: SaleResponse): Sale
         +toResourceFromEntity(entity: Sale): SaleResource
@@ -248,7 +230,6 @@ package "infrastructure" {
         +incomes: IncomeResponse[]
         +sales: SaleResponse[]
     }
-
     class ExpenseResponse {
         +id: number
         +description: string
@@ -257,7 +238,6 @@ package "infrastructure" {
         +category: string
         +date: string
     }
-
     class IncomeResponse {
         +id: number
         +description: string
@@ -265,7 +245,6 @@ package "infrastructure" {
         +currency: string
         +date: string
     }
-
     class SaleResponse {
         +id: number
         +cropName: string
@@ -274,7 +253,6 @@ package "infrastructure" {
         +currency: string
         +date: string
     }
-
     class FinancialRecordResource {
         +fundoId: number
         +seasonId: number
@@ -282,7 +260,6 @@ package "infrastructure" {
         +incomes: IncomeResource[]
         +sales: SaleResource[]
     }
-
     class ExpenseResource {
         +description: string
         +amount: number
@@ -290,14 +267,12 @@ package "infrastructure" {
         +category: string
         +date: string
     }
-
     class IncomeResource {
         +description: string
         +amount: number
         +currency: string
         +date: string
     }
-
     class SaleResource {
         +cropName: string
         +quantity: number
@@ -306,7 +281,6 @@ package "infrastructure" {
         +date: string
     }
 
-    ' Infrastructure implements domain repository interface
     FinancialApi .up.|> FinancialRecordRepository : implements
 
     FinancialApi ..> FinancialRecordAssembler : uses
@@ -318,16 +292,15 @@ package "infrastructure" {
     FinancialRecordAssembler ..> FinancialRecordResource
     ExpenseAssembler ..> ExpenseResponse
     ExpenseAssembler ..> ExpenseResource
-    IncomeAssembler ..> IncomeResponse
-    IncomeAssembler ..> IncomeResource
-    SaleAssembler ..> SaleResponse
-    SaleAssembler ..> SaleResource
+    IncomeAssembler  ..> IncomeResponse
+    IncomeAssembler  ..> IncomeResource
+    SaleAssembler    ..> SaleResponse
+    SaleAssembler    ..> SaleResource
 }
 
 package "presentation" {
 
     package "views" {
-
         class ExpenseListComponent <<Component>> {
             -expenses: Expense[]
             -isLoading: boolean
@@ -336,7 +309,6 @@ package "presentation" {
             +filterByCategory(category: ExpenseCategory): void
             +onAddExpense(): void
         }
-
         class ExpenseFormComponent <<Component>> {
             -categories: ExpenseCategory[]
             -isSubmitting: boolean
@@ -344,7 +316,6 @@ package "presentation" {
             +onSubmit(description: string, amount: Money, category: ExpenseCategory, date: Date): void
             +cancel(): void
         }
-
         class IncomeListComponent <<Component>> {
             -incomes: Income[]
             -isLoading: boolean
@@ -353,7 +324,6 @@ package "presentation" {
             +filterByDateRange(from: Date, to: Date): void
             +onAddIncome(): void
         }
-
         class SaleListComponent <<Component>> {
             -sales: Sale[]
             -isLoading: boolean
@@ -362,7 +332,6 @@ package "presentation" {
             +onAddSale(): void
             +calculateTotalRevenue(): Money
         }
-
         class ProfitabilityDashboardComponent <<Component>> {
             -profitability: Profitability
             -isLoading: boolean
@@ -372,10 +341,10 @@ package "presentation" {
         }
     }
 
-    ExpenseListComponent           ..> FinancialStore : uses
-    ExpenseFormComponent           ..> FinancialStore : uses
-    IncomeListComponent            ..> FinancialStore : uses
-    SaleListComponent              ..> FinancialStore : uses
+    ExpenseListComponent            ..> FinancialStore : uses
+    ExpenseFormComponent            ..> FinancialStore : uses
+    IncomeListComponent             ..> FinancialStore : uses
+    SaleListComponent               ..> FinancialStore : uses
     ProfitabilityDashboardComponent ..> FinancialStore : uses
 }
 
