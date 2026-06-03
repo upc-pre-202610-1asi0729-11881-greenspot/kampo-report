@@ -1,137 +1,241 @@
 @startuml
-
+title Class Diagram - Report (Backend)
 left to right direction
 
-title Class Diagram - Report (Backend)
+package "com.acme.kampo.platform" {
+    package "report" {
 
-package "domain" {
+        package "interfaces.rest" {
+            class ReportController <<controller>> {
+                -reportCommandService: ReportCommandService
+                -reportQueryService: ReportQueryService
+                +generateReport(resource: CreateReportResource): ResponseEntity<?>
+                +generateRecommendation(resource: CreateRecommendationResource): ResponseEntity<?>
+                +implementRecommendation(recommendationId: Long): ResponseEntity<?>
+                +getAllReports(): ResponseEntity<?>
+                +getReportById(reportId: Long): ResponseEntity<?>
+            }
+        }
 
-  package "services" {
-    interface ReportDomainService {
-      +validateReport(report: Report): void
-      +generateReport(report: Report): Report
-      +validateRecommendation(recommendation: Recommendation): void
+        package "interfaces.acl" {
+            interface ReportContextFacade <<facade>> {
+                +createReport(): Long
+                +fetchReportIdBy(usersId: Long): Long
+            }
+        }
+
+        package "interfaces.events" {
+            class ReportGeneratedIntegrationEvent <<integration event>> {}
+        }
+
+        package "application.commandservices" {
+            interface ReportCommandService <<service>> {
+                +handle(command: GenerateReportCommand): Result<Report, ApplicationError>
+                +handle(command: GenerateRecommendationCommand): Result<Recommendation, ApplicationError>
+                +handle(command: ImplementRecommendationCommand): Result<Recommendation, ApplicationError>
+            }
+        }
+
+        package "application.queryservices" {
+            interface ReportQueryService <<service>> {
+                +handle(query: GetReportByIdQuery): Optional<Report>
+                +handle(query: GetAllReportsQuery): List<Report>
+                +handle(query: GetRecommendationsByReportQuery): List<Recommendation>
+            }
+        }
+
+        package "application.internal.commandservices" {
+            class ReportCommandServiceImpl <<service>> {
+                -reportRepository: ReportRepository
+                -recommendationRepository: RecommendationRepository
+                +handle(command: GenerateReportCommand): Result<Report, ApplicationError>
+                +handle(command: GenerateRecommendationCommand): Result<Recommendation, ApplicationError>
+                +handle(command: ImplementRecommendationCommand): Result<Recommendation, ApplicationError>
+            }
+        }
+
+        package "application.internal.queryservices" {
+            class ReportQueryServiceImpl <<service>> {
+                -reportRepository: ReportRepository
+                -recommendationRepository: RecommendationRepository
+                +handle(query: GetReportByIdQuery): Optional<Report>
+                +handle(query: GetAllReportsQuery): List<Report>
+                +handle(query: GetRecommendationsByReportQuery): List<Recommendation>
+            }
+        }
+
+        package "application.internal.eventhandlers" {
+            class ReportGeneratedEventHandler <<event handler>> {
+                -eventPublisher: ApplicationEventPublisher
+                +on(event: ReportGeneratedEvent): void
+            }
+        }
+
+        package "application.acl" {
+            class ReportContextFacadeImpl <<facade>> {
+                -reportCommandService: ReportCommandService
+                -reportQueryService: ReportQueryService
+                +createReport(): Long
+                +fetchReportIdBy(usersId: Long): Long
+            }
+        }
+
+        package "domain.model.aggregates" {
+            class Report <<aggregate>> {
+                -id: ReportId
+                -type: ReportType
+                -fileUrl: FileUrl
+                -usersId: UserId
+                -seasonsId: SeasonId
+                +create(command: GenerateReportCommand): Report
+                +attachFile(fileUrl: FileUrl): void
+                +getId(): ReportId
+                +getType(): ReportType
+                +getFileUrl(): FileUrl
+                +getUsersId(): UserId
+                +getSeasonsId(): SeasonId
+            }
+
+            class Recommendation <<aggregate>> {
+                -id: RecommendationId
+                -priority: PriorityLevel
+                -status: RecommendationStatus
+                -createdAt: LocalDateTime
+                -implementedAt: LocalDateTime
+                -reportsId: ReportId
+                +create(command: GenerateRecommendationCommand): Recommendation
+                +markAsImplemented(command: ImplementRecommendationCommand): void
+                +getId(): RecommendationId
+                +getPriority(): PriorityLevel
+                +getStatus(): RecommendationStatus
+                +getReportsId(): ReportId
+            }
+        }
+
+        package "domain.model.enums" {
+            enum ReportType {
+                FINANCIAL
+                IOT
+                RECOMMENDATION
+            }
+            enum PriorityLevel {
+                LOW
+                MEDIUM
+                HIGH
+            }
+            enum RecommendationStatus {
+                PENDING
+                IMPLEMENTED
+            }
+        }
+
+        package "domain.model.valueobjects" {
+            class ReportId <<value object>> {
+                -value: Long
+                +of(value: Long): ReportId
+                +getValue(): Long
+            }
+            class RecommendationId <<value object>> {
+                -value: Long
+                +of(value: Long): RecommendationId
+                +getValue(): Long
+            }
+            class UserId <<value object>> {
+                -value: Long
+                +of(value: Long): UserId
+                +getValue(): Long
+            }
+            class SeasonId <<value object>> {
+                -value: Long
+                +of(value: Long): SeasonId
+                +getValue(): Long
+            }
+            class FileUrl <<value object>> {
+                -value: String
+                +of(value: String): FileUrl
+                +getValue(): String
+            }
+        }
+
+        package "domain.model.commands" {
+            class GenerateReportCommand {
+                -type: ReportType
+                -usersId: UserId
+                -seasonsId: SeasonId
+            }
+            class GenerateRecommendationCommand {
+                -reportsId: ReportId
+                -priority: PriorityLevel
+            }
+            class ImplementRecommendationCommand {
+                -recommendationId: RecommendationId
+            }
+        }
+
+        package "domain.model.events" {
+            class ReportGeneratedEvent <<domain event>> {}
+        }
+
+        package "domain.repositories" {
+            interface ReportRepository <<repository>> {
+                +findById(id: Long): Optional<Report>
+                +findAll(): List<Report>
+                +save(report: Report): Report
+            }
+            interface RecommendationRepository <<repository>> {
+                +findById(id: Long): Optional<Recommendation>
+                +findByReportId(reportId: Long): List<Recommendation>
+                +save(recommendation: Recommendation): Recommendation
+            }
+        }
+
+        package "infrastructure.persistence.jpa.repositories" {
+            interface ReportJpaRepository <<jpa repository>>
+            interface RecommendationJpaRepository <<jpa repository>>
+        }
+
+        package "infrastructure.persistence.jpa.adapters" {
+            class ReportRepositoryImpl <<adapter>>
+            class RecommendationRepositoryImpl <<adapter>>
+        }
+
+        package "infrastructure.persistence.jpa.entities" {
+            class ReportPersistenceEntity <<entity>>
+            class RecommendationPersistenceEntity <<entity>>
+        }
     }
-  }
 
-  package "model" {
-
-    package "aggregate" {
-
-      class Report {
-        -id: ReportId
-        -type: ReportType
-        -fileUrl: FileUrl
-        -usersId: UserId
-        -seasonsId: SeasonId
-
-        +create(command: GenerateReportCommand): Report
-        +attachFile(fileUrl: FileUrl): void
-        +getId(): ReportId
-        +getType(): ReportType
-        +getFileUrl(): FileUrl
-        +getUsersId(): UserId
-        +getSeasonsId(): SeasonId
-      }
-
-      class Recommendation {
-        -id: RecommendationId
-        -priority: PriorityLevel
-        -status: RecommendationStatus
-        -createdAt: LocalDateTime
-        -implementedAt: LocalDateTime
-        -reportsId: ReportId
-
-        +create(command: GenerateRecommendationCommand): Recommendation
-        +markAsImplemented(command: ImplementRecommendationCommand): void
-        +getId(): RecommendationId
-        +getPriority(): PriorityLevel
-        +getStatus(): RecommendationStatus
-        +getReportsId(): ReportId
-      }
-
+    package "shared" {
+        package "domain.model.aggregates" {
+            abstract class AbstractDomainAggregateRoot <<base aggregate>>
+        }
     }
-
-    package "enums" {
-
-      enum ReportType {
-        FINANCIAL
-        IOT
-        RECOMMENDATION
-      }
-
-      enum PriorityLevel {
-        LOW
-        MEDIUM
-        HIGH
-      }
-
-      enum RecommendationStatus {
-        PENDING
-        IMPLEMENTED
-      }
-
-    }
-
-    package "valueobject" {
-
-      class ReportId {
-        -value: Long
-        +of(value: Long): ReportId
-        +getValue(): Long
-      }
-
-      class RecommendationId {
-        -value: Long
-        +of(value: Long): RecommendationId
-        +getValue(): Long
-      }
-
-      class UserId {
-        -value: Long
-        +of(value: Long): UserId
-        +getValue(): Long
-      }
-
-      class SeasonId {
-        -value: Long
-        +of(value: Long): SeasonId
-        +getValue(): Long
-      }
-
-      class FileUrl {
-        -value: String
-        +of(value: String): FileUrl
-        +getValue(): String
-      }
-
-    }
-
-  }
-
-  package "commands" {
-
-    class GenerateReportCommand {
-      -type: ReportType
-      -usersId: UserId
-      -seasonsId: SeasonId
-    }
-
-    class GenerateRecommendationCommand {
-      -reportsId: ReportId
-      -priority: PriorityLevel
-    }
-
-    class ImplementRecommendationCommand {
-      -recommendationId: RecommendationId
-    }
-
-  }
-
 }
 
-ReportDomainService --> Report
-ReportDomainService --> Recommendation
+' Report relationships
+ReportController --> ReportCommandService
+ReportController --> ReportQueryService
+
+ReportContextFacadeImpl ..|> ReportContextFacade
+ReportContextFacadeImpl --> ReportCommandService
+ReportContextFacadeImpl --> ReportQueryService
+
+ReportCommandServiceImpl ..|> ReportCommandService
+ReportQueryServiceImpl ..|> ReportQueryService
+ReportCommandServiceImpl --> ReportRepository
+ReportCommandServiceImpl --> RecommendationRepository
+ReportQueryServiceImpl --> ReportRepository
+ReportQueryServiceImpl --> RecommendationRepository
+
+ReportRepositoryImpl ..|> ReportRepository
+RecommendationRepositoryImpl ..|> RecommendationRepository
+
+ReportPersistenceEntity --> Report : toDomainModel()
+RecommendationPersistenceEntity --> Recommendation : toDomainModel()
+ReportRepositoryImpl --> ReportPersistenceEntity : uses
+RecommendationRepositoryImpl --> RecommendationPersistenceEntity : uses
+ReportJpaRepository --> ReportPersistenceEntity : manages
+RecommendationJpaRepository --> RecommendationPersistenceEntity : manages
 
 Report --> ReportId
 Report --> ReportType
@@ -144,10 +248,15 @@ Recommendation --> PriorityLevel
 Recommendation --> RecommendationStatus
 Recommendation --> ReportId
 
-Report --> Recommendation
+GenerateReportCommand ..> Report
+GenerateRecommendationCommand ..> Recommendation
+ImplementRecommendationCommand ..> Recommendation
 
-GenerateReportCommand --> Report
-GenerateRecommendationCommand --> Recommendation
-ImplementRecommendationCommand --> Recommendation
+Report ..> ReportGeneratedEvent : publishes
+ReportGeneratedEventHandler --> ReportGeneratedEvent
+ReportGeneratedEventHandler --> ReportGeneratedIntegrationEvent : republishes
+
+Report --|> AbstractDomainAggregateRoot
+Recommendation --|> AbstractDomainAggregateRoot
 
 @enduml
