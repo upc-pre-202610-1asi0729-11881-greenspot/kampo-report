@@ -5,27 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5f0d69e7-1262-41c4-b37f-5b1eef910611" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/Arquitecture/img/ComponentDiagramAlerts.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/Arquitecture/img/ComponentDiagramEmployee.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/Arquitecture/img/ComponentDiagramField.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/Arquitecture/img/ComponentDiagramFinancial.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/Arquitecture/img/ComponentDiagramIOT.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/Arquitecture/img/ComponentDiagramInventory.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/Arquitecture/img/ComponentDiagramOrganization.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/Arquitecture/img/ComponentDiagramProfile.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/Arquitecture/img/ContainerDiagram.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/Arquitecture/softwareArquitectureComponentAlerts.puml" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Arquitecture/softwareArquitectureComponentAlerts.puml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/Arquitecture/softwareArquitectureComponentDiagramEmployee.puml" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Arquitecture/softwareArquitectureComponentDiagramEmployee.puml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/Arquitecture/softwareArquitectureComponentDiagramFieldO.puml" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Arquitecture/softwareArquitectureComponentDiagramFieldO.puml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/Arquitecture/softwareArquitectureComponentDiagramFinancial.puml" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Arquitecture/softwareArquitectureComponentDiagramFinancial.puml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/Arquitecture/softwareArquitectureComponentDiagramIOT.puml" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Arquitecture/softwareArquitectureComponentDiagramIOT.puml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/Arquitecture/softwareArquitectureComponentDiagramInventory.puml" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Arquitecture/softwareArquitectureComponentDiagramInventory.puml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/Arquitecture/softwareArquitectureComponentDiagramOrganization.puml" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Arquitecture/softwareArquitectureComponentDiagramOrganization.puml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/Arquitecture/softwareArquitectureComponentDiagramProfile.puml" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Arquitecture/softwareArquitectureComponentDiagramProfile.puml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/Arquitecture/softwareArquitectureContainerDiagram.puml" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Arquitecture/softwareArquitectureContainerDiagram.puml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/ClassDiagrams/FinancialManagement/FinancialBack.puml" beforeDir="false" afterPath="$PROJECT_DIR$/docs/ClassDiagrams/FinancialManagement/FinancialBack.puml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/assets/img/class-diagram/FinancialManagement/FinancialManagementBack.png" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,7 +36,7 @@
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "feature/diagrams",
+    "git-widget-placeholder": "feature/financial",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/ACER/Desktop/Kampo-Report",
     "node.js.detected.package.eslint": "true",
@@ -71,6 +52,9 @@
       <recent name="C:\Users\ACER\Desktop\Kampo-Report\docs\assets" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/docs/assets/img/class-diagram/InventoryManagement" />
+      <recent name="$PROJECT_DIR$/docs/Arquitecture/img" />
+      <recent name="$PROJECT_DIR$/docs/Arquitecture" />
       <recent name="C:\Users\ACER\Desktop\Kampo-Report\docs\assets\img" />
     </key>
   </component>

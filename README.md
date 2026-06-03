@@ -30,7 +30,7 @@
  Acuache Lucas Mathias Joaquin     u202314898 
 
 
-<strong>26 de Abril de 2026</strong><br>
+<strong>26 de Junio de 2026</strong><br>
 </div>
 
 
@@ -45,20 +45,20 @@
 | AV1     | 25/04/2026 | • Acuache Lucas Mathias Joaquin <br> • Arroyo Gonzales Emily Juliette <br> • Hurtado Balcazar Rommel Daniel <br> • Ramos Fuentes Rivera Adriana Nicole <br> • Tuesta Girón Kiara Lucia | Indicar el timing de las entrevistas, mostrar las user stories en el formato de tabla indicado en el enunciado, los diagramas deben estar alineados a DDD y la nomenclatura de tablas incorrecta, Web Applications Prototyping en blanco, indicar el nombre del responsable de trabajar en la tarea del sprint, no se ubica url de lading page en el reporte, nombre de organización y repositorios github incorrectos, secciones en blanco y Student Outcome vacío. |
 
 
-**TP**
+**TB1**
 
 | Versión | Fecha     | Autor               | Descripción de modificación |
 |--------|-----------|---------------------|-----------------------------|
-| TP     | 14/05/2026| • Acuache Lucas Mathias Joaquin <br> • Arroyo Gonzales Emily Juliette <br> • Hurtado Balcazar Rommel Daniel <br> • Ramos Fuentes Rivera Adriana Nicole <br> • Tuesta Girón Kiara Lucia|                             |
+| TB1     | 14/05/2026| • Acuache Lucas Mathias Joaquin <br> • Arroyo Gonzales Emily Juliette <br> • Hurtado Balcazar Rommel Daniel <br> • Ramos Fuentes Rivera Adriana Nicole <br> • Tuesta Girón Kiara Lucia|                             |
 
 
-**TB2**
+**AV2**
 
 | Versión | Fecha      | Autor               | Descripción de modificación                                                                |
 |---------|------------|---------------------|--------------------------------------------------------------------------------------------|
 
 
-**TF**
+**TB2**
 
 | Versión | Fecha      | Autor               | Descripción de modificación                                                                                                           |
 |---------|------------|---------------------|---------------------------------------------------------------------------------------------------------------------------------------|
@@ -77,13 +77,20 @@ Con el objetivo de trabajar de forma colaborativa y organizada durante el desarr
 Para organizar adecuadamente el proyecto, se crearon diferentes repositorios especializados según el propósito de cada componente. El repositorio report fue utilizado para almacenar y gestionar el Project Report y la documentación técnica; webapp para el desarrollo del frontend de la aplicación; website para la implementación de la landing page; platform para la integración y arquitectura general del sistema; y mockapi para la simulación de servicios y endpoints utilizados durante las pruebas y validaciones del frontend. A continuación, se presentan los enlaces correspondientes a cada uno de los repositorios utilizados durante el desarrollo del proyecto:
 </div>
 
-URL del repositorio del report: 
-URL del repositorio del webapp:
-URL del repositorio del website:
-URL del repositorio del platform:
-URL del repositorio del mockapi:
+URL del repositorio del report: https://github.com/upc-pre-202610-1asi0729-11881-greenspot/kampo-report
 
-**TB1**
+URL del repositorio del webapp: https://github.com/upc-pre-202610-1asi0729-11881-greenspot/kampo-webapp
+
+URL del repositorio del website: https://github.com/upc-pre-202610-1asi0729-11881-greenspot/kampo-website
+
+URL del repositorio del platform: https://github.com/upc-pre-202610-1asi0729-11881-greenspot/kampo-platform
+
+URL del repositorio del mockapi: https://github.com/upc-pre-202610-1asi0729-11881-greenspot/kampo-mockapi
+
+<img src="docs\assets\img\Capítulo 1\report_collaboration_organization.png"/>
+
+
+**AV1**
 <div align="justify">
 Para la primera entrega se presentó los antecedentes y problemática que se busca resolver, además del análisis del contexto del proyecto y de las necesidades identificadas en los segmentos objetivo mediante entrevistas y validaciones iniciales. Asimismo, se elaboró el Lean UX Canvas como herramienta para definir las hipótesis de negocio, los problemas principales de los usuarios, las propuestas de solución y el valor diferencial del sistema Kampo.
 
@@ -94,29 +101,18 @@ Además, se desarrollaron los bounded contexts para delimitar las responsabilida
 Asimismo, durante el desarrollo del proyecto se trabajó el  Product Implementation y Validation & Deployment, en el cual se documentó la configuración del entorno de desarrollo, la gestión del código fuente mediante repositorios GitHub, las convenciones y guías de estilo utilizadas por el equipo, así como la configuración de despliegue del software. De igual manera, se registró la implementación de la landing page, incluyendo la planificación, backlog, roles de líderes y colaboradores, evidencias de desarrollo, ejecución, documentación de servicios, despliegue del sistema y las conclusiones de colaboración obtenidas durante el trabajo en equipo.
 </div>
 
-**TP**
+<img src="docs\assets\img\Capítulo 1\report_collaboration_contributors_av1.png"/>
+
+**TB1**
 <div align="justify">
 Para el trabajo parcial, se levantaron las correcciones de la primera entrega con el objetivo de mejorar la estructura, consistencia y calidad general del proyecto Kampo. Se realizaron ajustes en los artefactos de análisis y diseño, refinando las user stories, bounded contexts, diagramas C4, diagramas de clases y el modelo de base de datos, permitiendo una mejor representación de la arquitectura y de los procesos del sistema. Asimismo, se fortaleció el Ubiquitous Language y la validación de requerimientos obtenidos a partir de las entrevistas realizadas a los segmentos objetivo.
 
 Además, durante esta etapa se desarrolló el frontend del sistema, incluyendo la implementación de la landing page y de las principales interfaces de usuario de la aplicación web. Para ello, se trabajó en el diseño de componentes visuales, navegación, formularios, vistas funcionales y experiencia de usuario, buscando garantizar una interfaz intuitiva, accesible y alineada con las necesidades del sector agrícola. También se documentaron los avances mediante evidencias de desarrollo, ejecución y despliegue correspondientes a cada sprint realizado por el equipo.
 </div>
 
+<img src="docs\assets\img\Capítulo 1\report_collaboration_contributors_tb1.png"/>
 
-**TB2**
-
-
-**TF**
-
-
-
-
-**TB1**
-
-
-
-**TP1**
-
-
+**AV2**
 
 
 **TB2**
@@ -124,7 +120,8 @@ Además, durante esta etapa se desarrolló el frontend del sistema, incluyendo l
 
 
 
-**TF**
+
+
 
 <div style="page-break-after: always;"></div>
 
@@ -827,6 +824,7 @@ USER PERSONA 02 - Agroindustria mediana y grande
   <img src="docs/assets/img/cap-ii/Luis Ramos.png" width="500"/>
   <br/>
 </p>
+
 ##### 2.3.2. User Task Matrix
 En esta sección se presenta el User Task Matrix considerando los dos segmentos objetivo identificados: ingenieros agrónomos asesores y supervisores, representados por Calor Mendoza, y gestores del sector agroindustrial, representados por Luis Ramos. Las tareas listadas corresponden a actividades que ambos segmentos realizan en su trabajo cotidiano, independientemente de la existencia de la solución propuesta.
 
@@ -936,10 +934,6 @@ USER PERSONA 02
 ![big_picture_event_storming_step3_1](docs/assets/img/event-storming/big_picture_event_storming_step3_1.png)
 
 ![big_picture_event_storming_step3_2](docs/assets/img/event-storming/big_picture_event_storming_step3_2.png)
-
-
-**Paso 10: Bounded Context**
-![Bounded-Context](docs/assets/img/event-storming/BoundedContext.png)
 
 ## 2.5. Ubiquitous Language
 <div align="justify">
