@@ -145,5 +145,4 @@ ConfigureAlertRuleCommand --> AlertRule
 EvaluateConditionCommand --> AlertRule
 SendAlertCommand --> Alert
 MarkAlertReadCommand --> Alert
-
 @enduml
