@@ -141,6 +141,9 @@ package "com.acme.kampo.platform"{
                 +save(inventory: Inventory):Inventory
             }
         }
+        package "infrastructure.persistence.jpa.repositories"{
+            interface InventoryJpaRepository <<jpa repository>>
+        }
         package "infrastructure.persistence.jpa.adapters"{
             class InventoryRepositoryImpl <<adapter>>
         }
@@ -169,6 +172,10 @@ InventoryQueryServiceImpl ..|> InventoryQueryService
 InventoryCommandServiceImpl --> InventoryRepository
 InventoryQueryServiceImpl --> InventoryRepository
 InventoryRepositoryImpl ..|> InventoryRepository
+
+InventoryPersistenceEntity --> Inventory : toDomainModel()
+InventoryRepositoryImpl --> InventoryPersistenceEntity : uses
+InventoryJpaRepository --> InventoryPersistenceEntity : manages
 
 Inventory --> InventoryId
 Supplier --> SupplierId

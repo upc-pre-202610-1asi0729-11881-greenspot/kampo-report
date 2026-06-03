@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="5f0d69e7-1262-41c4-b37f-5b1eef910611" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,7 +35,7 @@
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "feature/corrections",
+    "git-widget-placeholder": "develop",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/ACER/Desktop/Kampo-Report",
     "node.js.detected.package.eslint": "true",
@@ -52,6 +51,9 @@
       <recent name="C:\Users\ACER\Desktop\Kampo-Report\docs\assets" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/docs/assets/img/class-diagram/InventoryManagement" />
+      <recent name="$PROJECT_DIR$/docs/Arquitecture/img" />
+      <recent name="$PROJECT_DIR$/docs/Arquitecture" />
       <recent name="C:\Users\ACER\Desktop\Kampo-Report\docs\assets\img" />
     </key>
   </component>
