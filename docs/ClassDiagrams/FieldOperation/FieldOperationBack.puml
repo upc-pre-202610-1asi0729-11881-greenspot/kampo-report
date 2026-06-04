@@ -1,147 +1,341 @@
 @startuml
-left to right direction
 title Class Diagram - Field Operation (Backend)
+left to right direction
 
-package "domain" {
-  together {
-    package "commands" {
-      class ScheduleFieldVisitCommand {
-        -fieldId: FieldId
-        -scheduledAt: LocalDateTime
-      }
-      class CompleteFieldVisitCommand {
-        -fieldVisitId: FieldVisitId
-        -doneAt: LocalDateTime
-      }
-      class RegisterObservationCommand {
-        -fieldVisitId: FieldVisitId
-        -notes: String
-        -pestName: String
-        -pestSeverity: Severity
-        -diseaseName: String
-        -diseaseSeverity: Severity
-        -recommendation: String
-      }
-      class UploadEvidenceCommand {
-        -observationId: ObservationId
-        -evidenceUrl: String
-      }
-      class ImplementRecommendationCommand {
-        -observationId: ObservationId
-        -recommendation: String
-      }
+package "com.acme.kampo.platform" {
+
+    package "fieldoperation" {
+
+        package "interfaces.rest" {
+
+            class FieldVisitController <<controller>> {
+                -fieldVisitCommandService: FieldVisitCommandService
+                -fieldVisitQueryService: FieldVisitQueryService
+
+                +scheduleFieldVisit(resource: CreateFieldVisitResource): ResponseEntity<?>
+                +completeFieldVisit(fieldVisitId: Long): ResponseEntity<?>
+                +getFieldVisitById(fieldVisitId: Long): ResponseEntity<?>
+                +getFieldVisitsByField(fieldId: Long): ResponseEntity<?>
+            }
+
+            class ObservationController <<controller>> {
+                -observationCommandService: ObservationCommandService
+                -observationQueryService: ObservationQueryService
+
+                +registerObservation(resource: CreateObservationResource): ResponseEntity<?>
+                +getObservationById(observationId: Long): ResponseEntity<?>
+                +getObservationsByFieldVisit(fieldVisitId: Long): ResponseEntity<?>
+            }
+        }
+
+        package "interfaces.acl" {
+
+            interface FieldOperationContextFacade <<facade>> {
+                +fetchFieldVisitIdBy(fieldId: Long): Long
+            }
+        }
+
+        package "interfaces.events" {
+
+            class FieldVisitCompletedIntegrationEvent <<integration event>>
+            class ObservationRegisteredIntegrationEvent <<integration event>>
+        }
+
+        package "application.commandservices" {
+
+            interface FieldVisitCommandService <<service>> {
+                +handle(command: ScheduleFieldVisitCommand): Result<FieldVisit, ApplicationError>
+                +handle(command: CompleteFieldVisitCommand): Result<FieldVisit, ApplicationError>
+            }
+
+            interface ObservationCommandService <<service>> {
+                +handle(command: RegisterObservationCommand): Result<Observation, ApplicationError>
+            }
+        }
+
+        package "application.queryservices" {
+
+            interface FieldVisitQueryService <<service>> {
+                +handle(query: GetFieldVisitByIdQuery): Optional<FieldVisit>
+                +handle(query: GetFieldVisitsByFieldQuery): List<FieldVisit>
+            }
+
+            interface ObservationQueryService <<service>> {
+                +handle(query: GetObservationByIdQuery): Optional<Observation>
+                +handle(query: GetObservationsByFieldVisitQuery): List<Observation>
+            }
+        }
+
+        package "application.internal.commandservices" {
+
+            class FieldVisitCommandServiceImpl <<service>> {
+                -fieldVisitRepository: FieldVisitRepository
+
+                +handle(command: ScheduleFieldVisitCommand): Result<FieldVisit, ApplicationError>
+                +handle(command: CompleteFieldVisitCommand): Result<FieldVisit, ApplicationError>
+            }
+
+            class ObservationCommandServiceImpl <<service>> {
+                -observationRepository: ObservationRepository
+
+                +handle(command: RegisterObservationCommand): Result<Observation, ApplicationError>
+            }
+        }
+
+        package "application.internal.queryservices" {
+
+            class FieldVisitQueryServiceImpl <<service>> {
+                -fieldVisitRepository: FieldVisitRepository
+
+                +handle(query: GetFieldVisitByIdQuery): Optional<FieldVisit>
+                +handle(query: GetFieldVisitsByFieldQuery): List<FieldVisit>
+            }
+
+            class ObservationQueryServiceImpl <<service>> {
+                -observationRepository: ObservationRepository
+
+                +handle(query: GetObservationByIdQuery): Optional<Observation>
+                +handle(query: GetObservationsByFieldVisitQuery): List<Observation>
+            }
+        }
+
+        package "application.internal.eventhandlers" {
+
+            class FieldVisitCompletedEventHandler <<event handler>> {
+                -eventPublisher: ApplicationEventPublisher
+                +on(event: FieldVisitCompletedEvent): void
+            }
+
+            class ObservationRegisteredEventHandler <<event handler>> {
+                -eventPublisher: ApplicationEventPublisher
+                +on(event: ObservationRegisteredEvent): void
+            }
+        }
+
+        package "application.acl" {
+
+            class FieldOperationContextFacadeImpl <<facade>> {
+                -fieldVisitQueryService: FieldVisitQueryService
+
+                +fetchFieldVisitIdBy(fieldId: Long): Long
+            }
+        }
+
+        package "domain.model.commands" {
+
+            class ScheduleFieldVisitCommand <<command>> {
+                +fieldId: Long
+                +scheduledAt: LocalDateTime
+            }
+
+            class CompleteFieldVisitCommand <<command>> {
+                +fieldVisitId: Long
+            }
+
+            class RegisterObservationCommand <<command>> {
+                +fieldVisitId: Long
+                +notes: String
+                +pestName: String
+                +pestSeverity: Severity
+                +diseaseName: String
+                +diseaseSeverity: Severity
+                +recommendation: String
+                +evidenceUrl: String
+            }
+        }
+
+        package "domain.model.queries" {
+
+            class GetFieldVisitByIdQuery <<query>> {
+                +fieldVisitId: Long
+            }
+
+            class GetFieldVisitsByFieldQuery <<query>> {
+                +fieldId: Long
+            }
+
+            class GetObservationByIdQuery <<query>> {
+                +observationId: Long
+            }
+
+            class GetObservationsByFieldVisitQuery <<query>> {
+                +fieldVisitId: Long
+            }
+        }
+
+        package "domain.model.aggregates" {
+
+            class FieldVisit <<aggregate>> {
+                -id: FieldVisitId
+                -fieldId: FieldId
+                -scheduledAt: LocalDateTime
+                -doneAt: LocalDateTime
+                -status: FieldVisitStatus
+
+                +create(command: ScheduleFieldVisitCommand): FieldVisit
+                +complete(command: CompleteFieldVisitCommand): void
+
+                +getId(): FieldVisitId
+                +getFieldId(): FieldId
+                +getStatus(): FieldVisitStatus
+            }
+
+            class Observation <<aggregate>> {
+                -id: ObservationId
+                -fieldVisitId: FieldVisitId
+                -notes: String
+                -pestName: String
+                -pestSeverity: Severity
+                -diseaseName: String
+                -diseaseSeverity: Severity
+                -recommendation: String
+                -evidenceUrl: String
+
+                +create(command: RegisterObservationCommand): Observation
+
+                +getId(): ObservationId
+                +getFieldVisitId(): FieldVisitId
+            }
+        }
+
+        package "domain.model.enums" {
+
+            enum FieldVisitStatus {
+                SCHEDULED
+                DONE
+            }
+
+            enum Severity {
+                LOW
+                MEDIUM
+                HIGH
+                CRITICAL
+            }
+        }
+
+        package "domain.model.valueobjects" {
+
+            class FieldVisitId <<value object>> {
+                -value: Long
+                +of(value: Long): FieldVisitId
+                +getValue(): Long
+            }
+
+            class ObservationId <<value object>> {
+                -value: Long
+                +of(value: Long): ObservationId
+                +getValue(): Long
+            }
+
+            class FieldId <<value object>> {
+                -value: Long
+                +of(value: Long): FieldId
+                +getValue(): Long
+            }
+        }
+
+        package "domain.model.events" {
+
+            class FieldVisitCompletedEvent <<domain event>>
+            class ObservationRegisteredEvent <<domain event>>
+        }
+
+        package "domain.repositories" {
+
+            interface FieldVisitRepository <<repository>> {
+                +findById(id: Long): Optional<FieldVisit>
+                +findByFieldId(fieldId: Long): List<FieldVisit>
+                +save(fieldVisit: FieldVisit): FieldVisit
+            }
+
+            interface ObservationRepository <<repository>> {
+                +findById(id: Long): Optional<Observation>
+                +findByFieldVisitId(fieldVisitId: Long): List<Observation>
+                +save(observation: Observation): Observation
+            }
+        }
+
+        package "infrastructure.persistence.jpa.repositories" {
+
+            interface FieldVisitJpaRepository <<jpa repository>>
+            interface ObservationJpaRepository <<jpa repository>>
+        }
+
+        package "infrastructure.persistence.jpa.adapters" {
+
+            class FieldVisitRepositoryImpl <<adapter>>
+            class ObservationRepositoryImpl <<adapter>>
+        }
+
+        package "infrastructure.persistence.jpa.entities" {
+
+            class FieldVisitPersistenceEntity <<entity>>
+            class ObservationPersistenceEntity <<entity>>
+        }
     }
 
-    package "model" {
-      package "aggregate" {
-        class FieldVisit <<Aggregate>>{
-          -id: FieldVisitId
-          -fieldId: FieldId
-          -scheduledAt: LocalDateTime
-          -doneAt: LocalDateTime
-          -status: FieldVisitStatus
-          -observations: List<Observation>
-          +schedule(command: ScheduleFieldVisitCommand): FieldVisit
-          +complete(command: CompleteFieldVisitCommand): void
-          +addObservation(command: RegisterObservationCommand): Observation
-          +uploadEvidence(command: UploadEvidenceCommand): void
-          +implementRecommendation(command: ImplementRecommendationCommand): void
-          +getId(): FieldVisitId
-          +getFieldId(): FieldId
-          +getStatus(): FieldVisitStatus
-          +getObservations(): List<Observation>
-          +isCompleted(): boolean
-        }
-      }
+    package "shared" {
 
-      package "entities" {
-        class Observation <<Entity>> {
-          -id: ObservationId
-          -fieldVisitId: FieldVisitId
-          -notes: String
-          -pestName: String
-          -pestSeverity: Severity
-          -diseaseName: String
-          -diseaseSeverity: Severity
-          -recommendation: String
-          -evidenceUrl: String
-          +getId(): ObservationId
-          +getFieldVisitId(): FieldVisitId
-          +getNotes(): String
-          +getPestSeverity(): Severity
-          +getDiseaseSeverity(): Severity
-          +updateEvidence(url: String): void
-          +updateRecommendation(recommendation: String): void
-        }
-      }
+        package "domain.model.aggregates" {
 
-      package "valueobject" {
-        class FieldVisitId {
-          -value: Long
-          +of(value: Long): FieldVisitId
-          +getValue(): Long
+            abstract class AbstractDomainAggregateRoot <<base aggregate>>
         }
-        class FieldId {
-          -value: Long
-          +of(value: Long): FieldId
-          +getValue(): Long
-        }
-        class ObservationId {
-          -value: Long
-          +of(value: Long): ObservationId
-          +getValue(): Long
-        }
-      }
-
-      package "enums" {
-        enum FieldVisitStatus {
-          SCHEDULED
-          DONE
-        }
-        enum Severity {
-          LOW
-          MEDIUM
-          HIGH
-          CRITICAL
-        }
-      }
     }
-  }
-
-  package "services" {
-    interface FieldOperationDomainService {
-      +validateSchedule(fieldVisit: FieldVisit): void
-      +canAddObservation(fieldVisit: FieldVisit): boolean
-      +evaluateSeverity(observation: Observation): Severity
-    }
-  }
-
-  package "repositories" {
-    interface FieldVisitRepository {
-      +findById(id: FieldVisitId): Optional<FieldVisit>
-      +findByFieldId(fieldId: FieldId): List<FieldVisit>
-      +save(fieldVisit: FieldVisit): FieldVisit
-      +delete(id: FieldVisitId): void
-    }
-  }
 }
 
-ScheduleFieldVisitCommand        ..> FieldVisit
-CompleteFieldVisitCommand        ..> FieldVisit
-RegisterObservationCommand       ..> FieldVisit
-UploadEvidenceCommand            ..> FieldVisit
-ImplementRecommendationCommand   ..> FieldVisit
+FieldVisitController --> FieldVisitCommandService
+FieldVisitController --> FieldVisitQueryService
 
-FieldVisit   "1" *--> "many" Observation : contains
-FieldVisit   --> FieldVisitId
-FieldVisit   --> FieldId
-FieldVisit   --> FieldVisitStatus
-Observation  --> ObservationId
-Observation  --> FieldVisitId
-Observation  --> Severity
+ObservationController --> ObservationCommandService
+ObservationController --> ObservationQueryService
 
-FieldOperationDomainService ..> FieldVisit
-FieldOperationDomainService ..> Observation
-FieldVisitRepository        ..> FieldVisit
+FieldOperationContextFacadeImpl ..|> FieldOperationContextFacade
+FieldOperationContextFacadeImpl --> FieldVisitQueryService
+
+FieldVisitCommandServiceImpl ..|> FieldVisitCommandService
+ObservationCommandServiceImpl ..|> ObservationCommandService
+
+FieldVisitQueryServiceImpl ..|> FieldVisitQueryService
+ObservationQueryServiceImpl ..|> ObservationQueryService
+
+FieldVisitCommandServiceImpl --> FieldVisitRepository
+ObservationCommandServiceImpl --> ObservationRepository
+
+FieldVisitQueryServiceImpl --> FieldVisitRepository
+ObservationQueryServiceImpl --> ObservationRepository
+
+FieldVisitRepositoryImpl ..|> FieldVisitRepository
+ObservationRepositoryImpl ..|> ObservationRepository
+
+FieldVisitRepositoryImpl --> FieldVisitPersistenceEntity : uses
+ObservationRepositoryImpl --> ObservationPersistenceEntity : uses
+
+FieldVisitJpaRepository --> FieldVisitPersistenceEntity : manages
+ObservationJpaRepository --> ObservationPersistenceEntity : manages
+
+FieldVisitPersistenceEntity --> FieldVisit : toDomainModel()
+ObservationPersistenceEntity --> Observation : toDomainModel()
+
+FieldVisit --> FieldVisitId
+FieldVisit --> FieldId
+FieldVisit --> FieldVisitStatus
+
+Observation --> ObservationId
+Observation --> FieldVisitId
+Observation --> Severity
+
+FieldVisit ..> FieldVisitCompletedEvent : publishes
+Observation ..> ObservationRegisteredEvent : publishes
+
+FieldVisitCompletedEventHandler --> FieldVisitCompletedEvent
+FieldVisitCompletedEventHandler --> FieldVisitCompletedIntegrationEvent : republishes
+
+ObservationRegisteredEventHandler --> ObservationRegisteredEvent
+ObservationRegisteredEventHandler --> ObservationRegisteredIntegrationEvent : republishes
+
+FieldVisit --|> AbstractDomainAggregateRoot
+Observation --|> AbstractDomainAggregateRoot
+
+FieldVisit "1" -- "many" Observation : contains
 
 @enduml

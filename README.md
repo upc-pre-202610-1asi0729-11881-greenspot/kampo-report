@@ -1584,8 +1584,7 @@ Estos archivos representan la estructura de clases, atributos y relaciones de ca
   ![Employee Management Class Diagram](docs/assets/img/class-diagram/EmployeeManagement/EmployeeManagementBack.png)
 - Frontend:
   [Employee Management Frontend](./docs/ClassDiagrams/EmployeeManagement/EmployeeManagementFront.puml)
-  ![Employee Management Class Diagram](docs/assets/img/class-diagram/EmployeeManagement/EmployeeManagementFront.png)
-### Field Operation
+ ### Field Operation
 - Backend:
   [Field Operation Backend](./docs/ClassDiagrams/FieldOperation/FieldOperationBack.puml)
   ![Field Operation Class Diagram](docs/assets/img/class-diagram/FieldOperation/FieldOperationBack.png)
