@@ -54,8 +54,9 @@
 
 **AV2**
 
-| Versión | Fecha      | Autor               | Descripción de modificación                                                                |
-|---------|------------|---------------------|--------------------------------------------------------------------------------------------|
+| Versión | Fecha      | Autor               | Descripción de modificación                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+|---------|------------|---------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| AV2     | 20/06/2026 | • Acuache Lucas Mathias Joaquin <br> • Hurtado Balcazar Rommel Daniel <br> • Tuesta Girón Kiara Lucia | • Aplicar GitFlow correctamente <br> • Corregir nombres de organización/repositorios en GitHub <br> • Agregar imagen del board en Sprint Backlog <br> • Corregir Sprint Goal (orientarñp a negocio) <br> •Corregir Big Picture Event Storming <br> • Refinar diagramas de clase (clases aisladas) <br> • Agregar estadísticas en Collaboration Insights <br> • Agregar SPA al diagrama de contenedores <br> • Alinear diagramas de componentes a  DDD <br> • Corregir nomenclatura de archivos <br> • Agregar archivos .docx faltantes <br> • Corregir mes/año <br> |
 
 
 **TB2**
@@ -289,7 +290,7 @@ La mayoría de agricultores peruanos aún gestionan sus cultivos y finanzas de f
 ##### 1.2.1. Antecedentes y problemática
 
 ###### Antecedentes
-La agricultura peruana representa el 4.6% del PBI nacional y es uno de los pilares históricos de la economía del país (BCRP, 2024). En la última década, las exportaciones agrícolas crecieron de US$4,400 millones en 2013 a US$10,500 millones en 2023, evidenciando el enorme potencial del sector (MIDAGRI, 2024). Sin embargo, este crecimiento ha sido desigual: mientras las grandes empresas agroexportadoras adoptan tecnología de precisión, sensores y análisis de datos, el agricultor pequeño y mediano sigue gestionando su campo y sus finanzas de forma manual, con cuadernos o herramientas genéricas como hojas de cálculo.
+La agricultura peruana representa el 4.6% del PBI nacional y es uno de los pilares históricos de la economía del país (BCRP, 2024). En la última década, las exportaciones agrícolas crecieron de US 4,400 millones en 2013 a US 10,500 millones en 2023, evidenciando el enorme potencial del sector (MIDAGRI, 2024). Sin embargo, este crecimiento ha sido desigual: mientras las grandes empresas agroexportadoras adoptan tecnología de precisión, sensores y análisis de datos, el agricultor pequeño y mediano sigue gestionando su campo y sus finanzas de forma manual, con cuadernos o herramientas genéricas como hojas de cálculo.
 
 Según el MIDAGRI, el 85% de los agricultores peruanos trabaja en parcelas de menos de 10 hectáreas, predominando unidades productivas de entre 3 y 10 ha. Este segmento mayoritario enfrenta una profunda brecha tecnológica: según la Encuesta Nacional Agropecuaria del INEI (2022), solo el 7% de los pequeños y medianos productores utiliza sistemas de riego tecnificado, frente al 53% entre los grandes productores. A nivel nacional, apenas el 20% de la superficie agrícola cuenta con riego tecnificado (Business Empresarial, 2024).
 
