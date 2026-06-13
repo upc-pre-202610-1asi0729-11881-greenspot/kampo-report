@@ -960,19 +960,6 @@ Dentro de Kampo, nuestro contexto, se han definido los siguientes términos clav
 ## Capítulo III: Requirements Specification
 ## 3.1. User Stories
 
-<div>
-    <table>
-<thead>
-    <th>Epic/Story ID</th>
-    <th>Titulo</th>
-    <th>Descripcion</th>
-    <th>Criterios de Aceptacion</th>
-    <th>Relacionado con (Epic ID)</th>
-</thead>
-</table>
-</div>
-
-
 | Epic / Story ID | Título | Descripción | Criterios de Aceptación | Relacionado con (Epic ID) |
 |---|---|---|---|---|
 |US01|Registrar cultivo por lote|Como ingeniero agrónomo y agroindustria mediana y grande quiero registrar cultivos por lote, para organizar la operación agrícola| **Escenario 1: Registro exitoso** <br><br> • **Dado que** el usuario cuenta con permisos para gestionar inventario. <br> • **Cuando** el usuario registra un cultivo con datos válidos <br> • **Entonces** el cultivo queda registrado correctamente <br><br> **Escenario 2: Validación de datos obligatorios** <br><br> • **Dado que** el usuario cuenta con permisos para gestionar inventario <br> • **Cuando** el usuario no completa los datos requeridos <br> • **Entonces** el sistema rechaza el registro e informa que los datos son incompletos| EP01 |
