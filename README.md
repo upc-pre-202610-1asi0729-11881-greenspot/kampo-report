@@ -19,13 +19,9 @@
 
 ### Team Members:
 
-   Hurtado Balcazar Rommel Daniel     u202517474 
+ Hurtado Balcazar Rommel Daniel     u202517474
 
- Ramos Fuentes Rivera Adriana Nicole  u202018427 
-
- Tuesta Girón Kiara Lucia        u20251I477 
-
- Arroyo Gonzales Emily Juliette     u202311469 
+ Tuesta Girón Kiara Lucia        u20251I477
 
  Acuache Lucas Mathias Joaquin     u202314898 
 
