@@ -110,6 +110,11 @@ Además, durante esta etapa se desarrolló el frontend del sistema, incluyendo l
 <img src="docs\assets\img\Capítulo 1\report_collaboration_contributors_tb1.png"/>
 
 **AV2**
+<div align="justify">
+Para esta entrega se realizaron las correcciones señaladas en la retroalimentación de TB1, incluyendo la aplicación correcta de GitFlow como workflow de control de versiones, la corrección de los nombres de la organización y los repositorios en GitHub, y la actualización del Big Picture Event Storming para mantener consistencia con el Ubiquitous Language y con los bounded contexts implementados. Asimismo, se refinaron los diagramas de clases de cada bounded context, conectando las clases que se encontraban aisladas y alineando los diagramas de componentes a Domain-Driven Design.
+
+En paralelo, el equipo avanzó en la implementación del backend (Spring Boot) siguiendo arquitectura hexagonal y Domain-Driven Design, completando los bounded contexts de Alert Management y Report durante el Sprint 3, además de continuar con el desarrollo del Frontend Web Application en Angular iniciado en el Sprint 2. Se documentaron los endpoints REST mediante Swagger/OpenAPI y se llevó a cabo el Sprint Planning 3, definiendo un Sprint Goal orientado a entregar valor de negocio a los segmentos de ingenieros agrónomos y agroindustria. La colaboración se organizó a través de los repositorios kampo-report (documentación), kampo-frontend (Angular), kampo-website (landing page) y kampo-platform (backend Spring Boot), aplicando GitFlow con ramas feature por bounded context y revisión vía Pull Requests.
+</div>
 
 
 **TB2**
@@ -852,13 +857,6 @@ SEGMENTO 01
 SEGMENTO 02
 <p align="center">
   <img src="docs/assets/img/cap-ii/SEGMENTO 2.png" width="500"/>
-
-<p aling="center"><img src="docs/assets/img/Capítulo%202/SEGMENTO 1.png" width="500"/><br/></p>
-
-SEGMENTO 02
-<p align="center">
-  <img src="docs/assets/img/Capítulo%202/SEGMENTO 2.png" width="500"/>
-
   <br/>
 </p>
 
@@ -870,8 +868,6 @@ USER PERSONA 01
 
   <img src="docs/assets/img/cap-ii/PERSONA 1.png" width="500"/>
 
-  <img src="docs/assets/img/Capítulo%202/PERSONA 1.png" width="500"/>
-
   <br/>
 </p>
 
@@ -879,8 +875,6 @@ USER PERSONA 02
 <p align="center">
 
   <img src="docs/assets/img/cap-ii/PERSONA 2.png" width="500"/>
-
-  <img src="docs/assets/img/Capítulo%202/PERSONA 2.png" width="500"/>
 
   <br/>
 </p>
