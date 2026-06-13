@@ -2012,31 +2012,13 @@ los sprints de implementación posteriores.
         <th><b>Attendees (to planning meeting)</b></th>
         <th> Hurtado Balcazar Rommel Daniel /<br> Ramos Fuentes Rivera Adriana Nicole/<br>Tuesta Girón Kiara Lucia/ <br>Arroyo Gonzales Emily Juliette / <br>Acuache Lucas Mathias Joaquin </th>
     </tr>
+    
     <tr>
-        <th><b>Sprint 0 Review Summary</b></th>
-        <th>No aplica. Este es el primer sprint del proyecto.</th>
-    </tr>
-    <tr>
-        <th><b>Sprint 0 Retrospective Summary</b></th>
-        <th>No aplica. Este es el primer sprint del proyecto.</th>
-    </tr>
-    <tr>
-        <th><b>Sprint Goal & User Stories</b></th>
+        <th><b>Sprint 1 Goal</b></th>
         <th>
-        </th>
-    </tr>
-    <tr>
-        <th><b>Sprint n Goal</b></th>
-        <th>
-            > Nuestro objetivo es proporcionar documentación completa y estructurada del proyecto KAMPO en formato Markdown, que abarque el contexto del problema, el proceso Lean UX,
-            > los requisitos del usuario y la configuración técnica.
-            > Creemos que esto proporciona una comprensión clara y compartida de la visión del producto,
-            > el problema de negocio y la base técnica al equipo de GreenSpot y
-            > a las partes interesadas del ámbito académico.
-            > Esto se confirmará cuando todas las secciones de la documentación —incluidas:
-            > el Perfil de la Startup, la Declaración del Problema, el Lienzo Lean UX, las Historias de Usuario,
-            > los Segmentos Objetivo y la Gestión de la Configuración del Software— estén completas,
-            > revisadas y incorporadas al repositorio principal.
+            Our focus is on delivering complete and structured documentation of the KAMPO project in Markdown format, covering the problem context, the Lean UX process, user requirements, and the technical configuration.
+            We believe this provides a clear and shared understanding of the product vision, the business problem, and the technical foundation to the GreenSpot team and academic stakeholders.
+            This will be confirmed when all documentation sections — including the Startup Profile, Problem Statement, Lean UX Canvas, User Stories, Target Segments, and Software Configuration Management — are complete, reviewed, and merged into the main repository.
         </th>
     </tr>
     <tr>
@@ -2353,9 +2335,9 @@ cubriendo los principales módulos de la solución.
     <tr>
         <th><b>Sprint 2 Goal</b></th>
         <th>
-            > Our focus is on delivering the class diagrams for all bounded contexts of KAMPO and the first functional modules of the Frontend Web Application.<br>
-            > We believe it delivers a solid architectural foundation and a navigable initial experience to agronomist engineers and agroindustry managers.<br>
-            > This will be confirmed when all bounded contexts have their frontend and backend class diagrams published in the repository, and when users can navigate through the initial modules of the Angular web application.
+            Our focus is on delivering the first navigable modules of the KAMPO Web Application to agronomist engineers and agroindustry managers.<br>
+            We believe it delivers an early hands-on experience of the platform's core sections (crop monitoring, financial control, alerts, inventory, and reports) to our target segments.<br>
+            This will be confirmed when users can navigate through the initial Angular modules for each bounded context and provide feedback on the proposed information architecture.
         </th>
     </tr>
     <tr>
