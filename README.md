@@ -2012,7 +2012,10 @@ los sprints de implementación posteriores.
         <th><b>Attendees (to planning meeting)</b></th>
         <th> Hurtado Balcazar Rommel Daniel /<br> Ramos Fuentes Rivera Adriana Nicole/<br>Tuesta Girón Kiara Lucia/ <br>Arroyo Gonzales Emily Juliette / <br>Acuache Lucas Mathias Joaquin </th>
     </tr>
-    
+    <tr>
+        <th><b>Sprint Goal & User Stories</b></th>
+        <th></th>
+    </tr>
     <tr>
         <th><b>Sprint 1 Goal</b></th>
         <th>
@@ -2029,7 +2032,6 @@ los sprints de implementación posteriores.
         <th><b>Sum of Story Points</b></th>
         <th>20 Story Points</th>
     </tr>
-
 </table>
 
 ###### 5.2.1.2. Aspect Leaders and Collaborators
