@@ -19,18 +19,12 @@
 
 ### Team Members:
 
-   Hurtado Balcazar Rommel Daniel     u202517474 
-
- Ramos Fuentes Rivera Adriana Nicole  u202018427 
-
- Tuesta Girón Kiara Lucia        u20251I477 
-
- Arroyo Gonzales Emily Juliette     u202311469 
+ Hurtado Balcazar Rommel Daniel     u202517474 
 
  Acuache Lucas Mathias Joaquin     u202314898 
 
 
-<strong>20 de Junio de 2026</strong><br>
+<strong>19 de Junio de 2026</strong><br>
 </div>
 
 
@@ -47,16 +41,16 @@
 
 **TB1**
 
-| Versión | Fecha     | Autor               | Descripción de modificación |
-|--------|-----------|---------------------|-----------------------------|
-| TB1     | 14/05/2026| • Acuache Lucas Mathias Joaquin <br> • Arroyo Gonzales Emily Juliette <br> • Hurtado Balcazar Rommel Daniel <br> • Ramos Fuentes Rivera Adriana Nicole <br> • Tuesta Girón Kiara Lucia|                             |
+| Versión | Fecha     | Autor               | Descripción de modificación                                                                          |
+|--------|-----------|---------------------|------------------------------------------------------------------------------------------------------|
+| TB1     | 14/05/2026| • Acuache Lucas Mathias Joaquin <br> • Arroyo Gonzales Emily Juliette <br> • Hurtado Balcazar Rommel Daniel <br> • Ramos Fuentes Rivera Adriana Nicole <br> • Tuesta Girón Kiara Lucia| Desarrollo del Frontend - MockApi de Kampo para pruebas en el frontend - Mejoras en la Documentacion |
 
 
 **AV2**
 
-| Versión | Fecha      | Autor               | Descripción de modificación                                                                |
-|---------|------------|---------------------|--------------------------------------------------------------------------------------------|
-
+| Versión | Fecha      | Autor | Descripción de modificación                                                                             |
+|---------|------------|-------|---------------------------------------------------------------------------------------------------------|
+|AV2| 19/06/2026 |  • Acuache Lucas Mathias Joaquin <br>  • Hurtado Balcazar Rommel Daniel     | Desarollo de bounded context - Despliegue - Comunicacion Backend-Frontend - Mejoras de la documentacion |
 
 **TB2**
 
@@ -113,7 +107,17 @@ Además, durante esta etapa se desarrolló el frontend del sistema, incluyendo l
 <img src="docs\assets\img\Capítulo 1\report_collaboration_contributors_tb1.png"/>
 
 **AV2**
+<div align="justify">
+Asimismo, durante esta etapa se desarrolló la implementación del backend de la aplicación siguiendo los principios de Domain-Driven Design (DDD). Para ello, se estructuró la solución en diez bounded contexts, cada uno encargado de gestionar un conjunto específico de responsabilidades del negocio agrícola, favoreciendo la modularidad, mantenibilidad y escalabilidad de la arquitectura. Además, se implementaron las entidades, agregados, servicios de aplicación, repositorios, comandos y consultas necesarios para soportar los procesos funcionales definidos en las historias de usuario priorizadas.
 
+De igual manera, se trabajó en la integración entre el frontend y el backend mediante el consumo de APIs REST, garantizando la comunicación adecuada entre ambas capas del sistema y permitiendo la ejecución de los flujos funcionales desarrollados. También se realizaron pruebas de integración para validar el correcto intercambio de información entre los distintos módulos de la plataforma.
+
+Por otro lado, se documentó y ejecutó el despliegue del backend en un entorno cloud, configurando los servicios necesarios para su publicación, disponibilidad y acceso remoto. Este proceso incluyó la gestión de repositorios, automatización de despliegues, configuración de variables de entorno y validación del funcionamiento de la aplicación en producción.
+
+Finalmente, se desarrolló el Sprint 3 del proyecto, registrando la planificación, asignación de tareas, implementación de funcionalidades, seguimiento de avances y evidencias de desarrollo correspondientes. Asimismo, se documentaron los resultados obtenidos, las mejoras incorporadas durante la iteración y las conclusiones derivadas del trabajo colaborativo realizado por el equipo, consolidando una versión funcional e integrada de la solución propuesta.
+</div>
+
+<img src="docs\assets\img\Capítulo 1\report_collaboration_contributors_av2.png"/>
 
 **TB2**
 
@@ -280,9 +284,6 @@ La mayoría de agricultores peruanos aún gestionan sus cultivos y finanzas de f
 |                                Miembro                                 | Descripción |
 |:----------------------------------------------------------------------:|:---|
 |  <img src="docs/assets/img/Chapter1/members/Rommel.jpg" width="200"/>  | **Hurtado Balcazar Rommel Daniel - U202517474** <br><br> Soy Rommel Hurtado Balcázar, tengo 23 años y estudio Ingeniería de Software en el 5to-6to ciclo. Me considero un líder técnico orientado a la resolución de problemas, con capacidad para tomar decisiones y guiar al equipo hacia los objetivos del proyecto.<br><br>Cuento con experiencia en desarrollo fullstack, manejando tanto frontend como backend. En el lado del servidor trabajo principalmente con Java, y en el frontend utilizo React. Además, tengo conocimientos en bases de datos relacionales con SQL y no relacionales con MongoDB, así como experiencia con Node.js, Python y HTML/CSS.<br><br>He desarrollado proyectos propios fuera del ámbito universitario, lo que me ha dado una visión completa del ciclo de desarrollo de software. También me desenvuelvo en inglés a nivel intermedio-avanzado, lo que me permite acceder a documentación técnica y comunicarme en entornos internacionales. |
-| <img src="docs/assets/img/Chapter1/members/Adriana.jpg" width="200"/>  | **Ramos Fuentes Rivera Adriana Nicole - U202018427** <br><br> Soy Adriana Nicole Ramos Fuentes Rivera, estudio la carrera de Ingeniería de Software en la UPC, actualmente estoy en el 5to ciclo. Me gusta aprender nuevas tecnologías y conocimientos complementarios que me permitan desarrollar soluciones a problemáticas dentro de un contexto real. Cuento con experiencia en lenguajes de programación como C++ y Python, además de conocimientos en base de datos no relacional como MongoDB. Dentro del equipo, me enfoco en el desarrollo de frontend y backend, aplicando principios de Domain Driven Design y el modelo de arquitectura C4 para documentar sistemas de software de manera clara y jerárquica. Me considero una persona organizada y empática. |
-|  <img src="docs/assets/img/Chapter1/members/Kiara.jpg" width="200"/>   | **Tuesta Girón Kiara Lucia - U20251I477** <br><br> Soy estudiante de Ingeniería de Software, tengo 20 años y me interesa el desarrollo de aplicaciones. He trabajado con lenguajes como C++ y C#, y también tengo experiencia usando SQL para bases de datos. En trabajos en equipo me gusta participar activamente, aportar ideas y ayudar a que el grupo avance. |
-|  <img src="docs/assets/img/Chapter1/members/Emily.png" width="200"/>   | **Arroyo Gonzales Emily Juliette - U202311469** <br><br> Soy estudiante de la carrera de Ingeniería de Software, tengo 20 años y tengo experiencia en lenguajes como C++ y MongoDB. En trabajos grupales me gusta aportar ideas que contribuyan a mi grupo y avanzar según lo asignado. |
 | <img src="docs/assets/img/Chapter1/members/Mathias.jpeg" width="200"/> | **Acuache Lucas Mathias Joaquin - U202314898** <br><br> Soy Mathias Joaquin Acuache Lucas, me encuentro en el sexto ciclo de la carrera de Ingeniería de Software. Tengo experiencia en C++, SQL y MongoDB, además de utilizar GitHub de manera correcta. Me considero una persona que trata de apoyar en los diversos trabajos en equipo e investigo cosas nuevas. |
 
 #### 1.2. Solution Profile
@@ -1584,6 +1585,7 @@ Estos archivos representan la estructura de clases, atributos y relaciones de ca
   ![Employee Management Class Diagram](docs/assets/img/class-diagram/EmployeeManagement/EmployeeManagementBack.png)
 - Frontend:
   [Employee Management Frontend](./docs/ClassDiagrams/EmployeeManagement/EmployeeManagementFront.puml)
+  ![Employee Management Class Diagram](docs/assets/img/class-diagram/EmployeeManagement/EmployeeManagementFront.png)
  ### Field Operation
 - Backend:
   [Field Operation Backend](./docs/ClassDiagrams/FieldOperation/FieldOperationBack.puml)
@@ -1593,8 +1595,21 @@ Estos archivos representan la estructura de clases, atributos y relaciones de ca
   ![Field Operation Class Diagram](docs/assets/img/class-diagram/FieldOperation/FieldOperationFront.png)
 ### Financial Management
 - Backend:
-  [Financial Management Backend](./docs/ClassDiagrams/FinancialManagement/FinancialBack.puml)
-  ![Financial Management Class Diagram](docs/assets/img/class-diagram/FinancialManagement/FinancialManagementBack.png)
+  [Financial Management Backend](./docs/ClassDiagrams/FinancialManagement/overviewFiancial.puml)
+  ![Financial Management Class Diagram](docs/assets/img/class-diagram/FinancialManagement/overviewFinancial.png)
+
+  [Financial Management expense](./docs/ClassDiagrams/FinancialManagement/expenseFinnancial.puml)
+  ![Financial Management expense Class Diagram](docs/assets/img/class-diagram/FinancialManagement/expenseFiancial.png)
+
+  [Financial Management income](./docs/ClassDiagrams/FinancialManagement/incomeFinancial.puml)
+  ![Financial Management income Class Diagram](docs/assets/img/class-diagram/FinancialManagement/incomeFinancial.png)
+
+  [Financial Management profitability](./docs/ClassDiagrams/FinancialManagement/profitFinancial.puml)
+  ![Financial Management profitability Class Diagram](docs/assets/img/class-diagram/FinancialManagement/profitFinancial.png)
+
+  [Financial Management sales](./docs/ClassDiagrams/FinancialManagement/saleFinancial.puml)
+  ![Financial Management sales Class Diagram](docs/assets/img/class-diagram/FinancialManagement/saleFinancial.png)
+
 - Frontend:
   [Financial Management Frontend](./docs/ClassDiagrams/FinancialManagement/FinancialFront.puml)
   ![Financial Management Class Diagram](docs/assets/img/class-diagram/FinancialManagement/FinancialManagementFront.png)

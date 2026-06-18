@@ -1,0 +1,242 @@
+@startuml
+title Class Diagram - Financial Management (Profitability Module)
+left to right direction
+
+package "com.acme.kampo.platform.financial" {
+
+    package "interfaces.rest" {
+        class ProfitabilityController <<controller>> {
+            -profitabilityCommandService: ProfitabilityCommandService
+            -profitabilityQueryService: ProfitabilityQueryService
+            +calculateProfitability(resource: CalculateProfitabilityResource): ResponseEntity<?>
+            +getProfitabilityByFundo(fundoId: Long, seasonId: Long): ResponseEntity<?>
+            +getProfitabilityHistory(fundoId: Long): ResponseEntity<?>
+        }
+    }
+
+    package "interfaces.acl" {
+        interface FinancialContextFacade <<facade>> {
+            +fetchExpenseTotalByFundo(fundoId: Long): Money
+            +fetchIncomeTotalByFundo(fundoId: Long): Money
+            +fetchSaleTotalByFundo(fundoId: Long): Money
+            +fetchProfitabilityByFundoAndSeason(fundoId: Long, seasonId: Long): Optional<Profitability>
+        }
+    }
+
+    package "interfaces.events" {
+        class ProfitabilityCalculatedIntegrationEvent <<integration event>> {
+            +fundoId: Long
+            +seasonId: Long
+            +netProfit: BigDecimal
+            +marginPercentage: Double
+            +occurredOn: LocalDateTime
+        }
+    }
+
+    ' ── APPLICATION LAYER ─────────────────────
+    package "application.commandservices" {
+        interface ProfitabilityCommandService <<service>> {
+            +handle(command: CalculateProfitabilityCommand): Result<Profitability, ApplicationError>
+        }
+    }
+
+    package "application.queryservices" {
+        interface ProfitabilityQueryService <<service>> {
+            +handle(query: GetProfitabilityByFundoQuery): Optional<Profitability>
+            +handle(query: GetProfitabilityBySeasonQuery): Optional<Profitability>
+            +handle(query: GetProfitabilityHistoryQuery): List<Profitability>
+        }
+    }
+
+    package "application.internal.commandservices" {
+        class ProfitabilityCommandServiceImpl <<service>> {
+            -expenseRepository: ExpenseRepository
+            -incomeRepository: IncomeRepository
+            -saleRepository: SaleRepository
+            +handle(command: CalculateProfitabilityCommand): Result<Profitability, ApplicationError>
+        }
+    }
+
+    package "application.internal.queryservices" {
+        class ProfitabilityQueryServiceImpl <<service>> {
+            -expenseRepository: ExpenseRepository
+            -incomeRepository: IncomeRepository
+            -saleRepository: SaleRepository
+            +handle(query: GetProfitabilityByFundoQuery): Optional<Profitability>
+            +handle(query: GetProfitabilityBySeasonQuery): Optional<Profitability>
+            +handle(query: GetProfitabilityHistoryQuery): List<Profitability>
+        }
+    }
+
+    package "application.internal.eventhandlers" {
+        class ProfitabilityCalculatedEventHandler <<event handler>> {
+            -eventPublisher: ApplicationEventPublisher
+            +on(event: ProfitabilityCalculatedEvent): void
+        }
+    }
+
+    package "application.acl" {
+        class FinancialContextFacadeImpl <<facade>> {
+            -expenseQueryService: ExpenseQueryService
+            -incomeQueryService: IncomeQueryService
+            -saleQueryService: SaleQueryService
+            -profitabilityQueryService: ProfitabilityQueryService
+            +fetchExpenseTotalByFundo(fundoId: Long): Money
+            +fetchIncomeTotalByFundo(fundoId: Long): Money
+            +fetchSaleTotalByFundo(fundoId: Long): Money
+            +fetchProfitabilityByFundoAndSeason(fundoId: Long, seasonId: Long): Optional<Profitability>
+        }
+    }
+
+    ' ── DOMAIN LAYER ──────────────────────────
+    package "domain.model.commands" {
+        class CalculateProfitabilityCommand <<command>> {
+            +fundoId: Long
+            +seasonId: Long
+            +periodStart: LocalDate
+            +periodEnd: LocalDate
+        }
+    }
+
+    package "domain.model.queries" {
+        class GetProfitabilityByFundoQuery <<query>> {
+            +fundoId: Long
+        }
+        class GetProfitabilityBySeasonQuery <<query>> {
+            +fundoId: Long
+            +seasonId: Long
+        }
+        class GetProfitabilityHistoryQuery <<query>> {
+            +fundoId: Long
+        }
+    }
+
+    package "domain.model.services" {
+        ' NOTE: Profitability is a Domain Service result type / Read Model.
+        ' It is calculated, not mutated. It is NOT an Aggregate Root.
+        class ProfitabilityCalculatorService <<domain service>> {
+            +calculate(income: Money, expenses: Money, sales: Money, fundoId: FundoId, seasonId: SeasonId): Profitability
+        }
+        class Profitability <<value object>> {
+            -fundoId: FundoId
+            -seasonId: SeasonId
+            -totalIncome: Money
+            -totalExpenses: Money
+            -totalSales: Money
+            -netProfit: Money
+            -margin: Double
+            -calculatedAt: LocalDateTime
+            +getNetProfit(): Money
+            +getMarginPercentage(): Double
+            +getTotalIncome(): Money
+            +getTotalExpenses(): Money
+        }
+    }
+
+    package "domain.model.enums" {
+        enum FinancialPeriod {
+            MONTHLY
+            QUARTERLY
+            SEASONAL
+            ANNUAL
+        }
+    }
+
+    package "domain.model.valueobjects" {
+        class Money <<value object>> {
+            -amount: BigDecimal
+            -currency: String
+            +of(amount: BigDecimal, currency: String): Money
+            +add(other: Money): Money
+            +subtract(other: Money): Money
+            +isPositive(): boolean
+            +isZero(): boolean
+        }
+        class FundoId <<value object>> {
+            -value: Long
+            +of(value: Long): FundoId
+            +getValue(): Long
+        }
+        class SeasonId <<value object>> {
+            -value: Long
+            +of(value: Long): SeasonId
+            +getValue(): Long
+        }
+    }
+
+    package "domain.model.events" {
+        class ProfitabilityCalculatedEvent <<domain event>> {
+            +fundoId: FundoId
+            +seasonId: SeasonId
+            +netProfit: Money
+            +marginPercentage: Double
+            +occurredOn: LocalDateTime
+        }
+    }
+
+    ' ── Dependencias de SOLO LECTURA hacia otros aggregates ──
+    package "domain.repositories" {
+        interface ExpenseRepository <<repository>> {
+            +findByFundoId(fundoId: FundoId): List<Expense>
+        }
+        interface IncomeRepository <<repository>> {
+            +findByFundoId(fundoId: FundoId): List<Income>
+        }
+        interface SaleRepository <<repository>> {
+            +findByFundoId(fundoId: FundoId): List<Sale>
+        }
+    }
+
+    package "application.queryservices" {
+        interface ExpenseQueryService <<service>> {
+        }
+        interface IncomeQueryService <<service>> {
+        }
+        interface SaleQueryService <<service>> {
+        }
+    }
+
+    ' ─────────────────────────────────────────
+    ' RELATIONSHIPS
+    ' ─────────────────────────────────────────
+
+    ProfitabilityController --> ProfitabilityCommandService
+    ProfitabilityController --> ProfitabilityQueryService
+
+    FinancialContextFacadeImpl ..|> FinancialContextFacade
+    FinancialContextFacadeImpl --> ExpenseQueryService
+    FinancialContextFacadeImpl --> IncomeQueryService
+    FinancialContextFacadeImpl --> SaleQueryService
+    FinancialContextFacadeImpl --> ProfitabilityQueryService
+
+    ProfitabilityCommandServiceImpl ..|> ProfitabilityCommandService
+    ProfitabilityQueryServiceImpl   ..|> ProfitabilityQueryService
+
+    ' Lee de los repositorios de los otros 3 aggregates (no escribe)
+    ProfitabilityCommandServiceImpl --> ExpenseRepository : reads
+    ProfitabilityCommandServiceImpl --> IncomeRepository  : reads
+    ProfitabilityCommandServiceImpl --> SaleRepository    : reads
+
+    ProfitabilityQueryServiceImpl --> ExpenseRepository : reads
+    ProfitabilityQueryServiceImpl --> IncomeRepository  : reads
+    ProfitabilityQueryServiceImpl --> SaleRepository    : reads
+
+    ProfitabilityCommandServiceImpl ..> CalculateProfitabilityCommand
+
+    ProfitabilityQueryServiceImpl ..> GetProfitabilityByFundoQuery
+    ProfitabilityQueryServiceImpl ..> GetProfitabilityBySeasonQuery
+    ProfitabilityQueryServiceImpl ..> GetProfitabilityHistoryQuery
+
+    Profitability *-- Money
+    Profitability *-- FundoId
+    Profitability *-- SeasonId
+
+    ProfitabilityCommandServiceImpl --> ProfitabilityCalculatorService
+    ProfitabilityCalculatorService ..> Profitability : creates
+    ProfitabilityCalculatorService ..> ProfitabilityCalculatedEvent : publishes
+
+    ProfitabilityCalculatedEventHandler ..> ProfitabilityCalculatedEvent : handles
+    ProfitabilityCalculatedEventHandler ..> ProfitabilityCalculatedIntegrationEvent : publishes
+}
+
+@enduml

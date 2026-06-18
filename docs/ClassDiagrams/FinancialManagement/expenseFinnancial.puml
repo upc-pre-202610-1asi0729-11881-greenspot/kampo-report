@@ -1,0 +1,336 @@
+@startuml
+title Class Diagram - Financial Management (Expense Aggregate)
+left to right direction
+
+package "com.acme.kampo.platform.shared" {
+    package "domain.model.aggregates" {
+        abstract class AbstractDomainAggregateRoot <<base aggregate>> {
+        }
+    }
+}
+
+package "com.acme.kampo.platform.financial" {
+
+    package "interfaces.rest" {
+        class ExpenseController <<controller>> {
+            -expenseCommandService: ExpenseCommandService
+            -expenseQueryService: ExpenseQueryService
+            +createExpense(resource: CreateExpenseResource): ResponseEntity<?>
+            +updateExpense(id: Long, resource: UpdateExpenseResource): ResponseEntity<?>
+            +deleteExpense(id: Long): ResponseEntity<?>
+            +getExpenseById(id: Long): ResponseEntity<?>
+            +getExpensesByFundo(fundoId: Long): ResponseEntity<?>
+            +getAllExpenses(): ResponseEntity<?>
+        }
+
+        class ExpenseCategoryController <<controller>> {
+            -expenseCommandService: ExpenseCommandService
+            -expenseQueryService: ExpenseQueryService
+            +createCategory(resource: CreateExpenseCategoryResource): ResponseEntity<?>
+            +getAllCategories(): ResponseEntity<?>
+            +getCategoryById(id: Long): ResponseEntity<?>
+        }
+    }
+
+    package "interfaces.events" {
+        class ExpenseRegisteredIntegrationEvent <<integration event>> {
+            +expenseId: Long
+            +fundoId: Long
+            +amount: BigDecimal
+            +currency: String
+            +occurredOn: LocalDateTime
+        }
+    }
+
+    ' ── APPLICATION LAYER ─────────────────────
+    package "application.commandservices" {
+        interface ExpenseCommandService <<service>> {
+            +handle(command: RegisterExpenseCommand): Result<Expense, ApplicationError>
+            +handle(command: UpdateExpenseCommand): Result<Expense, ApplicationError>
+            +handle(command: DeleteExpenseCommand): Result<Void, ApplicationError>
+            +handle(command: CreateExpenseCategoryCommand): Result<ExpenseCategory, ApplicationError>
+        }
+    }
+
+    package "application.queryservices" {
+        interface ExpenseQueryService <<service>> {
+            +handle(query: GetExpenseByIdQuery): Optional<Expense>
+            +handle(query: GetExpensesByFundoQuery): List<Expense>
+            +handle(query: GetExpensesByTypeQuery): List<Expense>
+            +handle(query: GetAllExpensesQuery): List<Expense>
+            +handle(query: GetExpenseCategoriesQuery): List<ExpenseCategory>
+        }
+    }
+
+    package "application.internal.commandservices" {
+        class ExpenseCommandServiceImpl <<service>> {
+            -expenseRepository: ExpenseRepository
+            -expenseCategoryRepository: ExpenseCategoryRepository
+            +handle(command: RegisterExpenseCommand): Result<Expense, ApplicationError>
+            +handle(command: UpdateExpenseCommand): Result<Expense, ApplicationError>
+            +handle(command: DeleteExpenseCommand): Result<Void, ApplicationError>
+            +handle(command: CreateExpenseCategoryCommand): Result<ExpenseCategory, ApplicationError>
+        }
+    }
+
+    package "application.internal.queryservices" {
+        class ExpenseQueryServiceImpl <<service>> {
+            -expenseRepository: ExpenseRepository
+            -expenseCategoryRepository: ExpenseCategoryRepository
+            +handle(query: GetExpenseByIdQuery): Optional<Expense>
+            +handle(query: GetExpensesByFundoQuery): List<Expense>
+            +handle(query: GetExpensesByTypeQuery): List<Expense>
+            +handle(query: GetAllExpensesQuery): List<Expense>
+            +handle(query: GetExpenseCategoriesQuery): List<ExpenseCategory>
+        }
+    }
+
+    package "application.internal.eventhandlers" {
+        class ExpenseRegisteredEventHandler <<event handler>> {
+            -eventPublisher: ApplicationEventPublisher
+            +on(event: ExpenseRegisteredEvent): void
+        }
+    }
+
+    ' ── DOMAIN LAYER ──────────────────────────
+    package "domain.model.commands" {
+        class RegisterExpenseCommand <<command>> {
+            +description: String
+            +amount: BigDecimal
+            +currency: String
+            +type: ExpenseType
+            +categoryId: Long
+            +fundoId: Long
+            +date: LocalDate
+        }
+        class UpdateExpenseCommand <<command>> {
+            +expenseId: Long
+            +description: String
+            +amount: BigDecimal
+            +type: ExpenseType
+        }
+        class DeleteExpenseCommand <<command>> {
+            +expenseId: Long
+        }
+        class CreateExpenseCategoryCommand <<command>> {
+            +name: String
+            +description: String
+        }
+    }
+
+    package "domain.model.queries" {
+        class GetExpenseByIdQuery <<query>> {
+            +expenseId: Long
+        }
+        class GetExpensesByFundoQuery <<query>> {
+            +fundoId: Long
+        }
+        class GetExpensesByTypeQuery <<query>> {
+            +type: ExpenseType
+        }
+        class GetAllExpensesQuery <<query>>
+        class GetExpenseCategoriesQuery <<query>>
+    }
+
+    package "domain.model.aggregates" {
+        class Expense <<aggregate>> {
+            -id: ExpenseId
+            -description: String
+            -amount: Money
+            -type: ExpenseType
+            -categoryId: Long
+            -fundoId: FundoId
+            -date: LocalDate
+            -createdAt: LocalDateTime
+            +create(command: RegisterExpenseCommand): Expense
+            +update(command: UpdateExpenseCommand): void
+            +validate(): void
+            +belongsToFundo(fundoId: FundoId): boolean
+            +getId(): ExpenseId
+            +getAmount(): Money
+            +getFundoId(): FundoId
+        }
+    }
+
+    package "domain.model.entities" {
+        ' NOTE: ExpenseCategory is an Entity, NOT an Aggregate Root.
+        ' It has no independent lifecycle; Expense references it via categoryId (Long).
+        class ExpenseCategory <<entity>> {
+            -id: Long
+            -name: String
+            -description: String
+            +getId(): Long
+            +getName(): String
+            +getDescription(): String
+        }
+    }
+
+    package "domain.model.enums" {
+        enum ExpenseType {
+            LABOR
+            INPUT
+            TRANSPORT
+            MAINTENANCE
+            OTHER
+        }
+    }
+
+    package "domain.model.valueobjects" {
+        class Money <<value object>> {
+            -amount: BigDecimal
+            -currency: String
+            +of(amount: BigDecimal, currency: String): Money
+            +add(other: Money): Money
+            +subtract(other: Money): Money
+            +isPositive(): boolean
+            +isZero(): boolean
+        }
+        class FundoId <<value object>> {
+            -value: Long
+            +of(value: Long): FundoId
+            +getValue(): Long
+        }
+        class ExpenseId <<value object>> {
+            -value: Long
+            +of(value: Long): ExpenseId
+            +getValue(): Long
+        }
+    }
+
+    package "domain.model.events" {
+        class ExpenseRegisteredEvent <<domain event>> {
+            +expenseId: ExpenseId
+            +fundoId: FundoId
+            +amount: Money
+            +occurredOn: LocalDateTime
+        }
+        class ExpenseCategoryCreatedEvent <<domain event>> {
+            +categoryId: Long
+            +name: String
+            +occurredOn: LocalDateTime
+        }
+    }
+
+    package "domain.repositories" {
+        interface ExpenseRepository <<repository>> {
+            +save(expense: Expense): Expense
+            +findById(id: ExpenseId): Optional<Expense>
+            +findByFundoId(fundoId: FundoId): List<Expense>
+            +findByType(type: ExpenseType): List<Expense>
+            +findAll(): List<Expense>
+            +delete(id: ExpenseId): void
+        }
+        interface ExpenseCategoryRepository <<repository>> {
+            +save(category: ExpenseCategory): ExpenseCategory
+            +findById(id: Long): Optional<ExpenseCategory>
+            +findAll(): List<ExpenseCategory>
+        }
+    }
+
+    ' ── INFRASTRUCTURE LAYER ──────────────────
+    package "infrastructure.persistence.jpa.repositories" {
+        interface ExpenseJpaRepository <<jpa repository>> {
+            ' extends JpaRepository<ExpenseEntity, Long>
+            +findByFundoId(fundoId: Long): List<ExpenseEntity>
+            +findByType(type: String): List<ExpenseEntity>
+        }
+        interface ExpenseCategoryJpaRepository <<jpa repository>> {
+            ' extends JpaRepository<ExpenseCategoryEntity, Long>
+        }
+    }
+
+    package "infrastructure.persistence.jpa.adapters" {
+        class ExpenseRepositoryImpl <<adapter>> {
+            -jpaRepository: ExpenseJpaRepository
+            +save(expense: Expense): Expense
+            +findById(id: ExpenseId): Optional<Expense>
+            +findByFundoId(fundoId: FundoId): List<Expense>
+            +findByType(type: ExpenseType): List<Expense>
+            +findAll(): List<Expense>
+            +delete(id: ExpenseId): void
+        }
+        class ExpenseCategoryRepositoryImpl <<adapter>> {
+            -jpaRepository: ExpenseCategoryJpaRepository
+            +save(category: ExpenseCategory): ExpenseCategory
+            +findById(id: Long): Optional<ExpenseCategory>
+            +findAll(): List<ExpenseCategory>
+        }
+    }
+
+    package "infrastructure.persistence.jpa.entities" {
+        class ExpensePersistenceEntity <<entity>> {
+            ' @Entity @Table(name = "expenses")
+            -id: Long
+            -description: String
+            -amount: BigDecimal
+            -currency: String
+            -type: String
+            -categoryId: Long
+            -fundoId: Long
+            -date: LocalDate
+            -createdAt: LocalDateTime
+        }
+        class ExpenseCategoryPersistenceEntity <<entity>> {
+            ' @Entity @Table(name = "expense_categories")
+            -id: Long
+            -name: String
+            -description: String
+        }
+    }
+
+    ' ─────────────────────────────────────────
+    ' RELATIONSHIPS
+    ' ─────────────────────────────────────────
+
+    ExpenseController --> ExpenseCommandService
+    ExpenseController --> ExpenseQueryService
+    ExpenseCategoryController --> ExpenseCommandService
+    ExpenseCategoryController --> ExpenseQueryService
+
+    ExpenseCommandServiceImpl ..|> ExpenseCommandService
+    ExpenseQueryServiceImpl   ..|> ExpenseQueryService
+
+    ExpenseCommandServiceImpl --> ExpenseRepository
+    ExpenseCommandServiceImpl --> ExpenseCategoryRepository
+    ExpenseQueryServiceImpl   --> ExpenseRepository
+    ExpenseQueryServiceImpl   --> ExpenseCategoryRepository
+
+    ExpenseCommandServiceImpl ..> RegisterExpenseCommand
+    ExpenseCommandServiceImpl ..> UpdateExpenseCommand
+    ExpenseCommandServiceImpl ..> DeleteExpenseCommand
+    ExpenseCommandServiceImpl ..> CreateExpenseCategoryCommand
+
+    ExpenseQueryServiceImpl ..> GetExpenseByIdQuery
+    ExpenseQueryServiceImpl ..> GetExpensesByFundoQuery
+    ExpenseQueryServiceImpl ..> GetExpensesByTypeQuery
+    ExpenseQueryServiceImpl ..> GetAllExpensesQuery
+    ExpenseQueryServiceImpl ..> GetExpenseCategoriesQuery
+
+    Expense --|> AbstractDomainAggregateRoot
+
+    Expense *-- ExpenseId
+    Expense *-- Money
+    Expense *-- FundoId
+    Expense --> ExpenseType
+    Expense ..> ExpenseCategory : references by categoryId
+
+    Expense ..> ExpenseRegisteredEvent : publishes
+    ExpenseCategory ..> ExpenseCategoryCreatedEvent : publishes
+
+    ExpenseRegisteredEventHandler ..> ExpenseRegisteredEvent : handles
+    ExpenseRegisteredEventHandler ..> ExpenseRegisteredIntegrationEvent : publishes
+
+    ExpenseRepositoryImpl         ..|> ExpenseRepository
+    ExpenseCategoryRepositoryImpl ..|> ExpenseCategoryRepository
+
+    ExpensePersistenceEntity         --> Expense         : toDomainModel()
+    ExpenseCategoryPersistenceEntity --> ExpenseCategory : toDomainModel()
+
+    ExpenseRepositoryImpl         --> ExpensePersistenceEntity         : uses
+    ExpenseCategoryRepositoryImpl --> ExpenseCategoryPersistenceEntity : uses
+
+    ExpenseJpaRepository         --> ExpensePersistenceEntity         : manages
+    ExpenseCategoryJpaRepository --> ExpenseCategoryPersistenceEntity : manages
+}
+
+@enduml

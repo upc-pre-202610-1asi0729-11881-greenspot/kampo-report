@@ -1,0 +1,238 @@
+@startuml
+title Class Diagram - Financial Management (Income Aggregate)
+left to right direction
+
+package "com.acme.kampo.platform.shared" {
+    package "domain.model.aggregates" {
+        abstract class AbstractDomainAggregateRoot <<base aggregate>> {
+        }
+    }
+}
+
+package "com.acme.kampo.platform.financial" {
+
+    package "interfaces.rest" {
+        class IncomeController <<controller>> {
+            -incomeCommandService: IncomeCommandService
+            -incomeQueryService: IncomeQueryService
+            +createIncome(resource: CreateIncomeResource): ResponseEntity<?>
+            +updateIncome(id: Long, resource: UpdateIncomeResource): ResponseEntity<?>
+            +deleteIncome(id: Long): ResponseEntity<?>
+            +getIncomeById(id: Long): ResponseEntity<?>
+            +getIncomesByFundo(fundoId: Long): ResponseEntity<?>
+        }
+    }
+
+    package "interfaces.events" {
+        class IncomeRegisteredIntegrationEvent <<integration event>> {
+            +incomeId: Long
+            +fundoId: Long
+            +amount: BigDecimal
+            +currency: String
+            +occurredOn: LocalDateTime
+        }
+    }
+
+    ' ── APPLICATION LAYER ─────────────────────
+    package "application.commandservices" {
+        interface IncomeCommandService <<service>> {
+            +handle(command: RegisterIncomeCommand): Result<Income, ApplicationError>
+            +handle(command: UpdateIncomeCommand): Result<Income, ApplicationError>
+            +handle(command: DeleteIncomeCommand): Result<Void, ApplicationError>
+        }
+    }
+
+    package "application.queryservices" {
+        interface IncomeQueryService <<service>> {
+            +handle(query: GetIncomeByIdQuery): Optional<Income>
+            +handle(query: GetIncomesByFundoQuery): List<Income>
+            +handle(query: GetAllIncomesQuery): List<Income>
+        }
+    }
+
+    package "application.internal.commandservices" {
+        class IncomeCommandServiceImpl <<service>> {
+            -incomeRepository: IncomeRepository
+            +handle(command: RegisterIncomeCommand): Result<Income, ApplicationError>
+            +handle(command: UpdateIncomeCommand): Result<Income, ApplicationError>
+            +handle(command: DeleteIncomeCommand): Result<Void, ApplicationError>
+        }
+    }
+
+    package "application.internal.queryservices" {
+        class IncomeQueryServiceImpl <<service>> {
+            -incomeRepository: IncomeRepository
+            +handle(query: GetIncomeByIdQuery): Optional<Income>
+            +handle(query: GetIncomesByFundoQuery): List<Income>
+            +handle(query: GetAllIncomesQuery): List<Income>
+        }
+    }
+
+    package "application.internal.eventhandlers" {
+        class IncomeRegisteredEventHandler <<event handler>> {
+            -eventPublisher: ApplicationEventPublisher
+            +on(event: IncomeRegisteredEvent): void
+        }
+    }
+
+    ' ── DOMAIN LAYER ──────────────────────────
+    package "domain.model.commands" {
+        class RegisterIncomeCommand <<command>> {
+            +description: String
+            +amount: BigDecimal
+            +currency: String
+            +fundoId: Long
+            +date: LocalDate
+        }
+        class UpdateIncomeCommand <<command>> {
+            +incomeId: Long
+            +description: String
+            +amount: BigDecimal
+        }
+        class DeleteIncomeCommand <<command>> {
+            +incomeId: Long
+        }
+    }
+
+    package "domain.model.queries" {
+        class GetIncomeByIdQuery <<query>> {
+            +incomeId: Long
+        }
+        class GetIncomesByFundoQuery <<query>> {
+            +fundoId: Long
+        }
+        class GetAllIncomesQuery <<query>>
+    }
+
+    package "domain.model.aggregates" {
+        class Income <<aggregate>> {
+            -id: IncomeId
+            -description: String
+            -amount: Money
+            -fundoId: FundoId
+            -date: LocalDate
+            -createdAt: LocalDateTime
+            +create(command: RegisterIncomeCommand): Income
+            +update(command: UpdateIncomeCommand): void
+            +validate(): void
+            +getId(): IncomeId
+            +getAmount(): Money
+            +getFundoId(): FundoId
+        }
+    }
+
+    package "domain.model.valueobjects" {
+        class Money <<value object>> {
+            -amount: BigDecimal
+            -currency: String
+            +of(amount: BigDecimal, currency: String): Money
+            +add(other: Money): Money
+            +subtract(other: Money): Money
+            +isPositive(): boolean
+            +isZero(): boolean
+        }
+        class FundoId <<value object>> {
+            -value: Long
+            +of(value: Long): FundoId
+            +getValue(): Long
+        }
+        class IncomeId <<value object>> {
+            -value: Long
+            +of(value: Long): IncomeId
+            +getValue(): Long
+        }
+    }
+
+    package "domain.model.events" {
+        class IncomeRegisteredEvent <<domain event>> {
+            +incomeId: IncomeId
+            +fundoId: FundoId
+            +amount: Money
+            +occurredOn: LocalDateTime
+        }
+    }
+
+    package "domain.repositories" {
+        interface IncomeRepository <<repository>> {
+            +save(income: Income): Income
+            +findById(id: IncomeId): Optional<Income>
+            +findByFundoId(fundoId: FundoId): List<Income>
+            +findAll(): List<Income>
+            +delete(id: IncomeId): void
+        }
+    }
+
+    ' ── INFRASTRUCTURE LAYER ──────────────────
+    package "infrastructure.persistence.jpa.repositories" {
+        interface IncomeJpaRepository <<jpa repository>> {
+            ' extends JpaRepository<IncomeEntity, Long>
+            +findByFundoId(fundoId: Long): List<IncomeEntity>
+        }
+    }
+
+    package "infrastructure.persistence.jpa.adapters" {
+        class IncomeRepositoryImpl <<adapter>> {
+            -jpaRepository: IncomeJpaRepository
+            +save(income: Income): Income
+            +findById(id: IncomeId): Optional<Income>
+            +findByFundoId(fundoId: FundoId): List<Income>
+            +findAll(): List<Income>
+            +delete(id: IncomeId): void
+        }
+    }
+
+    package "infrastructure.persistence.jpa.entities" {
+        class IncomePersistenceEntity <<entity>> {
+            ' @Entity @Table(name = "incomes")
+            -id: Long
+            -description: String
+            -amount: BigDecimal
+            -currency: String
+            -fundoId: Long
+            -date: LocalDate
+            -createdAt: LocalDateTime
+        }
+    }
+
+    ' ─────────────────────────────────────────
+    ' RELATIONSHIPS
+    ' ─────────────────────────────────────────
+
+    IncomeController --> IncomeCommandService
+    IncomeController --> IncomeQueryService
+
+    IncomeCommandServiceImpl ..|> IncomeCommandService
+    IncomeQueryServiceImpl   ..|> IncomeQueryService
+
+    IncomeCommandServiceImpl --> IncomeRepository
+    IncomeQueryServiceImpl   --> IncomeRepository
+
+    IncomeCommandServiceImpl ..> RegisterIncomeCommand
+    IncomeCommandServiceImpl ..> UpdateIncomeCommand
+    IncomeCommandServiceImpl ..> DeleteIncomeCommand
+
+    IncomeQueryServiceImpl ..> GetIncomeByIdQuery
+    IncomeQueryServiceImpl ..> GetIncomesByFundoQuery
+    IncomeQueryServiceImpl ..> GetAllIncomesQuery
+
+    Income --|> AbstractDomainAggregateRoot
+
+    Income *-- IncomeId
+    Income *-- Money
+    Income *-- FundoId
+
+    Income ..> IncomeRegisteredEvent : publishes
+
+    IncomeRegisteredEventHandler ..> IncomeRegisteredEvent : handles
+    IncomeRegisteredEventHandler ..> IncomeRegisteredIntegrationEvent : publishes
+
+    IncomeRepositoryImpl ..|> IncomeRepository
+
+    IncomePersistenceEntity --> Income : toDomainModel()
+
+    IncomeRepositoryImpl --> IncomePersistenceEntity : uses
+
+    IncomeJpaRepository --> IncomePersistenceEntity : manages
+}
+
+@enduml
