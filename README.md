@@ -19,18 +19,12 @@
 
 ### Team Members:
 
-   Hurtado Balcazar Rommel Daniel     u202517474 
-
- Ramos Fuentes Rivera Adriana Nicole  u202018427 
-
- Tuesta Girón Kiara Lucia        u20251I477 
-
- Arroyo Gonzales Emily Juliette     u202311469 
+ Hurtado Balcazar Rommel Daniel     u202517474 
 
  Acuache Lucas Mathias Joaquin     u202314898 
 
 
-<strong>26 de Junio de 2026</strong><br>
+<strong>19 de Junio de 2026</strong><br>
 </div>
 
 
@@ -45,20 +39,20 @@
 | AV1     | 25/04/2026 | • Acuache Lucas Mathias Joaquin <br> • Arroyo Gonzales Emily Juliette <br> • Hurtado Balcazar Rommel Daniel <br> • Ramos Fuentes Rivera Adriana Nicole <br> • Tuesta Girón Kiara Lucia | Indicar el timing de las entrevistas, mostrar las user stories en el formato de tabla indicado en el enunciado, los diagramas deben estar alineados a DDD y la nomenclatura de tablas incorrecta, Web Applications Prototyping en blanco, indicar el nombre del responsable de trabajar en la tarea del sprint, no se ubica url de lading page en el reporte, nombre de organización y repositorios github incorrectos, secciones en blanco y Student Outcome vacío. |
 
 
-**TP**
+**TB1**
 
-| Versión | Fecha     | Autor               | Descripción de modificación |
-|--------|-----------|---------------------|-----------------------------|
-| TP     | 14/05/2026| • Acuache Lucas Mathias Joaquin <br> • Arroyo Gonzales Emily Juliette <br> • Hurtado Balcazar Rommel Daniel <br> • Ramos Fuentes Rivera Adriana Nicole <br> • Tuesta Girón Kiara Lucia|                             |
+| Versión | Fecha     | Autor               | Descripción de modificación                                                                          |
+|--------|-----------|---------------------|------------------------------------------------------------------------------------------------------|
+| TB1     | 14/05/2026| • Acuache Lucas Mathias Joaquin <br> • Arroyo Gonzales Emily Juliette <br> • Hurtado Balcazar Rommel Daniel <br> • Ramos Fuentes Rivera Adriana Nicole <br> • Tuesta Girón Kiara Lucia| Desarrollo del Frontend - MockApi de Kampo para pruebas en el frontend - Mejoras en la Documentacion |
 
+
+**AV2**
+
+| Versión | Fecha      | Autor | Descripción de modificación                                                                             |
+|---------|------------|-------|---------------------------------------------------------------------------------------------------------|
+|AV2| 19/06/2026 |  • Acuache Lucas Mathias Joaquin <br>  • Hurtado Balcazar Rommel Daniel     | Desarollo de bounded context - Despliegue - Comunicacion Backend-Frontend - Mejoras de la documentacion |
 
 **TB2**
-
-| Versión | Fecha      | Autor               | Descripción de modificación                                                                |
-|---------|------------|---------------------|--------------------------------------------------------------------------------------------|
-
-
-**TF**
 
 | Versión | Fecha      | Autor               | Descripción de modificación                                                                                                           |
 |---------|------------|---------------------|---------------------------------------------------------------------------------------------------------------------------------------|
@@ -87,8 +81,10 @@ URL del repositorio del platform: https://github.com/upc-pre-202610-1asi0729-118
 
 URL del repositorio del mockapi: https://github.com/upc-pre-202610-1asi0729-11881-greenspot/kampo-mockapi
 
+<img src="docs\assets\img\Capítulo 1\report_collaboration_organization.png"/>
 
-**TB1**
+
+**AV1**
 <div align="justify">
 Para la primera entrega se presentó los antecedentes y problemática que se busca resolver, además del análisis del contexto del proyecto y de las necesidades identificadas en los segmentos objetivo mediante entrevistas y validaciones iniciales. Asimismo, se elaboró el Lean UX Canvas como herramienta para definir las hipótesis de negocio, los problemas principales de los usuarios, las propuestas de solución y el valor diferencial del sistema Kampo.
 
@@ -99,37 +95,37 @@ Además, se desarrollaron los bounded contexts para delimitar las responsabilida
 Asimismo, durante el desarrollo del proyecto se trabajó el  Product Implementation y Validation & Deployment, en el cual se documentó la configuración del entorno de desarrollo, la gestión del código fuente mediante repositorios GitHub, las convenciones y guías de estilo utilizadas por el equipo, así como la configuración de despliegue del software. De igual manera, se registró la implementación de la landing page, incluyendo la planificación, backlog, roles de líderes y colaboradores, evidencias de desarrollo, ejecución, documentación de servicios, despliegue del sistema y las conclusiones de colaboración obtenidas durante el trabajo en equipo.
 </div>
 
-**TP**
+<img src="docs\assets\img\Capítulo 1\report_collaboration_contributors_av1.png"/>
+
+**TB1**
 <div align="justify">
 Para el trabajo parcial, se levantaron las correcciones de la primera entrega con el objetivo de mejorar la estructura, consistencia y calidad general del proyecto Kampo. Se realizaron ajustes en los artefactos de análisis y diseño, refinando las user stories, bounded contexts, diagramas C4, diagramas de clases y el modelo de base de datos, permitiendo una mejor representación de la arquitectura y de los procesos del sistema. Asimismo, se fortaleció el Ubiquitous Language y la validación de requerimientos obtenidos a partir de las entrevistas realizadas a los segmentos objetivo.
 
 Además, durante esta etapa se desarrolló el frontend del sistema, incluyendo la implementación de la landing page y de las principales interfaces de usuario de la aplicación web. Para ello, se trabajó en el diseño de componentes visuales, navegación, formularios, vistas funcionales y experiencia de usuario, buscando garantizar una interfaz intuitiva, accesible y alineada con las necesidades del sector agrícola. También se documentaron los avances mediante evidencias de desarrollo, ejecución y despliegue correspondientes a cada sprint realizado por el equipo.
 </div>
 
+<img src="docs\assets\img\Capítulo 1\report_collaboration_contributors_tb1.png"/>
+
+**AV2**
+<div align="justify">
+Asimismo, durante esta etapa se desarrolló la implementación del backend de la aplicación siguiendo los principios de Domain-Driven Design (DDD). Para ello, se estructuró la solución en diez bounded contexts, cada uno encargado de gestionar un conjunto específico de responsabilidades del negocio agrícola, favoreciendo la modularidad, mantenibilidad y escalabilidad de la arquitectura. Además, se implementaron las entidades, agregados, servicios de aplicación, repositorios, comandos y consultas necesarios para soportar los procesos funcionales definidos en las historias de usuario priorizadas.
+
+De igual manera, se trabajó en la integración entre el frontend y el backend mediante el consumo de APIs REST, garantizando la comunicación adecuada entre ambas capas del sistema y permitiendo la ejecución de los flujos funcionales desarrollados. También se realizaron pruebas de integración para validar el correcto intercambio de información entre los distintos módulos de la plataforma.
+
+Por otro lado, se documentó y ejecutó el despliegue del backend en un entorno cloud, configurando los servicios necesarios para su publicación, disponibilidad y acceso remoto. Este proceso incluyó la gestión de repositorios, automatización de despliegues, configuración de variables de entorno y validación del funcionamiento de la aplicación en producción.
+
+Finalmente, se desarrolló el Sprint 3 del proyecto, registrando la planificación, asignación de tareas, implementación de funcionalidades, seguimiento de avances y evidencias de desarrollo correspondientes. Asimismo, se documentaron los resultados obtenidos, las mejoras incorporadas durante la iteración y las conclusiones derivadas del trabajo colaborativo realizado por el equipo, consolidando una versión funcional e integrada de la solución propuesta.
+</div>
+
+<img src="docs\assets\img\Capítulo 1\report_collaboration_contributors_av2.png"/>
 
 **TB2**
 
 
-**TF**
 
 
 
 
-**TB1**
-
-
-
-**TP1**
-
-
-
-
-**TB2**
-
-
-
-
-**TF**
 
 <div style="page-break-after: always;"></div>
 
@@ -288,9 +284,6 @@ La mayoría de agricultores peruanos aún gestionan sus cultivos y finanzas de f
 |                                Miembro                                 | Descripción |
 |:----------------------------------------------------------------------:|:---|
 |  <img src="docs/assets/img/Chapter1/members/Rommel.jpg" width="200"/>  | **Hurtado Balcazar Rommel Daniel - U202517474** <br><br> Soy Rommel Hurtado Balcázar, tengo 23 años y estudio Ingeniería de Software en el 5to-6to ciclo. Me considero un líder técnico orientado a la resolución de problemas, con capacidad para tomar decisiones y guiar al equipo hacia los objetivos del proyecto.<br><br>Cuento con experiencia en desarrollo fullstack, manejando tanto frontend como backend. En el lado del servidor trabajo principalmente con Java, y en el frontend utilizo React. Además, tengo conocimientos en bases de datos relacionales con SQL y no relacionales con MongoDB, así como experiencia con Node.js, Python y HTML/CSS.<br><br>He desarrollado proyectos propios fuera del ámbito universitario, lo que me ha dado una visión completa del ciclo de desarrollo de software. También me desenvuelvo en inglés a nivel intermedio-avanzado, lo que me permite acceder a documentación técnica y comunicarme en entornos internacionales. |
-| <img src="docs/assets/img/Chapter1/members/Adriana.jpg" width="200"/>  | **Ramos Fuentes Rivera Adriana Nicole - U202018427** <br><br> Soy Adriana Nicole Ramos Fuentes Rivera, estudio la carrera de Ingeniería de Software en la UPC, actualmente estoy en el 5to ciclo. Me gusta aprender nuevas tecnologías y conocimientos complementarios que me permitan desarrollar soluciones a problemáticas dentro de un contexto real. Cuento con experiencia en lenguajes de programación como C++ y Python, además de conocimientos en base de datos no relacional como MongoDB. Dentro del equipo, me enfoco en el desarrollo de frontend y backend, aplicando principios de Domain Driven Design y el modelo de arquitectura C4 para documentar sistemas de software de manera clara y jerárquica. Me considero una persona organizada y empática. |
-|  <img src="docs/assets/img/Chapter1/members/Kiara.jpg" width="200"/>   | **Tuesta Girón Kiara Lucia - U20251I477** <br><br> Soy estudiante de Ingeniería de Software, tengo 20 años y me interesa el desarrollo de aplicaciones. He trabajado con lenguajes como C++ y C#, y también tengo experiencia usando SQL para bases de datos. En trabajos en equipo me gusta participar activamente, aportar ideas y ayudar a que el grupo avance. |
-|  <img src="docs/assets/img/Chapter1/members/Emily.png" width="200"/>   | **Arroyo Gonzales Emily Juliette - U202311469** <br><br> Soy estudiante de la carrera de Ingeniería de Software, tengo 20 años y tengo experiencia en lenguajes como C++ y MongoDB. En trabajos grupales me gusta aportar ideas que contribuyan a mi grupo y avanzar según lo asignado. |
 | <img src="docs/assets/img/Chapter1/members/Mathias.jpeg" width="200"/> | **Acuache Lucas Mathias Joaquin - U202314898** <br><br> Soy Mathias Joaquin Acuache Lucas, me encuentro en el sexto ciclo de la carrera de Ingeniería de Software. Tengo experiencia en C++, SQL y MongoDB, además de utilizar GitHub de manera correcta. Me considero una persona que trata de apoyar en los diversos trabajos en equipo e investigo cosas nuevas. |
 
 #### 1.2. Solution Profile
@@ -1496,7 +1489,6 @@ Para validar la experiencia de usuario (UX), se desarrolló un prototipo funcion
 ![Field](docs/assets/img/event-storming/field.png)
 ![Finantial](docs/assets/img/event-storming/finantial.png)
 ![Inventory](docs/assets/img/event-storming/inventory.png)
-![IoT](docs/assets/img/event-storming/iot.png)
 ![Organization](docs/assets/img/event-storming/organization.png)
 ![Profile](docs/assets/img/event-storming/profile.png)
 ![Report](docs/assets/img/event-storming/report.png)
@@ -1505,7 +1497,7 @@ Para validar la experiencia de usuario (UX), se desarrolló un prototipo funcion
 
 ### **Event Storming completo:**
 
-![EventStorming](docs/assets/img/event-storming/event_storming.png)
+![EventStorming](docs/assets/img/event-storming/BoundedContext.png)
 
 [Ver en Miro](https://miro.com/app/board/uXjVHecaRio=/?share_link_id=80187881554)
 
@@ -1593,7 +1585,7 @@ Estos archivos representan la estructura de clases, atributos y relaciones de ca
 - Frontend:
   [Employee Management Frontend](./docs/ClassDiagrams/EmployeeManagement/EmployeeManagementFront.puml)
   ![Employee Management Class Diagram](docs/assets/img/class-diagram/EmployeeManagement/EmployeeManagementFront.png)
-### Field Operation
+ ### Field Operation
 - Backend:
   [Field Operation Backend](./docs/ClassDiagrams/FieldOperation/FieldOperationBack.puml)
   ![Field Operation Class Diagram](docs/assets/img/class-diagram/FieldOperation/FieldOperationBack.png)
@@ -1602,8 +1594,21 @@ Estos archivos representan la estructura de clases, atributos y relaciones de ca
   ![Field Operation Class Diagram](docs/assets/img/class-diagram/FieldOperation/FieldOperationFront.png)
 ### Financial Management
 - Backend:
-  [Financial Management Backend](./docs/ClassDiagrams/FinancialManagement/FinancialBack.puml)
-  ![Financial Management Class Diagram](docs/assets/img/class-diagram/FinancialManagement/FinancialManagementBack.png)
+  [Financial Management Backend](./docs/ClassDiagrams/FinancialManagement/overviewFiancial.puml)
+  ![Financial Management Class Diagram](docs/assets/img/class-diagram/FinancialManagement/overviewFinancial.png)
+
+  [Financial Management expense](./docs/ClassDiagrams/FinancialManagement/expenseFinnancial.puml)
+  ![Financial Management expense Class Diagram](docs/assets/img/class-diagram/FinancialManagement/expenseFiancial.png)
+
+  [Financial Management income](./docs/ClassDiagrams/FinancialManagement/incomeFinancial.puml)
+  ![Financial Management income Class Diagram](docs/assets/img/class-diagram/FinancialManagement/incomeFinancial.png)
+
+  [Financial Management profitability](./docs/ClassDiagrams/FinancialManagement/profitFinancial.puml)
+  ![Financial Management profitability Class Diagram](docs/assets/img/class-diagram/FinancialManagement/profitFinancial.png)
+
+  [Financial Management sales](./docs/ClassDiagrams/FinancialManagement/saleFinancial.puml)
+  ![Financial Management sales Class Diagram](docs/assets/img/class-diagram/FinancialManagement/saleFinancial.png)
+
 - Frontend:
   [Financial Management Frontend](./docs/ClassDiagrams/FinancialManagement/FinancialFront.puml)
   ![Financial Management Class Diagram](docs/assets/img/class-diagram/FinancialManagement/FinancialManagementFront.png)
@@ -1615,14 +1620,6 @@ Estos archivos representan la estructura de clases, atributos y relaciones de ca
 - Frontend:
   [Inventory Management Frontend](./docs/ClassDiagrams/InventoryManagement/InventoryManagementFront.puml)
   ![Inventory Management Class Diagram](docs/assets/img/class-diagram/InventoryManagement/InventoryManagementFront.png)
-
-### Monitoring IoT
-- Backend:
-  [Monitoring IoT Backend](./docs/ClassDiagrams/MonitoringIoT/MonitoringIoTBack.puml)
-  ![Monitoring IoT Class Diagram](docs/assets/img/class-diagram/MonitoringIoT/MonitoringIoTBack.png)
-- Frontend:
-  [Monitoring IoT Frontend](./docs/ClassDiagrams/MonitoringIoT/MonitoringIoTFront.puml)
-  ![Monitoring IoT Class Diagram](docs/assets/img/class-diagram/MonitoringIoT/MonitoringIoTFront.png)
 
 ### Organization Management
 - Backend:
@@ -2508,20 +2505,6 @@ documentados en la sección 4.8 Domain-Driven Software Architecture
 del presente informe, donde se presentan los diagramas frontend y
 backend de cada bounded context.
 
-**Frontend Web Application – Angular (módulos iniciales):**
-
-[Insertar screenshot del módulo Inventory]
-[Insertar screenshot del módulo Financial]
-[Insertar screenshot del módulo Report]
-[Insertar screenshot del módulo Field]
-[Insertar screenshot del módulo Organization]
-[Insertar screenshot del módulo Season]
-[Insertar screenshot del módulo Profile & Access]
-[Insertar screenshot del módulo Alert]
-[Insertar screenshot del módulo Employee]
-[Insertar screenshot del módulo Subscription]
-
- **Video de demostración del Sprint 2:** [Insertar URL de Microsoft Stream aquí]
 ---
 
 ###### 5.2.2.6. Services Documentation Evidence for Sprint Review
@@ -2651,6 +2634,184 @@ El Pulse muestra el resumen de actividad del repositorio durante el
 periodo del Sprint 2 (2026-05-05 al 2026-05-13), incluyendo commits,
 Pull Requests abiertos y mergeados, y contribuciones por integrante.
 ---
+
+##### 5.2.3. Sprint 3
+
+El Sprint 3 estuvo enfocado en completar la totalidad del backend del proyecto Acme Kampo Platform, abarcando el diseño y la implementación de los seis bounded contexts del sistema bajo una arquitectura DDD (Domain-Driven Design) con patrones hexagonales (Ports & Adapters), la incorporación de un mecanismo de seguridad basado en JSON Web Tokens (JWT) para proteger todos los endpoints de la API, y el despliegue de la aplicación en un entorno cloud (Microsoft Azure App Service) utilizando contenedores Docker publicados en Azure Container Registry.
+
+Durante este sprint se consolidó el bounded context de Profile & Access (gestión de usuarios, roles, permisos y autenticación), se finalizaron los bounded contexts de Organization (organizaciones, fundos, campos y cultivos) y Field Operation (visitas de campo y observaciones agronómicas), y se integró la seguridad transversal mediante un filtro JWT aplicado a nivel de toda la plataforma.
+
+###### 5.2.3.1. Sprint Planning 3
+
+El Sprint Planning se realizó priorizando el cierre del backend completo, dado que los sprints anteriores habían cubierto los bounded contexts de Inventory, Financial y Alert. El objetivo del Sprint 3 fue:
+
+1. Completar el bounded context de **Organization** (Organization, Fundo, Field, Crop) con sus seis fases DDD: value objects, agregados, repositorios, servicios de aplicación, infraestructura JPA e interfaces REST.
+2. Completar el bounded context de **Field Operation** (FieldVisit, Observation), incluyendo la lógica de severidad de plagas/enfermedades y el ciclo de vida de visitas de campo (SCHEDULED → DONE).
+3. Diseñar y construir desde cero el bounded context de **Profile & Access**, incorporando autenticación basada en JWT, hash de contraseñas con BCrypt, gestión de roles (RolePosition) y permisos (PermissionCategory).
+4. Configurar **Spring Security** a nivel de plataforma para que todos los bounded contexts queden protegidos por un único punto de entrada de autenticación.
+5. **Desplegar** la aplicación actualizada en Azure App Service mediante imagen Docker publicada en Azure Container Registry (ACR).
+   La planificación se gestionó en **Trello**, donde el tablero del Sprint 3 organizó las tareas en columnas de Backlog, En Progreso, En Revisión y Completado, con tarjetas específicas por bounded context y por tarea de infraestructura (seguridad, despliegue).
+
+######  5.2.3.2. Aspect Leaders and Collaborators
+
+Durante el Sprint 3, el equipo GreenSpot organizó el trabajo en torno a dos ejes principales: la finalización de los bounded contexts de dominio agrícola (Organization y Field Operation) y la construcción completa del bounded context de seguridad y acceso (Profile & Access), incluyendo su integración transversal mediante JWT y el despliegue del backend en Azure. Cada integrante lideró los aspectos asignados y colaboró en los demás.
+
+L = Leader (líder del aspecto)
+C = Collaborator (colaborador)
+
+| Team Member (Last Name, First Name) | GitHub Username | Aspecto 1: Bounded Context Organization (L/C) | Aspecto 2: Bounded Context Field Operation (L/C) | Aspecto 3: Bounded Context Profile & Access (L/C) | Aspecto 4: Seguridad JWT Transversal (L/C) | Aspecto 5: Despliegue en Azure (L/C) |
+|---|---|---|---|---|---|---|
+| Hurtado Balcázar, Rommel Daniel | [rommelDN](https://github.com/rommelDN) | C | C | L | L | L |
+| Acuache Lucas, Mathias Joaquín | [MathiasA25](https://github.com/MathiasA25) | L | L | C | C | C |
+ 
+---
+######  5.2.3.3. Sprint Backlog 3
+
+| Sprint # | Sprint 3 |
+|---|---|
+
+| US/TS ID | Título | Task ID | Task Título | Descripción | Estimación (hrs) | Asignado a | Estado |
+|---|---|---|---|---|---|---|---|
+| TS-19 | Gestión de organizaciones, fundos, campos y cultivos | TS-19-1 | Diseñar value objects y enums de Organization | Crear OrganizationId, FundoId, FieldId, CropId y GeoLocation con cálculo Haversine | 4 | Acuache Lucas, M. | Completado |
+| TS-19 | Gestión de organizaciones, fundos, campos y cultivos | TS-19-2 | Implementar aggregates Organization, Fundo, Field, Crop | Construir los cuatro aggregates con sus constructores de creación y reconstitución | 6 | Acuache Lucas, M. | Completado |
+| TS-19 | Gestión de organizaciones, fundos, campos y cultivos | TS-19-3 | Implementar repositorios e infraestructura JPA | Crear repositorios de dominio, persistence entities, assemblers y adapters | 6 | Acuache Lucas, M. | Completado |
+| TS-19 | Gestión de organizaciones, fundos, campos y cultivos | TS-19-4 | Implementar endpoints REST jerárquicos | Crear OrganizationController con endpoints anidados por jerarquía | 4 | Acuache Lucas, M. | Completado |
+| TS-20 | Registro de visitas de campo y observaciones agronómicas | TS-20-1 | Diseñar value objects y enums de Field Operation | Crear FieldVisitId, ObservationId, FieldId, FieldVisitStatus y Severity | 3 | Acuache Lucas, M. | Completado |
+| TS-20 | Registro de visitas de campo y observaciones agronómicas | TS-20-2 | Implementar aggregates FieldVisit y Observation | Construir ciclo de vida SCHEDULED→DONE y lógica de severidad de plagas/enfermedades | 5 | Acuache Lucas, M. | Completado |
+| TS-20 | Registro de visitas de campo y observaciones agronómicas | TS-20-3 | Implementar repositorios e infraestructura JPA | Crear repositorios, persistence entities, assemblers y adapters | 5 | Acuache Lucas, M. | Completado |
+| TS-20 | Registro de visitas de campo y observaciones agronómicas | TS-20-4 | Implementar endpoints REST | Crear FieldVisitController y ObservationController | 4 | Acuache Lucas, M. | Completado |
+| TS-21 | Registro e inicio de sesión de usuarios | TS-21-1 | Diseñar value objects Email y HashedPassword | Crear validación de formato de email y hashing BCrypt de contraseñas | 4 | Hurtado Balcázar, R. | Completado |
+| TS-21 | Registro e inicio de sesión de usuarios | TS-21-2 | Implementar aggregate User y autenticación | Construir User con verifyPassword() y JwtTokenProvider para emisión de tokens | 6 | Hurtado Balcázar, R. | Completado |
+| TS-21 | Registro e inicio de sesión de usuarios | TS-21-3 | Implementar AuthController y UserController | Crear endpoints de login y registro con protección contra enumeración de usuarios | 5 | Hurtado Balcázar, R. | Completado |
+| TS-22 | Gestión de roles y permisos | TS-22-1 | Diseñar aggregates Role, Permission, UserRole, RolePermission | Modelar relaciones de asignación como aggregates independientes | 4 | Hurtado Balcázar, R. | Completado |
+| TS-22 | Gestión de roles y permisos | TS-22-2 | Implementar RoleController | Crear endpoints de creación y asignación de roles/permisos con validación de duplicados | 5 | Hurtado Balcázar, R. | Completado |
+| TS-23 | Protección de endpoints con JWT | TS-23-1 | Implementar JwtAuthenticationFilter | Crear filtro global que valida el token Bearer en cada request | 5 | Hurtado Balcázar, R. | Completado |
+| TS-23 | Protección de endpoints con JWT | TS-23-2 | Configurar SecurityConfiguration | Definir rutas públicas y proteger el resto de la plataforma con autenticación obligatoria | 4 | Hurtado Balcázar, R. | Completado |
+| TS-23 | Protección de endpoints con JWT | TS-23-3 | Integrar esquema bearerAuth en OpenAPI | Habilitar botón Authorize en Swagger UI para pruebas con JWT | 2 | Hurtado Balcázar, R. | Completado |
+| TS-24 | Despliegue del backend en la nube | TS-24-1 | Construir imagen Docker del backend | Generar jar y construir imagen con Docker Compose | 3 | Hurtado Balcázar, R. | Completado |
+| TS-24 | Despliegue del backend en la nube | TS-24-2 | Publicar imagen en Azure Container Registry | Etiquetar y subir la imagen al ACR del proyecto | 2 | Hurtado Balcázar, R. | Completado |
+| TS-24 | Despliegue del backend en la nube | TS-24-3 | Desplegar y diagnosticar en Azure App Service | Configurar el App Service, habilitar logs y resolver incidencias de seguridad post-despliegue | 6 | Hurtado Balcázar, R. | Completado |
+
+######  5.2.3.4. Development Evidence for Sprint Review
+
+Durante el Sprint 3, el equipo GreenSpot completó la implementación de los bounded contexts de Organization y Field Operation, y construyó desde cero el bounded context de Profile & Access junto con la capa de seguridad JWT transversal a toda la plataforma. Adicionalmente se desplegó el backend completo en Microsoft Azure mediante una imagen Docker publicada en Azure Container Registry.
+
+| Repository                   | Branch                 | Commit Id | Commit Message | Commit Message Body | Committed on (Date) |
+|------------------------------|------------------------|---|---|---------------------|---|
+| GreenSpot-app/kampo-platform | feature/shared         |10fc01289a8608ceff9d17343c07c7f08a3d4104 |feat!: add plugins | -                   | May 31, 2026|
+| GreenSpot-app/kampo-platform | feature/shared         |9ea88aa0b75785f7ac0a66fb483df403fcf69341 |feat: update shared bounded context. | -                   | Jun 1, 2026|
+| GreenSpot-app/kampo-platform | feature/configurations | 43a8d4178527e7cbf2fb686e3ac761a497ce425c|Merge branch 'feature/configurations' into develop | -                   |Jun 1, 2026|
+| GreenSpot-app/kampo-platform | feature/docs           | 2173be50f94d1e6bcdb225bc2fbd1454910bc784| feat: create inventory structure and class diagram| -                   |Jun 2, 2026 |
+| GreenSpot-app/kampo-platform | feature/inventory      | 71994b3e205a6c5ce3faa49dae69fb4af55922ad|feat: implementation inventory bounded context | -                   |Jun 4, 2026 |
+| GreenSpot-app/kampo-platform | feature/inventory      |a27285b9a5cbf94d6b59fa8b3d5b2e9630e82f76 |feat:completed inventory bounded context | -                   | Jun 6, 2026|
+| GreenSpot-app/kampo-platform | feature/financial      |25d23a321f1abd49c3467ecd1b53394e2b2f006f | feat: implementing financialBC| -                   |Jun 7, 2026 |
+| GreenSpot-app/kampo-platform | feature/alerts         | 2ec8d13e328e2251338c586adabdb7671295a52f|feat(alert): add alert management bounded context | -                   | Jun 9, 2026 |
+| GreenSpot-app/kampo-platform | feature/seasons        |185f1a26cd896636aa5aeb4d80f4cfcf62863bf4 | feat: add season boundend context backend| -                   | Jun 9, 2026|
+| GreenSpot-app/kampo-platform | feature/fixAlerts      | c7b5355af46974a4e5c980809461f30691ee7c11|feat(fix): refactoring alertBC | -                   |Jun 9, 2026 |
+| GreenSpot-app/kampo-platform | release/2.0.0          |1a3733eda716e246d631bbf06f865f05729f8668 |Merge tag '2.0.0' into develop | -                   | 17, 2026|
+| GreenSpot-app/kampo-platform | feature                |9184907fe20c13e0d2af8514d6fa622a4f54b6cf | feat:profile and access implement|                     |18, 2026 |
+| GreenSpot-app/kampo-platform | feature                | 15dd54ec838f1c375e114d6fbd74d14ccb9a06fd|feat: update version 3.0.0 | -                   | 18, 2026|
+| GreenSpot-app/kampo-platform | feature                | 1945e87572ea79c2d65ffcca1c995a366e7b1dec| feat: add employee boundend context|                     |18, 2026 |
+
+
+---
+
+######  5.2.3.5. Execution Evidence for Sprint Review
+
+La ejecución y validación funcional del backend se realizó mediante pruebas manuales mostradas a través de Swagger UI, cubriendo los siguientes flujos críticos del sistema:
+
+1. **Registro de usuario** (`POST /api/v1/users`) — verificación de creación exitosa, hash de contraseña y asignación automática de rol.
+2. **Autenticación** (`POST /api/v1/auth/login`) — verificación de generación correcta de token JWT y rechazo con credenciales inválidas (HTTP 401).
+3. **Acceso autenticado** a endpoints protegidos mediante el header `Authorization: Bearer <token>`, validando que las rutas de Organization, Field Operation y los demás bounded contexts respondan correctamente solo con un token válido.
+4. **Gestión de roles y permisos** (`POST /api/v1/roles`, `POST /api/v1/roles/assign`, `POST /api/v1/permissions/assign`) — verificación de asignaciones y de los códigos de conflicto (HTTP 409) ante asignaciones duplicadas.
+5. **Programación y finalización de visitas de campo** (`POST /api/v1/field-visits`, `PATCH /api/v1/field-visits/{id}/complete`) — verificación de la transición de estado SCHEDULED a DONE y de la restricción contra doble finalización.
+6. **Registro de observaciones agronómicas** (`POST /api/v1/observations`) — verificación de validación de existencia de la visita de campo asociada.
+
+Las pruebas evidenciaron correcciones iterativas aplicadas durante el sprint, entre ellas: el ajuste de la validación de fecha en `ScheduleFieldVisitCommand` (eliminada por ser excesivamente restrictiva para pruebas), la corrección del flujo de autenticación en Swagger (deshabilitación de `httpBasic` y `formLogin` por defecto de Spring Security), y la corrección de URLs base entre entornos local y de producción mediante la configuración de servidores relativos (`"/"`) en OpenAPI.
+
+---
+
+######  5.2.3.6. Services Documentation Evidence for Sprint Review
+
+La documentación de los servicios expuestos por la API se generó automáticamente mediante **springdoc-openapi**, integrando anotaciones `@Operation`, `@ApiResponse` y `@Schema` en cada controlador REST. La especificación OpenAPI resultante es accesible en:
+
+- **Swagger UI**: `/swagger-ui/index.html` — interfaz interactiva para probar todos los endpoints.
+- **OpenAPI JSON**: `/v3/api-docs` — especificación machine-readable consumida por Swagger UI y herramientas de generación de clientes.
+
+Cada bounded context documenta sus endpoints bajo una etiqueta (Tag) específica: *"Organization"*, *"Field Visits"*, *"Observations"*, *"Users"*, *"Auth"* y *"Roles & Permissions"*, facilitando la navegación dentro de la documentación generada. Los modelos de respuesta de error (`ProblemDetail`) están estandarizados, mapeando los códigos de `ApplicationError` del shared kernel (`_NOT_FOUND` → 404, `_CONFLICT` → 409, `BUSINESS_RULE_VIOLATION` → 409, credenciales inválidas → 401) a respuestas HTTP semánticamente correctas.
+
+Se incorporó el esquema de seguridad `bearerAuth` en la configuración global de OpenAPI, permitiendo que cualquier desarrollador que consulte la documentación entienda inmediatamente que la API requiere un token JWT Bearer, obtenible mediante el endpoint de login.
+ 
+---
+
+###### 5.2.3.7. Software Deployment Evidence for Sprint Review
+
+El despliegue del backend se realizó en **Microsoft Azure**, siguiendo un flujo de containerización con Docker:
+
+1. Generación del artefacto de la aplicación: `mvn clean package -DskipTests`.
+2. Construcción de la imagen Docker local mediante Docker Compose: `docker-compose -f docker-compose.yml build --no-cache`.
+3. Autenticación contra Azure Container Registry (ACR): `az acr login -n learningcenteroscontainereb`.
+4. Etiquetado y publicación de la imagen en el registry: `docker tag` y `docker push` hacia `learningcenteroscontainereb.azurecr.io`.
+5. Despliegue del contenedor en el Azure App Service `kampo-platform-os`, dentro del grupo de recursos `kampo-platform-rg`.
+6. Reinicio del servicio para aplicar la nueva imagen: `az webapp restart --resource-group kampo-platform-rg --name kampo-platform-os`.
+
+La aplicación desplegada es accesible públicamente en:
+
+> `https://kampo-platform-os.azurewebsites.net/swagger-ui/index.html`
+
+Durante el despliegue se habilitó el registro de logs de la aplicación (App Service Logs → File System) y se utilizó Log Stream para diagnosticar en tiempo real incidencias de configuración, entre ellas la interferencia del mecanismo de autenticación básica de Spring Security con el flujo de login JWT, resuelta mediante la deshabilitación explícita de `httpBasic` y `formLogin`, y la sobreescritura del `UserDetailsService` por defecto.
+
+El código fuente completo del proyecto se encuentra versionado en el repositorio:
+
+> `https://github.com/upc-pre-202610-1asi0729-11881-greenspot/kampo-platform.git`
+ 
+---
+
+###### 5.2.3.8. Team Collaboration Insights during Sprint
+
+Durante el Sprint 3, el equipo GreenSpot desarrolló las actividades de diseño e implementación de forma colaborativa a través de GitHub, aplicando GitFlow y Conventional Commits. Cada integrante trabajó en las ramas asignadas según los bounded contexts bajo su liderazgo.
+ 
+---
+
+**Distribución de contribuciones por integrante**
+
+| Integrante | Bounded contexts liderados | Entregable principal |
+|---|---|---|
+| Hurtado Balcázar, Rommel Daniel | Profile & Access, Seguridad JWT transversal, Despliegue en Azure | Bounded context de autenticación/autorización completo, configuración de Spring Security global, backend desplegado y accesible públicamente en Azure App Service |
+| Acuache Lucas, Mathias Joaquín | Organization, Field Operation | Bounded contexts de Organization (Organization, Fundo, Field, Crop) y Field Operation (FieldVisit, Observation) completos en sus seis fases DDD |
+
+---
+
+**Analíticos de colaboración en GitHub**
+
+**Figura 1: Gráfico de contribuciones por autor (Contributors) — kampo-platform**
+Captura obtenida desde:
+https://github.com/upc-pre-202610-1asi0729-11881-greenspot/kampo-platform/graphs/contributors?from=14%2F3%2F2026
+
+![Screeshot Contributors Kampo-Frontend](docs/assets/img/contributorsPlatform.png)
+---
+
+**Figura 2: Gráfico de contribuciones por autor (Contributors) — Kampo-Frontend**
+Captura obtenida desde:
+https://github.com/upc-pre-202610-1asi0729-11881-greenspot/kampo-webapp/graphs/contributors?from=14%2F3%2F2026
+
+![Screeshot Network](docs/assets/img/contributtorsWebbApp.png)
+
+
+
+---
+
+**Figura 3: Network graph — Kampo-Platform**
+Captura obtenida desde:
+https://github.com/upc-pre-202610-1asi0729-11881-greenspot/kampo-platform/network
+
+![Screenshot Pulse](docs/assets/img/nexworkPlatform.png)
+
+___
+**Figura 4: Swagger Deploy - Kampo-Platform**
+https://kampo-platform-os.azurewebsites.net/swagger-ui/index.html#/
+
+![Swagger Kampo Platform](docs/assets/img/swagger.png)
 
 ## 5.3. Validation Interviews
 ##### 5.3.1. Diseño de Entrevistas

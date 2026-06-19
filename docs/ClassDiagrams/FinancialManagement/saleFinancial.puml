@@ -1,0 +1,247 @@
+@startuml
+title Class Diagram - Financial Management (Sale Aggregate)
+left to right direction
+
+package "com.acme.kampo.platform.shared" {
+    package "domain.model.aggregates" {
+        abstract class AbstractDomainAggregateRoot <<base aggregate>> {
+        }
+    }
+}
+
+package "com.acme.kampo.platform.financial" {
+
+    package "interfaces.rest" {
+        class SaleController <<controller>> {
+            -saleCommandService: SaleCommandService
+            -saleQueryService: SaleQueryService
+            +createSale(resource: CreateSaleResource): ResponseEntity<?>
+            +updateSale(id: Long, resource: UpdateSaleResource): ResponseEntity<?>
+            +cancelSale(id: Long): ResponseEntity<?>
+            +getSaleById(id: Long): ResponseEntity<?>
+            +getSalesByFundo(fundoId: Long): ResponseEntity<?>
+        }
+    }
+
+    package "interfaces.events" {
+        class SaleRegisteredIntegrationEvent <<integration event>> {
+            +saleId: Long
+            +fundoId: Long
+            +totalAmount: BigDecimal
+            +occurredOn: LocalDateTime
+        }
+    }
+
+    ' ── APPLICATION LAYER ─────────────────────
+    package "application.commandservices" {
+        interface SaleCommandService <<service>> {
+            +handle(command: RegisterSaleCommand): Result<Sale, ApplicationError>
+            +handle(command: UpdateSaleCommand): Result<Sale, ApplicationError>
+            +handle(command: CancelSaleCommand): Result<Void, ApplicationError>
+        }
+    }
+
+    package "application.queryservices" {
+        interface SaleQueryService <<service>> {
+            +handle(query: GetSaleByIdQuery): Optional<Sale>
+            +handle(query: GetSalesByFundoQuery): List<Sale>
+            +handle(query: GetSalesByCropQuery): List<Sale>
+        }
+    }
+
+    package "application.internal.commandservices" {
+        class SaleCommandServiceImpl <<service>> {
+            -saleRepository: SaleRepository
+            +handle(command: RegisterSaleCommand): Result<Sale, ApplicationError>
+            +handle(command: UpdateSaleCommand): Result<Sale, ApplicationError>
+            +handle(command: CancelSaleCommand): Result<Void, ApplicationError>
+        }
+    }
+
+    package "application.internal.queryservices" {
+        class SaleQueryServiceImpl <<service>> {
+            -saleRepository: SaleRepository
+            +handle(query: GetSaleByIdQuery): Optional<Sale>
+            +handle(query: GetSalesByFundoQuery): List<Sale>
+            +handle(query: GetSalesByCropQuery): List<Sale>
+        }
+    }
+
+    package "application.internal.eventhandlers" {
+        class SaleRegisteredEventHandler <<event handler>> {
+            -eventPublisher: ApplicationEventPublisher
+            +on(event: SaleRegisteredEvent): void
+        }
+    }
+
+    ' ── DOMAIN LAYER ──────────────────────────
+    package "domain.model.commands" {
+        class RegisterSaleCommand <<command>> {
+            +cropName: String
+            +quantity: Double
+            +pricePerUnit: BigDecimal
+            +currency: String
+            +fundoId: Long
+            +date: LocalDate
+        }
+        class UpdateSaleCommand <<command>> {
+            +saleId: Long
+            +cropName: String
+            +quantity: Double
+            +pricePerUnit: BigDecimal
+        }
+        class CancelSaleCommand <<command>> {
+            +saleId: Long
+        }
+    }
+
+    package "domain.model.queries" {
+        class GetSaleByIdQuery <<query>> {
+            +saleId: Long
+        }
+        class GetSalesByFundoQuery <<query>> {
+            +fundoId: Long
+        }
+        class GetSalesByCropQuery <<query>> {
+            +cropName: String
+        }
+    }
+
+    package "domain.model.aggregates" {
+        class Sale <<aggregate>> {
+            -id: SaleId
+            -cropName: String
+            -quantity: Double
+            -pricePerUnit: Money
+            -totalAmount: Money
+            -fundoId: FundoId
+            -date: LocalDate
+            -createdAt: LocalDateTime
+            +create(command: RegisterSaleCommand): Sale
+            +update(command: UpdateSaleCommand): void
+            +cancel(): void
+            +calculateTotal(): Money
+            +validate(): void
+            +getId(): SaleId
+            +getFundoId(): FundoId
+        }
+    }
+
+    package "domain.model.valueobjects" {
+        class Money <<value object>> {
+            -amount: BigDecimal
+            -currency: String
+            +of(amount: BigDecimal, currency: String): Money
+            +add(other: Money): Money
+            +subtract(other: Money): Money
+            +isPositive(): boolean
+            +isZero(): boolean
+        }
+        class FundoId <<value object>> {
+            -value: Long
+            +of(value: Long): FundoId
+            +getValue(): Long
+        }
+        class SaleId <<value object>> {
+            -value: Long
+            +of(value: Long): SaleId
+            +getValue(): Long
+        }
+    }
+
+    package "domain.model.events" {
+        class SaleRegisteredEvent <<domain event>> {
+            +saleId: SaleId
+            +fundoId: FundoId
+            +totalAmount: Money
+            +occurredOn: LocalDateTime
+        }
+    }
+
+    package "domain.repositories" {
+        interface SaleRepository <<repository>> {
+            +save(sale: Sale): Sale
+            +findById(id: SaleId): Optional<Sale>
+            +findByFundoId(fundoId: FundoId): List<Sale>
+            +findByCropName(cropName: String): List<Sale>
+            +delete(id: SaleId): void
+        }
+    }
+
+    ' ── INFRASTRUCTURE LAYER ──────────────────
+    package "infrastructure.persistence.jpa.repositories" {
+        interface SaleJpaRepository <<jpa repository>> {
+            ' extends JpaRepository<SaleEntity, Long>
+            +findByFundoId(fundoId: Long): List<SaleEntity>
+            +findByCropName(cropName: String): List<SaleEntity>
+        }
+    }
+
+    package "infrastructure.persistence.jpa.adapters" {
+        class SaleRepositoryImpl <<adapter>> {
+            -jpaRepository: SaleJpaRepository
+            +save(sale: Sale): Sale
+            +findById(id: SaleId): Optional<Sale>
+            +findByFundoId(fundoId: FundoId): List<Sale>
+            +findByCropName(cropName: String): List<Sale>
+            +delete(id: SaleId): void
+        }
+    }
+
+    package "infrastructure.persistence.jpa.entities" {
+        class SalePersistenceEntity <<entity>> {
+            ' @Entity @Table(name = "sales")
+            -id: Long
+            -cropName: String
+            -quantity: Double
+            -pricePerUnit: BigDecimal
+            -totalAmount: BigDecimal
+            -currency: String
+            -fundoId: Long
+            -date: LocalDate
+            -createdAt: LocalDateTime
+        }
+    }
+
+    ' ─────────────────────────────────────────
+    ' RELATIONSHIPS
+    ' ─────────────────────────────────────────
+
+    SaleController --> SaleCommandService
+    SaleController --> SaleQueryService
+
+    SaleCommandServiceImpl ..|> SaleCommandService
+    SaleQueryServiceImpl   ..|> SaleQueryService
+
+    SaleCommandServiceImpl --> SaleRepository
+    SaleQueryServiceImpl   --> SaleRepository
+
+    SaleCommandServiceImpl ..> RegisterSaleCommand
+    SaleCommandServiceImpl ..> UpdateSaleCommand
+    SaleCommandServiceImpl ..> CancelSaleCommand
+
+    SaleQueryServiceImpl ..> GetSaleByIdQuery
+    SaleQueryServiceImpl ..> GetSalesByFundoQuery
+    SaleQueryServiceImpl ..> GetSalesByCropQuery
+
+    Sale --|> AbstractDomainAggregateRoot
+
+    Sale *-- SaleId
+    Sale *-- Money
+    Sale *-- FundoId
+
+    Sale ..> SaleRegisteredEvent : publishes
+
+    SaleRegisteredEventHandler ..> SaleRegisteredEvent : handles
+    SaleRegisteredEventHandler ..> SaleRegisteredIntegrationEvent : publishes
+
+    SaleRepositoryImpl ..|> SaleRepository
+
+    SalePersistenceEntity --> Sale : toDomainModel()
+
+    SaleRepositoryImpl --> SalePersistenceEntity : uses
+
+    SaleJpaRepository --> SalePersistenceEntity : manages
+}
+
+@enduml

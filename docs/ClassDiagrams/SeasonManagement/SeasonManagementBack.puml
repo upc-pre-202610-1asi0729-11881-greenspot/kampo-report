@@ -1,130 +1,188 @@
 @startuml
-left to right direction
 title Class Diagram - Season Management (Backend)
+left to right direction
 
-package "domain" {
-  together {
-    package "commands" {
-      class CreateSeasonCommand {
-        -fieldId: FieldId
-        -cropId: CropId
-        -cropName: String
-        -startedAt: LocalDate
-      }
-      class AssignCropToSeasonCommand {
-        -seasonId: SeasonId
-        -cropId: CropId
-        -cropName: String
-      }
-      class UpdateSeasonStatusCommand {
-        -seasonId: SeasonId
-        -status: SeasonStatus
-      }
-      class EndSeasonCommand {
-        -seasonId: SeasonId
-        -endedAt: LocalDate
-      }
+package "com.acme.kampo.platform"{
+    package "season"{
+        package "interfaces.rest"{
+            class SeasonController <<controller>>{
+                -seasonCommandService: SeasonCommandService
+                -seasonQueryService: SeasonQueryService
+                +createSeason(resource: CreateSeasonResource): ResponseEntity<?>
+                +getSeasonById(seasonId: Long): ResponseEntity<?>
+                +getAllSeasons(): ResponseEntity<?>
+            }
+        }
+        package "interfaces.acl"{
+            interface SeasonsContextFacade <<facade>>{
+                +createSeason():Long
+            }
+        }
+        package "interfaces.events"{
+            class SeasonCreatedIntegrationEvent <<integration event>>{
+            }
+        }
+        package "application.commandservices"{
+            interface SeasonCommandService <<service>>{
+                +handle(command: CreateSeasonCommand): Result<Season,ApplicationError>
+                +handle(command: AssignCropToSeasonCommand): Result<Season,ApplicationError>
+                +handle(command: UpdateSeasonStatusCommand): Result<Season,ApplicationError>
+                +handle(command: EndSeasonCommand): Result<Season,ApplicationError>
+            }
+        }
+        package "application.queryservices"{
+            interface SeasonQueryService <<service>> {
+                +handle(query: GetSeasonByIdQuery):Optional<Season>
+                +handle(query: GetSeasonsByFieldIdQuery):List<Season>
+                +handle(query: GetActiveSeasonByFieldIdQuery):Optional<Season>
+            }
+        }
+        package "application.internal.commandservices"{
+            class SeasonCommandServiceImpl <<service>> {
+                -seasonRepository: SeasonRepository
+                +handle(command: CreateSeasonCommand): Result<Season,ApplicationError>
+                +handle(command: AssignCropToSeasonCommand): Result<Season,ApplicationError>
+                +handle(command: UpdateSeasonStatusCommand): Result<Season,ApplicationError>
+                +handle(command: EndSeasonCommand): Result<Season,ApplicationError>
+            }
+        }
+        package "application.internal.queryservices"{
+            class SeasonQueryServiceImpl <<service>> {
+                -seasonRepository: SeasonRepository
+                +handle(query: GetSeasonByIdQuery) : Optional<Season>
+                +handle(query: GetSeasonsByFieldIdQuery):List<Season>
+                +handle(query: GetActiveSeasonByFieldIdQuery):Optional<Season>
+            }
+        }
+        package "application.internal.eventhandlers"{
+            class SeasonsSeasonCreatedEventHandler <<event handler>> {
+                -eventPublisher: ApplicationEventPublisher
+                +on(event: SeasonCreatedEvent): void
+            }
+        }
+        package "application.acl"{
+            class SeasonsContextFacadeImpl <<facade>> {
+                -seasonCommandService: SeasonCommandService
+                -seasonQueryService: SeasonQueryService
+                +createSeason():Long
+                +fetchSeasonIdBy...():Long
+            }
+        }
+        package "domain.model.aggregates"{
+            class Season <<aggregate>>{
+                -id: SeasonId
+                -fieldId: FieldId
+                -cropId: CropId
+                -cropName: String
+                -status: SeasonStatus
+                -startedAt: LocalDate
+                -endedAt: LocalDate
+                +create(command: CreateSeasonCommand): Season
+                +assignCrop(command: AssignCropToSeasonCommand): void
+                +updateStatus(command: UpdateSeasonStatusCommand): void
+                +end(command: EndSeasonCommand): void
+                +getId(): SeasonId
+                +getFieldId(): FieldId
+                +getCropId(): CropId
+                +getCropName(): String
+                +getStatus(): SeasonStatus
+                +getStartedAt(): LocalDate
+                +getEndedAt(): LocalDate
+                +isActive(): boolean
+                +canTransitionTo(newStatus: SeasonStatus): boolean
+            }
+        }
+        package "domain.model.enums"{
+            enum SeasonStatus {
+                PLANTING
+                GROWING
+                HARVESTING
+                ENDED
+            }
+        }
+        package "domain.model.valueobjects"{
+            class SeasonId <<value object>> {
+                -value: Long
+                +of(value: Long): SeasonId
+                +getValue(): Long
+            }
+            class FieldId <<value object>> {
+                -value: Long
+                +of(value: Long): FieldId
+                +getValue(): Long
+            }
+            class CropId <<value object>> {
+                -value: Long
+                +of(value: Long): CropId
+                +getValue(): Long
+            }
+            class DateRange <<value object>> {
+                -startedAt: LocalDate
+                -endedAt: LocalDate
+                +of(start: LocalDate, end: LocalDate): DateRange
+                +getStartedAt(): LocalDate
+                +getEndedAt(): LocalDate
+                +isValid(): boolean
+                +overlapsWith(other: DateRange): boolean
+                +equals(other: DateRange): boolean
+            }
+        }
+        package "domain.model.events"{
+            class SeasonCreatedEvent <<domain event>>{}
+        }
+        package "domain.repositories"{
+            interface SeasonRepository <<repository>>{
+                +findById(id:SeasonId):Optional<Season>
+                +findByFieldId(fieldId:FieldId):List<Season>
+                +findActiveByFieldId(fieldId:FieldId):Optional<Season>
+                +save(season: Season):Season
+                +delete(id: SeasonId): void
+            }
+        }
+        package "infrastructure.persistence.jpa.repositories"{
+            interface SeasonJpaRepository <<jpa repository>>
+        }
+        package "infrastructure.persistence.jpa.adapters"{
+            class SeasonRepositoryImpl <<adapter>>
+        }
+        package "infrastructure.persistence.jpa.entities"{
+            class SeasonPersistenceEntity <<entity>>
+        }
     }
 
-    package "model" {
-      package "aggregate" {
-        class Season <<Aggregate>> {
-          -id: SeasonId
-          -fieldId: FieldId
-          -cropId: CropId
-          -cropName: String
-          -status: SeasonStatus
-          -startedAt: LocalDate
-          -endedAt: LocalDate
-          +create(command: CreateSeasonCommand): Season
-          +assignCrop(command: AssignCropToSeasonCommand): void
-          +updateStatus(command: UpdateSeasonStatusCommand): void
-          +end(command: EndSeasonCommand): void
-          +getId(): SeasonId
-          +getFieldId(): FieldId
-          +getCropId(): CropId
-          +getCropName(): String
-          +getStatus(): SeasonStatus
-          +getStartedAt(): LocalDate
-          +getEndedAt(): LocalDate
-          +isActive(): boolean
-          +canTransitionTo(newStatus: SeasonStatus): boolean
+    package "shared"{
+        package "domain.model.aggregates"{
+            abstract class AbstractDomainAggregateRoot<<base aggregate>>
         }
-      }
-
-      package "valueobject" {
-        class SeasonId {
-          -value: Long
-          +of(value: Long): SeasonId
-          +getValue(): Long
-        }
-        class FieldId {
-          -value: Long
-          +of(value: Long): FieldId
-          +getValue(): Long
-        }
-        class CropId {
-          -value: Long
-          +of(value: Long): CropId
-          +getValue(): Long
-        }
-        class DateRange {
-          -startedAt: LocalDate
-          -endedAt: LocalDate
-          +of(start: LocalDate, end: LocalDate): DateRange
-          +getStartedAt(): LocalDate
-          +getEndedAt(): LocalDate
-          +isValid(): boolean
-          +overlapsWith(other: DateRange): boolean
-          +equals(other: DateRange): boolean
-        }
-      }
-
-      package "enums" {
-        enum SeasonStatus {
-          PLANTING
-          GROWING
-          HARVESTING
-          ENDED
-        }
-      }
     }
-  }
-
-  package "services" {
-    interface SeasonDomainService {
-      +validateSeason(season: Season): void
-      +canCreateSeason(fieldId: FieldId): boolean
-      +validateStatusTransition(current: SeasonStatus, next: SeasonStatus): boolean
-      +hasActiveSeasonInField(fieldId: FieldId): boolean
-    }
-  }
-
-  package "repositories" {
-    interface SeasonRepository {
-      +findById(id: SeasonId): Optional<Season>
-      +findByFieldId(fieldId: FieldId): List<Season>
-      +findActiveByFieldId(fieldId: FieldId): Optional<Season>
-      +save(season: Season): Season
-      +delete(id: SeasonId): void
-    }
-  }
 }
 
-CreateSeasonCommand        ..> Season
-AssignCropToSeasonCommand  ..> Season
-UpdateSeasonStatusCommand  ..> Season
-EndSeasonCommand           ..> Season
+' Season relationships
+SeasonController --> SeasonCommandService
+SeasonController --> SeasonQueryService
+
+SeasonsContextFacadeImpl ..|> SeasonsContextFacade
+SeasonsContextFacadeImpl --> SeasonCommandService
+SeasonsContextFacadeImpl --> SeasonQueryService
+
+SeasonCommandServiceImpl ..|> SeasonCommandService
+SeasonQueryServiceImpl ..|> SeasonQueryService
+SeasonCommandServiceImpl --> SeasonRepository
+SeasonQueryServiceImpl --> SeasonRepository
+SeasonRepositoryImpl ..|> SeasonRepository
+
+SeasonPersistenceEntity --> Season : toDomainModel()
+SeasonRepositoryImpl --> SeasonPersistenceEntity : uses
+SeasonJpaRepository --> SeasonPersistenceEntity : manages
 
 Season --> SeasonId
 Season --> FieldId
 Season --> CropId
 Season --> SeasonStatus
-Season --> DateRange
 
-SeasonDomainService ..> Season
-SeasonDomainService ..> SeasonStatus
-SeasonDomainService ..> FieldId
-SeasonRepository    ..> Season
+Season ..> SeasonCreatedEvent: publishes
+SeasonsSeasonCreatedEventHandler --> SeasonCreatedEvent
+SeasonsSeasonCreatedEventHandler --> SeasonCreatedIntegrationEvent : republishes
 
+Season --|> AbstractDomainAggregateRoot
 @enduml

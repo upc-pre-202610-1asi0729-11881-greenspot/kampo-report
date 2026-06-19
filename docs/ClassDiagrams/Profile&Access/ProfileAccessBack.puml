@@ -1,199 +1,265 @@
 @startuml
-
+title Class Diagram - Profile & Access Management (Backend)
 left to right direction
 
-title Class Diagram - Profile & Access (Backend)
-
-package "domain" {
-
-  package "services" {
-    interface ProfileAccessDomainService {
-      +validateUser(user: User): void
-      +validateRole(role: Role): void
-      +validatePermission(permission: Permission): void
-      +assignDefaultRole(user: User): User
+package "com.acme.kampo.platform"{
+    package "profileaccess"{
+        package "interfaces.rest"{
+            class ProfileAccessController <<controller>>{
+                -commandService: ProfileAccessCommandService
+                -queryService: ProfileAccessQueryService
+                +registerUser(resource: RegisterUserResource): ResponseEntity<?>
+                +login(resource: LoginResource): ResponseEntity<?>
+                +getUserById(userId: Long): ResponseEntity<?>
+            }
+        }
+        package "interfaces.acl"{
+            interface ProfileAccessContextFacade <<facade>>{
+                +fetchUserIdByEmail(email: String): Long
+            }
+        }
+        package "interfaces.events"{
+            class UserRegisteredIntegrationEvent <<integration event>>{
+            }
+        }
+        package "application.commandservices"{
+            interface ProfileAccessCommandService <<service>>{
+                +handle(command: RegisterUserCommand): Result<User,ApplicationError>
+                +handle(command: LoginCommand): Result<Boolean,ApplicationError>
+                +handle(command: ModifyProfileCommand): Result<User,ApplicationError>
+                +handle(command: AssignRoleCommand): Result<UserRole,ApplicationError>
+                +handle(command: AssignPermissionCommand): Result<RolePermission,ApplicationError>
+            }
+        }
+        package "application.queryservices"{
+            interface ProfileAccessQueryService <<service>> {
+                +handle(query: GetUserByIdQuery):Optional<User>
+                +handle(query: GetRoleByIdQuery):Optional<Role>
+            }
+        }
+        package "application.internal.commandservices"{
+            class ProfileAccessCommandServiceImpl <<service>> {
+                -userRepository: UserRepository
+                -roleRepository: RoleRepository
+                +handle(command: RegisterUserCommand): Result<User,ApplicationError>
+                +handle(command: LoginCommand): Result<Boolean,ApplicationError>
+                +handle(command: ModifyProfileCommand): Result<User,ApplicationError>
+                +handle(command: AssignRoleCommand): Result<UserRole,ApplicationError>
+                +handle(command: AssignPermissionCommand): Result<RolePermission,ApplicationError>
+            }
+        }
+        package "application.internal.queryservices"{
+            class ProfileAccessQueryServiceImpl <<service>> {
+                -userRepository: UserRepository
+                -roleRepository: RoleRepository
+                +handle(query: GetUserByIdQuery) : Optional<User>
+                +handle(query: GetRoleByIdQuery): Optional<Role>
+            }
+        }
+        package "application.internal.eventhandlers"{
+            class ProfileUserRegisteredEventHandler <<event handler>> {
+                -eventPublisher: ApplicationEventPublisher
+                +on(event: UserRegisteredEvent): void
+            }
+        }
+        package "application.acl"{
+            class ProfileAccessContextFacadeImpl <<facade>> {
+                -queryService: ProfileAccessQueryService
+                +fetchUserIdByEmail(email: String): Long
+            }
+        }
+        package "domain.model.aggregates"{
+            class User <<aggregate>>{
+                -id: UserId
+                -lastName: String
+                -firstName: String
+                -createdAt: LocalDateTime
+                -email: Email
+                -phone: String
+                +create(command: RegisterUserCommand): User
+                +login(command: LoginCommand): boolean
+                +modifyProfile(command: ModifyProfileCommand): void
+                +getId(): UserId
+                +getLastName(): String
+                +getFirstName(): String
+                +getEmail(): Email
+                +getPhone(): String
+            }
+            class Role <<aggregate>>{
+                -id: RoleId
+                -position: RolePosition
+                -description: String
+                +create(position: RolePosition, description: String): Role
+                +getId(): RoleId
+                +getPosition(): RolePosition
+                +getDescription(): String
+            }
+            class Permission <<aggregate>>{
+                -id: PermissionId
+                -category: PermissionCategory
+                -description: String
+                +create(category: PermissionCategory, description: String): Permission
+                +getId(): PermissionId
+                +getCategory(): PermissionCategory
+                +getDescription(): String
+            }
+        }
+        package "domain.model.entities"{
+            class UserRole <<entity>>{
+                -id: UserRoleId
+                -roleId: RoleId
+                -userId: UserId
+                +assign(command: AssignRoleCommand): UserRole
+                +getId(): UserRoleId
+                +getRoleId(): RoleId
+                +getUserId(): UserId
+            }
+            class RolePermission <<entity>>{
+                -id: RolePermissionId
+                -permissionId: PermissionId
+                -roleId: RoleId
+                +assign(command: AssignPermissionCommand): RolePermission
+                +getId(): RolePermissionId
+                +getPermissionId(): PermissionId
+                +getRoleId(): RoleId
+            }
+        }
+        package "domain.model.enums"{
+            enum RolePosition {
+                ADMIN
+                AGRONOMIST
+                TECHNICIAN
+                SUPERVISOR
+            }
+            enum PermissionCategory {
+                USERS
+                REPORTS
+                ALERTS
+                INVENTORY
+                FINANCIAL
+            }
+        }
+        package "domain.model.valueobjects"{
+            class UserId <<value object>> {
+                -value: Long
+                +of(value: Long): UserId
+                +getValue(): Long
+            }
+            class RoleId <<value object>> {
+                -value: Long
+                +of(value: Long): RoleId
+                +getValue(): Long
+            }
+            class PermissionId <<value object>> {
+                -value: Long
+                +of(value: Long): PermissionId
+                +getValue(): Long
+            }
+            class UserRoleId <<value object>> {
+                -value: Long
+                +of(value: Long): UserRoleId
+                +getValue(): Long
+            }
+            class RolePermissionId <<value object>> {
+                -value: Long
+                +of(value: Long): RolePermissionId
+                +getValue(): Long
+            }
+            class Email <<value object>> {
+                -value: String
+                +of(value: String): Email
+                +getValue(): String
+            }
+        }
+        package "domain.services"{
+            interface ProfileAccessDomainService <<domain service>>{
+                +validateUser(user: User): void
+                +validateRole(role: Role): void
+                +validatePermission(permission: Permission): void
+                +assignDefaultRole(user: User): User
+            }
+        }
+        package "domain.model.events"{
+            class UserRegisteredEvent <<domain event>>{}
+        }
+        package "domain.repositories"{
+            interface UserRepository <<repository>>{
+                +findById(id:UserId):Optional<User>
+                +findByEmail(email:Email):Optional<User>
+                +save(user: User):User
+            }
+            interface RoleRepository <<repository>>{
+                +findById(id:RoleId):Optional<Role>
+                +save(role: Role):Role
+            }
+        }
+        package "infrastructure.persistence.jpa.repositories"{
+            interface UserJpaRepository <<jpa repository>>
+            interface RoleJpaRepository <<jpa repository>>
+        }
+        package "infrastructure.persistence.jpa.adapters"{
+            class UserRepositoryImpl <<adapter>>
+            class RoleRepositoryImpl <<adapter>>
+        }
+        package "infrastructure.persistence.jpa.entities"{
+            class UserPersistenceEntity <<entity>>
+            class RolePersistenceEntity <<entity>>
+        }
     }
-  }
 
-  package "model" {
-
-    package "aggregate" {
-      class User {
-        -id: UserId
-        -lastName: String
-        -firstName: String
-        -createdAt: LocalDateTime
-        -email: Email
-        -phone: String
-
-        +create(command: RegisterUserCommand): User
-        +login(command: LoginCommand): boolean
-        +modifyProfile(command: ModifyProfileCommand): void
-        +getId(): UserId
-        +getLastName(): String
-        +getFirstName(): String
-        +getEmail(): Email
-        +getPhone(): String
-      }
-
-      class Role {
-        -id: RoleId
-        -position: RolePosition
-        -description: String
-
-        +create(position: RolePosition, description: String): Role
-        +getId(): RoleId
-        +getPosition(): RolePosition
-        +getDescription(): String
-      }
-
-      class Permission {
-        -id: PermissionId
-        -category: PermissionCategory
-        -description: String
-
-        +create(category: PermissionCategory, description: String): Permission
-        +getId(): PermissionId
-        +getCategory(): PermissionCategory
-        +getDescription(): String
-      }
-
-      class UserRole {
-        -id: UserRoleId
-        -rolesId: RoleId
-        -userId: UserId
-
-        +assign(command: AssignRoleCommand): UserRole
-        +getId(): UserRoleId
-        +getRolesId(): RoleId
-        +getUserId(): UserId
-      }
-
-      class RolePermission {
-        -id: RolePermissionId
-        -permissionId: PermissionId
-        -roleId: RoleId
-
-        +assign(command: AssignPermissionCommand): RolePermission
-        +getId(): RolePermissionId
-        +getPermissionId(): PermissionId
-        +getRoleId(): RoleId
-      }
+    package "shared"{
+        package "domain.model.aggregates"{
+            abstract class AbstractDomainAggregateRoot<<base aggregate>>
+        }
     }
-
-    package "enums" {
-      enum RolePosition {
-        ADMIN
-        AGRONOMIST
-        TECHNICIAN
-        SUPERVISOR
-      }
-
-      enum PermissionCategory {
-        USERS
-        REPORTS
-        ALERTS
-        INVENTORY
-        FINANCIAL
-      }
-    }
-
-    package "valueobject" {
-      class UserId {
-        -value: Long
-        +of(value: Long): UserId
-        +getValue(): Long
-      }
-
-      class RoleId {
-        -value: Long
-        +of(value: Long): RoleId
-        +getValue(): Long
-      }
-
-      class PermissionId {
-        -value: Long
-        +of(value: Long): PermissionId
-        +getValue(): Long
-      }
-
-      class UserRoleId {
-        -value: Long
-        +of(value: Long): UserRoleId
-        +getValue(): Long
-      }
-
-      class RolePermissionId {
-        -value: Long
-        +of(value: Long): RolePermissionId
-        +getValue(): Long
-      }
-
-      class Email {
-        -value: String
-        +of(value: String): Email
-        +getValue(): String
-      }
-    }
-  }
-
-  package "commands" {
-    class RegisterUserCommand {
-      -lastName: String
-      -firstName: String
-      -email: Email
-      -phone: String
-    }
-
-    class LoginCommand {
-      -email: Email
-    }
-
-    class ModifyProfileCommand {
-      -userId: UserId
-      -lastName: String
-      -firstName: String
-      -email: Email
-      -phone: String
-    }
-
-    class AssignRoleCommand {
-      -rolesId: RoleId
-      -userId: UserId
-    }
-
-    class AssignPermissionCommand {
-      -permissionId: PermissionId
-      -roleId: RoleId
-    }
-  }
 }
 
-ProfileAccessDomainService --> User
-ProfileAccessDomainService --> Role
-ProfileAccessDomainService --> Permission
+' Profile Access Relationships
+ProfileAccessController --> ProfileAccessCommandService
+ProfileAccessController --> ProfileAccessQueryService
+
+ProfileAccessContextFacadeImpl ..|> ProfileAccessContextFacade
+ProfileAccessContextFacadeImpl --> ProfileAccessQueryService
+
+ProfileAccessCommandServiceImpl ..|> ProfileAccessCommandService
+ProfileAccessQueryServiceImpl ..|> ProfileAccessQueryService
+ProfileAccessCommandServiceImpl --> UserRepository
+ProfileAccessCommandServiceImpl --> RoleRepository
+ProfileAccessQueryServiceImpl --> UserRepository
+ProfileAccessQueryServiceImpl --> RoleRepository
+
+UserRepositoryImpl ..|> UserRepository
+RoleRepositoryImpl ..|> RoleRepository
+
+UserPersistenceEntity --> User : toDomainModel()
+UserRepositoryImpl --> UserPersistenceEntity : uses
+UserJpaRepository --> UserPersistenceEntity : manages
+
+RolePersistenceEntity --> Role : toDomainModel()
+RoleRepositoryImpl --> RolePersistenceEntity : uses
+RoleJpaRepository --> RolePersistenceEntity : manages
+
+' Internal domain relationships
+UserRole --> UserId
+UserRole --> RoleId
+UserRole --> UserRoleId
+
+RolePermission --> RoleId
+RolePermission --> PermissionId
+RolePermission --> RolePermissionId
 
 User --> UserId
 User --> Email
-
 Role --> RoleId
 Role --> RolePosition
-
 Permission --> PermissionId
 Permission --> PermissionCategory
 
-UserRole --> UserRoleId
-UserRole --> RoleId
-UserRole --> UserId
+User ..> UserRegisteredEvent: publishes
+ProfileUserRegisteredEventHandler --> UserRegisteredEvent
+ProfileUserRegisteredEventHandler --> UserRegisteredIntegrationEvent : republishes
 
-RolePermission --> RolePermissionId
-RolePermission --> PermissionId
-RolePermission --> RoleId
-
-RegisterUserCommand --> User
-LoginCommand --> User
-ModifyProfileCommand --> User
-AssignRoleCommand --> UserRole
-AssignPermissionCommand --> RolePermission
-
+User --|> AbstractDomainAggregateRoot
+Role --|> AbstractDomainAggregateRoot
+Permission --|> AbstractDomainAggregateRoot
 @enduml

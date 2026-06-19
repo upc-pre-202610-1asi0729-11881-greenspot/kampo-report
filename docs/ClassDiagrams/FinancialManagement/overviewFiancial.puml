@@ -1,0 +1,55 @@
+@startuml
+title Class Diagram - Financial Management (Overview - High Level)
+left to right direction
+
+package "com.acme.kampo.platform.financial" {
+
+    package "Expense Module" as ExpenseModule {
+        class Expense <<aggregate>>
+        class ExpenseCategory <<entity>>
+        interface ExpenseRepository <<repository>>
+    }
+
+    package "Income Module" as IncomeModule {
+        class Income <<aggregate>>
+        interface IncomeRepository <<repository>>
+    }
+
+    package "Sale Module" as SaleModule {
+        class Sale <<aggregate>>
+        interface SaleRepository <<repository>>
+    }
+
+    package "Profitability Module" as ProfitabilityModule {
+        class Profitability <<value object>>
+        class ProfitabilityCalculatorService <<domain service>>
+    }
+
+    package "ACL" as ACL {
+        interface FinancialContextFacade <<facade>>
+    }
+
+    ProfitabilityModule ..> ExpenseModule : reads totals
+    ProfitabilityModule ..> IncomeModule  : reads totals
+    ProfitabilityModule ..> SaleModule    : reads totals
+
+    ACL ..> ExpenseModule
+    ACL ..> IncomeModule
+    ACL ..> SaleModule
+    ACL ..> ProfitabilityModule
+
+    note right of ProfitabilityModule
+        Profitability NO es un aggregate root.
+        Es un value object / read model calculado
+        a partir de Expense + Income + Sale.
+        No tiene su propio repositorio JPA.
+    end note
+
+    note right of ExpenseModule
+        ExpenseCategory es una Entity,
+        no un Aggregate Root independiente.
+        Expense la referencia por categoryId (Long).
+    end note
+}
+
+@enduml
