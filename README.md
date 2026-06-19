@@ -1,11 +1,13 @@
 <div align="center">
 
-<h3>Universidad Peruana de Ciencias Aplicadas</h3>
-
 <img alt="upc-logo" src="https://raw.githubusercontent.com/rommelDN/KAMPO_MARKDOWN/refs/heads/develop/docs/assets/img/Capítulo1/UPC-logo.png" width="100"/><br>
 
-<strong>Ingeniería de Software - 2026-01</strong><br>
-<strong>1ASI0729 - Desarrollo de Aplicaciones Open Source</strong><br>
+<h2>Universidad Peruana de Ciencias Aplicadas</h2>
+
+<strong>Carrera de Ingeniería de Software</strong><br>
+<strong>1ASI0729</strong><br>
+<strong>Desarrollo de Aplicaciones Open Source</strong><br>
+
 <strong>NRC: 11881</strong><br>
 <strong>Profesor: Efraín Ricardo Bautista Ubillús</strong><br>
 
@@ -15,20 +17,23 @@
 <strong>Producto: KAMPO</strong><br>
 
 
-
-
-### Team Members:
+### INTEGRANTES:
+### Código  Apellidos y Nombres
 
  Hurtado Balcazar Rommel Daniel     u202517474 
 
  Acuache Lucas Mathias Joaquin     u202314898 
 
+<strong>Período 202610</strong><br>
 
-<strong>19 de Junio de 2026</strong><br>
+<strong>Junio de 2026</strong><br>
 </div>
 
 
 <div style="page-break-after: always;"></div>
+
+
+
 
 # Registro de Versiones del Informe
 
@@ -2637,29 +2642,27 @@ Pull Requests abiertos y mergeados, y contribuciones por integrante.
 
 ##### 5.2.3. Sprint 3
 
-El Sprint 3 estuvo enfocado en completar la totalidad del backend del proyecto Acme Kampo Platform, abarcando el diseño y la implementación de los seis bounded contexts del sistema bajo una arquitectura DDD (Domain-Driven Design) con patrones hexagonales (Ports & Adapters), la incorporación de un mecanismo de seguridad basado en JSON Web Tokens (JWT) para proteger todos los endpoints de la API, y el despliegue de la aplicación en un entorno cloud (Microsoft Azure App Service) utilizando contenedores Docker publicados en Azure Container Registry.
+El Sprint 3 estuvo enfocado en consolidar el núcleo operativo de la plataforma Acme Kampo, completando los módulos críticos para la gestión agrícola y el monitoreo técnico de cultivos. El objetivo principal fue entregar un sistema funcional, seguro y listo para ser utilizado en entornos reales.
 
-Durante este sprint se consolidó el bounded context de Profile & Access (gestión de usuarios, roles, permisos y autenticación), se finalizaron los bounded contexts de Organization (organizaciones, fundos, campos y cultivos) y Field Operation (visitas de campo y observaciones agronómicas), y se integró la seguridad transversal mediante un filtro JWT aplicado a nivel de toda la plataforma.
+Durante este ciclo, se finalizó el módulo de Organización y Fundos (que permite la administración jerárquica de empresas, fincas, parcelas y cultivos) y el módulo de Operaciones de Campo (esencial para el registro de visitas técnicas y la evaluación de sanidad agrícola). Asimismo, se implementó un Sistema de Gestión de Accesos y Seguridad de grado empresarial para garantizar la privacidad de los datos operativos, culminando con la puesta en producción de la plataforma en una infraestructura en la nube, asegurando así su alta disponibilidad y acceso remoto ininterrumpido.
 
 ###### 5.2.3.1. Sprint Planning 3
 
-El Sprint Planning se realizó priorizando el cierre del backend completo, dado que los sprints anteriores habían cubierto los bounded contexts de Inventory, Financial y Alert. El objetivo del Sprint 3 fue:
+La planificación del Sprint 3 priorizó la entrega de valor al usuario final mediante la habilitación de flujos de trabajo completos. Dado que en fases previas se habían cubierto las áreas de inventario y finanzas, los objetivos de este sprint se centraron en la operatividad en campo:
 
-1. Completar el bounded context de **Organization** (Organization, Fundo, Field, Crop) con sus seis fases DDD: value objects, agregados, repositorios, servicios de aplicación, infraestructura JPA e interfaces REST.
-2. Completar el bounded context de **Field Operation** (FieldVisit, Observation), incluyendo la lógica de severidad de plagas/enfermedades y el ciclo de vida de visitas de campo (SCHEDULED → DONE).
-3. Diseñar y construir desde cero el bounded context de **Profile & Access**, incorporando autenticación basada en JWT, hash de contraseñas con BCrypt, gestión de roles (RolePosition) y permisos (PermissionCategory).
-4. Configurar **Spring Security** a nivel de plataforma para que todos los bounded contexts queden protegidos por un único punto de entrada de autenticación.
-5. **Desplegar** la aplicación actualizada en Azure App Service mediante imagen Docker publicada en Azure Container Registry (ACR).
-   La planificación se gestionó en **Trello**, donde el tablero del Sprint 3 organizó las tareas en columnas de Backlog, En Progreso, En Revisión y Completado, con tarjetas específicas por bounded context y por tarea de infraestructura (seguridad, despliegue).
+1. **Gestión de Infraestructura Agrícola**: Habilitar el registro y la administración jerárquica de la estructura agrícola (Organizaciones, Fundos, Campos y Cultivos) para reflejar fielmente la realidad operativa de los productores y facilitar un control administrativo preciso.
+2. **Trazabilidad y Monitoreo Agronómico**: Completar el flujo de Operaciones de Campo, permitiendo a los técnicos registrar visitas y observaciones, y automatizar alertas de severidad para el control preventivo de plagas y enfermedades.
+3. **Seguridad y Control de Accesos**: Diseñar y construir un sistema centralizado de perfiles, garantizando que cada usuario interactúe únicamente con la información autorizada según su rol y responsabilidades dentro de la empresa.
+4. **Puesta en Producción (Lanzamiento)**: Desplegar la plataforma en la nube para asegurar su rendimiento, estabilidad y accesibilidad constante para los usuarios finales.
 
 ######  5.2.3.2. Aspect Leaders and Collaborators
 
-Durante el Sprint 3, el equipo GreenSpot organizó el trabajo en torno a dos ejes principales: la finalización de los bounded contexts de dominio agrícola (Organization y Field Operation) y la construcción completa del bounded context de seguridad y acceso (Profile & Access), incluyendo su integración transversal mediante JWT y el despliegue del backend en Azure. Cada integrante lideró los aspectos asignados y colaboró en los demás.
+Durante el Sprint 3, el equipo GreenSpot organizó el trabajo en torno a dos ejes principales que impactan directamente en el negocio: la habilitación de las herramientas de gestión y sanidad agrícola, y la implementación de las políticas de seguridad y disponibilidad del sistema. Cada integrante lideró un área de impacto empresarial y colaboró de manera transversal..
 
 L = Leader (líder del aspecto)
 C = Collaborator (colaborador)
 
-| Team Member (Last Name, First Name) | GitHub Username | Aspecto 1: Bounded Context Organization (L/C) | Aspecto 2: Bounded Context Field Operation (L/C) | Aspecto 3: Bounded Context Profile & Access (L/C) | Aspecto 4: Seguridad JWT Transversal (L/C) | Aspecto 5: Despliegue en Azure (L/C) |
+| Team Member (Last Name, First Name) | GitHub Username | Aspecto 1: Gestión de Fundos y Organización Agricola (L/C) | Aspecto 2: Monitoreo de Operaciones y Sanidad (L/C) | Aspecto 3: Gestión de Perfiles y Accesos (L/C) | Aspecto 4: Seguridad Integral de la Plataforma (L/C) | Aspecto 5: Producción en Cloud (L/C) |
 |---|---|---|---|---|---|---|
 | Hurtado Balcázar, Rommel Daniel | [rommelDN](https://github.com/rommelDN) | C | C | L | L | L |
 | Acuache Lucas, Mathias Joaquín | [MathiasA25](https://github.com/MathiasA25) | L | L | C | C | C |
@@ -2667,30 +2670,32 @@ C = Collaborator (colaborador)
 ---
 ######  5.2.3.3. Sprint Backlog 3
 
+### 5.2.3.3. Sprint Backlog 3
+
 | Sprint # | Sprint 3 |
 |---|---|
 
 | US/TS ID | Título | Task ID | Task Título | Descripción | Estimación (hrs) | Asignado a | Estado |
-|---|---|---|---|---|---|---|---|
-| TS-19 | Gestión de organizaciones, fundos, campos y cultivos | TS-19-1 | Diseñar value objects y enums de Organization | Crear OrganizationId, FundoId, FieldId, CropId y GeoLocation con cálculo Haversine | 4 | Acuache Lucas, M. | Completado |
-| TS-19 | Gestión de organizaciones, fundos, campos y cultivos | TS-19-2 | Implementar aggregates Organization, Fundo, Field, Crop | Construir los cuatro aggregates con sus constructores de creación y reconstitución | 6 | Acuache Lucas, M. | Completado |
-| TS-19 | Gestión de organizaciones, fundos, campos y cultivos | TS-19-3 | Implementar repositorios e infraestructura JPA | Crear repositorios de dominio, persistence entities, assemblers y adapters | 6 | Acuache Lucas, M. | Completado |
-| TS-19 | Gestión de organizaciones, fundos, campos y cultivos | TS-19-4 | Implementar endpoints REST jerárquicos | Crear OrganizationController con endpoints anidados por jerarquía | 4 | Acuache Lucas, M. | Completado |
-| TS-20 | Registro de visitas de campo y observaciones agronómicas | TS-20-1 | Diseñar value objects y enums de Field Operation | Crear FieldVisitId, ObservationId, FieldId, FieldVisitStatus y Severity | 3 | Acuache Lucas, M. | Completado |
-| TS-20 | Registro de visitas de campo y observaciones agronómicas | TS-20-2 | Implementar aggregates FieldVisit y Observation | Construir ciclo de vida SCHEDULED→DONE y lógica de severidad de plagas/enfermedades | 5 | Acuache Lucas, M. | Completado |
-| TS-20 | Registro de visitas de campo y observaciones agronómicas | TS-20-3 | Implementar repositorios e infraestructura JPA | Crear repositorios, persistence entities, assemblers y adapters | 5 | Acuache Lucas, M. | Completado |
-| TS-20 | Registro de visitas de campo y observaciones agronómicas | TS-20-4 | Implementar endpoints REST | Crear FieldVisitController y ObservationController | 4 | Acuache Lucas, M. | Completado |
-| TS-21 | Registro e inicio de sesión de usuarios | TS-21-1 | Diseñar value objects Email y HashedPassword | Crear validación de formato de email y hashing BCrypt de contraseñas | 4 | Hurtado Balcázar, R. | Completado |
-| TS-21 | Registro e inicio de sesión de usuarios | TS-21-2 | Implementar aggregate User y autenticación | Construir User con verifyPassword() y JwtTokenProvider para emisión de tokens | 6 | Hurtado Balcázar, R. | Completado |
-| TS-21 | Registro e inicio de sesión de usuarios | TS-21-3 | Implementar AuthController y UserController | Crear endpoints de login y registro con protección contra enumeración de usuarios | 5 | Hurtado Balcázar, R. | Completado |
-| TS-22 | Gestión de roles y permisos | TS-22-1 | Diseñar aggregates Role, Permission, UserRole, RolePermission | Modelar relaciones de asignación como aggregates independientes | 4 | Hurtado Balcázar, R. | Completado |
-| TS-22 | Gestión de roles y permisos | TS-22-2 | Implementar RoleController | Crear endpoints de creación y asignación de roles/permisos con validación de duplicados | 5 | Hurtado Balcázar, R. | Completado |
-| TS-23 | Protección de endpoints con JWT | TS-23-1 | Implementar JwtAuthenticationFilter | Crear filtro global que valida el token Bearer en cada request | 5 | Hurtado Balcázar, R. | Completado |
-| TS-23 | Protección de endpoints con JWT | TS-23-2 | Configurar SecurityConfiguration | Definir rutas públicas y proteger el resto de la plataforma con autenticación obligatoria | 4 | Hurtado Balcázar, R. | Completado |
-| TS-23 | Protección de endpoints con JWT | TS-23-3 | Integrar esquema bearerAuth en OpenAPI | Habilitar botón Authorize en Swagger UI para pruebas con JWT | 2 | Hurtado Balcázar, R. | Completado |
-| TS-24 | Despliegue del backend en la nube | TS-24-1 | Construir imagen Docker del backend | Generar jar y construir imagen con Docker Compose | 3 | Hurtado Balcázar, R. | Completado |
-| TS-24 | Despliegue del backend en la nube | TS-24-2 | Publicar imagen en Azure Container Registry | Etiquetar y subir la imagen al ACR del proyecto | 2 | Hurtado Balcázar, R. | Completado |
-| TS-24 | Despliegue del backend en la nube | TS-24-3 | Desplegar y diagnosticar en Azure App Service | Configurar el App Service, habilitar logs y resolver incidencias de seguridad post-despliegue | 6 | Hurtado Balcázar, R. | Completado |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| TS-19 | Gestión de organizaciones, fundos, campos y cultivos | TS-19-1 | Definir reglas de negocio para la jerarquía agrícola | Establecer las estructuras de datos clave para la gestión de empresas, fundos y geolocalización | 4 | Acuache Lucas, M. | Completado |
+| TS-19 | Gestión de organizaciones, fundos, campos y cultivos | TS-19-2 | Construir la lógica de administración de fundos | Desarrollar las reglas de negocio para la creación, edición y administración de estructuras agrícolas y cultivos | 6 | Acuache Lucas, M. | Completado |
+| TS-19 | Gestión de organizaciones, fundos, campos y cultivos | TS-19-3 | Implementar almacenamiento de datos operativos | Configurar la persistencia segura de la información operativa de los fundos y campos | 6 | Acuache Lucas, M. | Completado |
+| TS-19 | Gestión de organizaciones, fundos, campos y cultivos | TS-19-4 | Habilitar interfaces de integración de datos | Crear los canales de comunicación necesarios para que la plataforma interactúe con la jerarquía agrícola | 4 | Acuache Lucas, M. | Completado |
+| TS-20 | Registro de visitas de campo y observaciones agronómicas | TS-20-1 | Diseñar parámetros de evaluación de sanidad | Definir las reglas de negocio para clasificar visitas, estados y niveles de severidad de incidencias en campo | 3 | Acuache Lucas, M. | Completado |
+| TS-20 | Registro de visitas de campo y observaciones agronómicas | TS-20-2 | Construir flujo operativo de visitas técnicas | Implementar el ciclo de vida de las visitas y la evaluación automatizada de severidad de plagas | 5 | Acuache Lucas, M. | Completado |
+| TS-20 | Registro de visitas de campo y observaciones agronómicas | TS-20-3 | Configurar registro histórico de observaciones | Implementar el almacenamiento seguro y la trazabilidad de todas las observaciones y evaluaciones de campo | 5 | Acuache Lucas, M. | Completado |
+| TS-20 | Registro de visitas de campo y observaciones agronómicas | TS-20-4 | Habilitar registro en tiempo real de operaciones | Crear los servicios de integración para la captura de datos agronómicos por parte de los técnicos | 4 | Acuache Lucas, M. | Completado |
+| TS-21 | Registro e inicio de sesión de usuarios | TS-21-1 | Establecer políticas de credenciales seguras | Implementar validaciones y encriptación de grado empresarial para proteger la identidad de los usuarios | 4 | Hurtado Balcázar, R. | Completado |
+| TS-21 | Registro e inicio de sesión de usuarios | TS-21-2 | Desarrollar sistema centralizado de autenticación | Construir el motor de emisión de credenciales seguras para el acceso validado a la plataforma | 6 | Hurtado Balcázar, R. | Completado |
+| TS-21 | Registro e inicio de sesión de usuarios | TS-21-3 | Crear interfaces de acceso seguro | Implementar los puntos de entrada para login y registro, asegurando protección contra accesos no autorizados | 5 | Hurtado Balcázar, R. | Completado |
+| TS-22 | Gestión de roles y permisos | TS-22-1 | Modelar niveles de autorización de usuarios | Definir las reglas de asignación de roles y permisos operativos según las responsabilidades del personal | 4 | Hurtado Balcázar, R. | Completado |
+| TS-22 | Gestión de roles y permisos | TS-22-2 | Habilitar panel de administración de accesos | Crear las herramientas para que los administradores gestionen el nivel de acceso de cada colaborador del fundo | 5 | Hurtado Balcázar, R. | Completado |
+| TS-23 | Protección de datos y flujos operativos | TS-23-1 | Implementar control de validación global | Asegurar que cada acción realizada en la plataforma pase por una validación estricta de identidad | 5 | Hurtado Balcázar, R. | Completado |
+| TS-23 | Protección de datos y flujos operativos | TS-23-2 | Configurar políticas de privacidad de la información | Definir qué información es pública y garantizar la confidencialidad de los datos internos de la empresa agrícola | 4 | Hurtado Balcázar, R. | Completado |
+| TS-23 | Protección de datos y flujos operativos | TS-23-3 | Integrar herramientas de validación de seguridad | Habilitar entornos de prueba controlados para asegurar que las políticas de acceso funcionan correctamente | 2 | Hurtado Balcázar, R. | Completado |
+| TS-24 | Despliegue y alta disponibilidad en la nube | TS-24-1 | Empaquetar la plataforma para producción | Preparar el sistema de manera estandarizada para garantizar su portabilidad y estabilidad operativa | 3 | Hurtado Balcázar, R. | Completado |
+| TS-24 | Despliegue y alta disponibilidad en la nube | TS-24-2 | Publicar versión oficial de la plataforma | Alojar el sistema en un repositorio seguro en la nube, preparándolo para su ejecución inmediata | 2 | Hurtado Balcázar, R. | Completado |
+| TS-24 | Despliegue y alta disponibilidad en la nube | TS-24-3 | Lanzamiento y monitoreo de estabilidad | Poner la plataforma a disposición de los usuarios finales en servidores seguros, garantizando su funcionamiento continuo | 6 | Hurtado Balcázar, R. | Completado |
 
 ######  5.2.3.4. Development Evidence for Sprint Review
 
