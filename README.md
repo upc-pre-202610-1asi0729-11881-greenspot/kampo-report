@@ -2513,19 +2513,6 @@ documentados en la sección 4.8 Domain-Driven Software Architecture
 del presente informe, donde se presentan los diagramas frontend y
 backend de cada bounded context.
 
-**Frontend Web Application – Angular (módulos iniciales):**
-
-[Insertar screenshot del módulo Inventory]
-[Insertar screenshot del módulo Financial]
-[Insertar screenshot del módulo Report]
-[Insertar screenshot del módulo Field]
-[Insertar screenshot del módulo Organization]
-[Insertar screenshot del módulo Season]
-[Insertar screenshot del módulo Profile & Access]
-[Insertar screenshot del módulo Alert]
-[Insertar screenshot del módulo Employee]
-[Insertar screenshot del módulo Subscription]
-
 ---
 
 ###### 5.2.2.6. Services Documentation Evidence for Sprint Review
@@ -2803,6 +2790,36 @@ Durante el Sprint 3, el equipo GreenSpot desarrolló las actividades de diseño 
 
 ---
 
+**Analíticos de colaboración en GitHub**
+
+**Figura 1: Gráfico de contribuciones por autor (Contributors) — kampo-platform**
+Captura obtenida desde:
+https://github.com/upc-pre-202610-1asi0729-11881-greenspot/kampo-platform/graphs/contributors?from=14%2F3%2F2026
+
+![Screeshot Contributors Kampo-Frontend](docs/assets/img/contributorsPlatform.png)
+---
+
+**Figura 2: Gráfico de contribuciones por autor (Contributors) — Kampo-Frontend**
+Captura obtenida desde:
+https://github.com/upc-pre-202610-1asi0729-11881-greenspot/kampo-webapp/graphs/contributors?from=14%2F3%2F2026
+
+![Screeshot Network](docs/assets/img/contributtorsWebbApp.png)
+
+
+
+---
+
+**Figura 3: Network graph — Kampo-Platform**
+Captura obtenida desde:
+https://github.com/upc-pre-202610-1asi0729-11881-greenspot/kampo-platform/network
+
+![Screenshot Pulse](docs/assets/img/nexworkPlatform.png)
+
+___
+**Figura 4: Swagger Deploy - Kampo-Platform**
+https://kampo-platform-os.azurewebsites.net/swagger-ui/index.html#/
+
+![Swagger Kampo Platform](docs/assets/img/swagger.png)
 
 ## 5.3. Validation Interviews
 ##### 5.3.1. Diseño de Entrevistas
