@@ -1489,7 +1489,6 @@ Para validar la experiencia de usuario (UX), se desarrolló un prototipo funcion
 ![Field](docs/assets/img/event-storming/field.png)
 ![Finantial](docs/assets/img/event-storming/finantial.png)
 ![Inventory](docs/assets/img/event-storming/inventory.png)
-![IoT](docs/assets/img/event-storming/iot.png)
 ![Organization](docs/assets/img/event-storming/organization.png)
 ![Profile](docs/assets/img/event-storming/profile.png)
 ![Report](docs/assets/img/event-storming/report.png)
@@ -1498,7 +1497,7 @@ Para validar la experiencia de usuario (UX), se desarrolló un prototipo funcion
 
 ### **Event Storming completo:**
 
-![EventStorming](docs/assets/img/event-storming/event_storming.png)
+![EventStorming](docs/assets/img/event-storming/BoundedContext.png)
 
 [Ver en Miro](https://miro.com/app/board/uXjVHecaRio=/?share_link_id=80187881554)
 
@@ -2527,7 +2526,6 @@ backend de cada bounded context.
 [Insertar screenshot del módulo Employee]
 [Insertar screenshot del módulo Subscription]
 
- **Video de demostración del Sprint 2:** [Insertar URL de Microsoft Stream aquí]
 ---
 
 ###### 5.2.2.6. Services Documentation Evidence for Sprint Review
@@ -2657,6 +2655,154 @@ El Pulse muestra el resumen de actividad del repositorio durante el
 periodo del Sprint 2 (2026-05-05 al 2026-05-13), incluyendo commits,
 Pull Requests abiertos y mergeados, y contribuciones por integrante.
 ---
+
+##### 5.2.3. Sprint 3
+
+El Sprint 3 estuvo enfocado en completar la totalidad del backend del proyecto Acme Kampo Platform, abarcando el diseño y la implementación de los seis bounded contexts del sistema bajo una arquitectura DDD (Domain-Driven Design) con patrones hexagonales (Ports & Adapters), la incorporación de un mecanismo de seguridad basado en JSON Web Tokens (JWT) para proteger todos los endpoints de la API, y el despliegue de la aplicación en un entorno cloud (Microsoft Azure App Service) utilizando contenedores Docker publicados en Azure Container Registry.
+
+Durante este sprint se consolidó el bounded context de Profile & Access (gestión de usuarios, roles, permisos y autenticación), se finalizaron los bounded contexts de Organization (organizaciones, fundos, campos y cultivos) y Field Operation (visitas de campo y observaciones agronómicas), y se integró la seguridad transversal mediante un filtro JWT aplicado a nivel de toda la plataforma.
+
+###### 5.2.3.1. Sprint Planning 3
+
+El Sprint Planning se realizó priorizando el cierre del backend completo, dado que los sprints anteriores habían cubierto los bounded contexts de Inventory, Financial y Alert. El objetivo del Sprint 3 fue:
+
+1. Completar el bounded context de **Organization** (Organization, Fundo, Field, Crop) con sus seis fases DDD: value objects, agregados, repositorios, servicios de aplicación, infraestructura JPA e interfaces REST.
+2. Completar el bounded context de **Field Operation** (FieldVisit, Observation), incluyendo la lógica de severidad de plagas/enfermedades y el ciclo de vida de visitas de campo (SCHEDULED → DONE).
+3. Diseñar y construir desde cero el bounded context de **Profile & Access**, incorporando autenticación basada en JWT, hash de contraseñas con BCrypt, gestión de roles (RolePosition) y permisos (PermissionCategory).
+4. Configurar **Spring Security** a nivel de plataforma para que todos los bounded contexts queden protegidos por un único punto de entrada de autenticación.
+5. **Desplegar** la aplicación actualizada en Azure App Service mediante imagen Docker publicada en Azure Container Registry (ACR).
+   La planificación se gestionó en **Trello**, donde el tablero del Sprint 3 organizó las tareas en columnas de Backlog, En Progreso, En Revisión y Completado, con tarjetas específicas por bounded context y por tarea de infraestructura (seguridad, despliegue).
+
+######  5.2.3.2. Aspect Leaders and Collaborators
+
+Durante el Sprint 3, el equipo GreenSpot organizó el trabajo en torno a dos ejes principales: la finalización de los bounded contexts de dominio agrícola (Organization y Field Operation) y la construcción completa del bounded context de seguridad y acceso (Profile & Access), incluyendo su integración transversal mediante JWT y el despliegue del backend en Azure. Cada integrante lideró los aspectos asignados y colaboró en los demás.
+
+L = Leader (líder del aspecto)
+C = Collaborator (colaborador)
+
+| Team Member (Last Name, First Name) | GitHub Username | Aspecto 1: Bounded Context Organization (L/C) | Aspecto 2: Bounded Context Field Operation (L/C) | Aspecto 3: Bounded Context Profile & Access (L/C) | Aspecto 4: Seguridad JWT Transversal (L/C) | Aspecto 5: Despliegue en Azure (L/C) |
+|---|---|---|---|---|---|---|
+| Hurtado Balcázar, Rommel Daniel | [rommelDN](https://github.com/rommelDN) | C | C | L | L | L |
+| Acuache Lucas, Mathias Joaquín | [MathiasA25](https://github.com/MathiasA25) | L | L | C | C | C |
+ 
+---
+######  5.2.3.3. Sprint Backlog 3
+
+| Sprint # | Sprint 3 |
+|---|---|
+
+| US/TS ID | Título | Task ID | Task Título | Descripción | Estimación (hrs) | Asignado a | Estado |
+|---|---|---|---|---|---|---|---|
+| TS-19 | Gestión de organizaciones, fundos, campos y cultivos | TS-19-1 | Diseñar value objects y enums de Organization | Crear OrganizationId, FundoId, FieldId, CropId y GeoLocation con cálculo Haversine | 4 | Acuache Lucas, M. | Completado |
+| TS-19 | Gestión de organizaciones, fundos, campos y cultivos | TS-19-2 | Implementar aggregates Organization, Fundo, Field, Crop | Construir los cuatro aggregates con sus constructores de creación y reconstitución | 6 | Acuache Lucas, M. | Completado |
+| TS-19 | Gestión de organizaciones, fundos, campos y cultivos | TS-19-3 | Implementar repositorios e infraestructura JPA | Crear repositorios de dominio, persistence entities, assemblers y adapters | 6 | Acuache Lucas, M. | Completado |
+| TS-19 | Gestión de organizaciones, fundos, campos y cultivos | TS-19-4 | Implementar endpoints REST jerárquicos | Crear OrganizationController con endpoints anidados por jerarquía | 4 | Acuache Lucas, M. | Completado |
+| TS-20 | Registro de visitas de campo y observaciones agronómicas | TS-20-1 | Diseñar value objects y enums de Field Operation | Crear FieldVisitId, ObservationId, FieldId, FieldVisitStatus y Severity | 3 | Acuache Lucas, M. | Completado |
+| TS-20 | Registro de visitas de campo y observaciones agronómicas | TS-20-2 | Implementar aggregates FieldVisit y Observation | Construir ciclo de vida SCHEDULED→DONE y lógica de severidad de plagas/enfermedades | 5 | Acuache Lucas, M. | Completado |
+| TS-20 | Registro de visitas de campo y observaciones agronómicas | TS-20-3 | Implementar repositorios e infraestructura JPA | Crear repositorios, persistence entities, assemblers y adapters | 5 | Acuache Lucas, M. | Completado |
+| TS-20 | Registro de visitas de campo y observaciones agronómicas | TS-20-4 | Implementar endpoints REST | Crear FieldVisitController y ObservationController | 4 | Acuache Lucas, M. | Completado |
+| TS-21 | Registro e inicio de sesión de usuarios | TS-21-1 | Diseñar value objects Email y HashedPassword | Crear validación de formato de email y hashing BCrypt de contraseñas | 4 | Hurtado Balcázar, R. | Completado |
+| TS-21 | Registro e inicio de sesión de usuarios | TS-21-2 | Implementar aggregate User y autenticación | Construir User con verifyPassword() y JwtTokenProvider para emisión de tokens | 6 | Hurtado Balcázar, R. | Completado |
+| TS-21 | Registro e inicio de sesión de usuarios | TS-21-3 | Implementar AuthController y UserController | Crear endpoints de login y registro con protección contra enumeración de usuarios | 5 | Hurtado Balcázar, R. | Completado |
+| TS-22 | Gestión de roles y permisos | TS-22-1 | Diseñar aggregates Role, Permission, UserRole, RolePermission | Modelar relaciones de asignación como aggregates independientes | 4 | Hurtado Balcázar, R. | Completado |
+| TS-22 | Gestión de roles y permisos | TS-22-2 | Implementar RoleController | Crear endpoints de creación y asignación de roles/permisos con validación de duplicados | 5 | Hurtado Balcázar, R. | Completado |
+| TS-23 | Protección de endpoints con JWT | TS-23-1 | Implementar JwtAuthenticationFilter | Crear filtro global que valida el token Bearer en cada request | 5 | Hurtado Balcázar, R. | Completado |
+| TS-23 | Protección de endpoints con JWT | TS-23-2 | Configurar SecurityConfiguration | Definir rutas públicas y proteger el resto de la plataforma con autenticación obligatoria | 4 | Hurtado Balcázar, R. | Completado |
+| TS-23 | Protección de endpoints con JWT | TS-23-3 | Integrar esquema bearerAuth en OpenAPI | Habilitar botón Authorize en Swagger UI para pruebas con JWT | 2 | Hurtado Balcázar, R. | Completado |
+| TS-24 | Despliegue del backend en la nube | TS-24-1 | Construir imagen Docker del backend | Generar jar y construir imagen con Docker Compose | 3 | Hurtado Balcázar, R. | Completado |
+| TS-24 | Despliegue del backend en la nube | TS-24-2 | Publicar imagen en Azure Container Registry | Etiquetar y subir la imagen al ACR del proyecto | 2 | Hurtado Balcázar, R. | Completado |
+| TS-24 | Despliegue del backend en la nube | TS-24-3 | Desplegar y diagnosticar en Azure App Service | Configurar el App Service, habilitar logs y resolver incidencias de seguridad post-despliegue | 6 | Hurtado Balcázar, R. | Completado |
+
+######  5.2.3.4. Development Evidence for Sprint Review
+
+Durante el Sprint 3, el equipo GreenSpot completó la implementación de los bounded contexts de Organization y Field Operation, y construyó desde cero el bounded context de Profile & Access junto con la capa de seguridad JWT transversal a toda la plataforma. Adicionalmente se desplegó el backend completo en Microsoft Azure mediante una imagen Docker publicada en Azure Container Registry.
+
+| Repository                   | Branch                 | Commit Id | Commit Message | Commit Message Body | Committed on (Date) |
+|------------------------------|------------------------|---|---|---------------------|---|
+| GreenSpot-app/kampo-platform | feature/shared         |10fc01289a8608ceff9d17343c07c7f08a3d4104 |feat!: add plugins | -                   | May 31, 2026|
+| GreenSpot-app/kampo-platform | feature/shared         |9ea88aa0b75785f7ac0a66fb483df403fcf69341 |feat: update shared bounded context. | -                   | Jun 1, 2026|
+| GreenSpot-app/kampo-platform | feature/configurations | 43a8d4178527e7cbf2fb686e3ac761a497ce425c|Merge branch 'feature/configurations' into develop | -                   |Jun 1, 2026|
+| GreenSpot-app/kampo-platform | feature/docs           | 2173be50f94d1e6bcdb225bc2fbd1454910bc784| feat: create inventory structure and class diagram| -                   |Jun 2, 2026 |
+| GreenSpot-app/kampo-platform | feature/inventory      | 71994b3e205a6c5ce3faa49dae69fb4af55922ad|feat: implementation inventory bounded context | -                   |Jun 4, 2026 |
+| GreenSpot-app/kampo-platform | feature/inventory      |a27285b9a5cbf94d6b59fa8b3d5b2e9630e82f76 |feat:completed inventory bounded context | -                   | Jun 6, 2026|
+| GreenSpot-app/kampo-platform | feature/financial      |25d23a321f1abd49c3467ecd1b53394e2b2f006f | feat: implementing financialBC| -                   |Jun 7, 2026 |
+| GreenSpot-app/kampo-platform | feature/alerts         | 2ec8d13e328e2251338c586adabdb7671295a52f|feat(alert): add alert management bounded context | -                   | Jun 9, 2026 |
+| GreenSpot-app/kampo-platform | feature/seasons        |185f1a26cd896636aa5aeb4d80f4cfcf62863bf4 | feat: add season boundend context backend| -                   | Jun 9, 2026|
+| GreenSpot-app/kampo-platform | feature/fixAlerts      | c7b5355af46974a4e5c980809461f30691ee7c11|feat(fix): refactoring alertBC | -                   |Jun 9, 2026 |
+| GreenSpot-app/kampo-platform | release/2.0.0          |1a3733eda716e246d631bbf06f865f05729f8668 |Merge tag '2.0.0' into develop | -                   | 17, 2026|
+| GreenSpot-app/kampo-platform | feature                |9184907fe20c13e0d2af8514d6fa622a4f54b6cf | feat:profile and access implement|                     |18, 2026 |
+| GreenSpot-app/kampo-platform | feature                | 15dd54ec838f1c375e114d6fbd74d14ccb9a06fd|feat: update version 3.0.0 | -                   | 18, 2026|
+| GreenSpot-app/kampo-platform | feature                | 1945e87572ea79c2d65ffcca1c995a366e7b1dec| feat: add employee boundend context|                     |18, 2026 |
+
+
+---
+
+######  5.2.3.5. Execution Evidence for Sprint Review
+
+La ejecución y validación funcional del backend se realizó mediante pruebas manuales mostradas a través de Swagger UI, cubriendo los siguientes flujos críticos del sistema:
+
+1. **Registro de usuario** (`POST /api/v1/users`) — verificación de creación exitosa, hash de contraseña y asignación automática de rol.
+2. **Autenticación** (`POST /api/v1/auth/login`) — verificación de generación correcta de token JWT y rechazo con credenciales inválidas (HTTP 401).
+3. **Acceso autenticado** a endpoints protegidos mediante el header `Authorization: Bearer <token>`, validando que las rutas de Organization, Field Operation y los demás bounded contexts respondan correctamente solo con un token válido.
+4. **Gestión de roles y permisos** (`POST /api/v1/roles`, `POST /api/v1/roles/assign`, `POST /api/v1/permissions/assign`) — verificación de asignaciones y de los códigos de conflicto (HTTP 409) ante asignaciones duplicadas.
+5. **Programación y finalización de visitas de campo** (`POST /api/v1/field-visits`, `PATCH /api/v1/field-visits/{id}/complete`) — verificación de la transición de estado SCHEDULED a DONE y de la restricción contra doble finalización.
+6. **Registro de observaciones agronómicas** (`POST /api/v1/observations`) — verificación de validación de existencia de la visita de campo asociada.
+
+Las pruebas evidenciaron correcciones iterativas aplicadas durante el sprint, entre ellas: el ajuste de la validación de fecha en `ScheduleFieldVisitCommand` (eliminada por ser excesivamente restrictiva para pruebas), la corrección del flujo de autenticación en Swagger (deshabilitación de `httpBasic` y `formLogin` por defecto de Spring Security), y la corrección de URLs base entre entornos local y de producción mediante la configuración de servidores relativos (`"/"`) en OpenAPI.
+
+---
+
+######  5.2.3.6. Services Documentation Evidence for Sprint Review
+
+La documentación de los servicios expuestos por la API se generó automáticamente mediante **springdoc-openapi**, integrando anotaciones `@Operation`, `@ApiResponse` y `@Schema` en cada controlador REST. La especificación OpenAPI resultante es accesible en:
+
+- **Swagger UI**: `/swagger-ui/index.html` — interfaz interactiva para probar todos los endpoints.
+- **OpenAPI JSON**: `/v3/api-docs` — especificación machine-readable consumida por Swagger UI y herramientas de generación de clientes.
+
+Cada bounded context documenta sus endpoints bajo una etiqueta (Tag) específica: *"Organization"*, *"Field Visits"*, *"Observations"*, *"Users"*, *"Auth"* y *"Roles & Permissions"*, facilitando la navegación dentro de la documentación generada. Los modelos de respuesta de error (`ProblemDetail`) están estandarizados, mapeando los códigos de `ApplicationError` del shared kernel (`_NOT_FOUND` → 404, `_CONFLICT` → 409, `BUSINESS_RULE_VIOLATION` → 409, credenciales inválidas → 401) a respuestas HTTP semánticamente correctas.
+
+Se incorporó el esquema de seguridad `bearerAuth` en la configuración global de OpenAPI, permitiendo que cualquier desarrollador que consulte la documentación entienda inmediatamente que la API requiere un token JWT Bearer, obtenible mediante el endpoint de login.
+ 
+---
+
+###### 5.2.3.7. Software Deployment Evidence for Sprint Review
+
+El despliegue del backend se realizó en **Microsoft Azure**, siguiendo un flujo de containerización con Docker:
+
+1. Generación del artefacto de la aplicación: `mvn clean package -DskipTests`.
+2. Construcción de la imagen Docker local mediante Docker Compose: `docker-compose -f docker-compose.yml build --no-cache`.
+3. Autenticación contra Azure Container Registry (ACR): `az acr login -n learningcenteroscontainereb`.
+4. Etiquetado y publicación de la imagen en el registry: `docker tag` y `docker push` hacia `learningcenteroscontainereb.azurecr.io`.
+5. Despliegue del contenedor en el Azure App Service `kampo-platform-os`, dentro del grupo de recursos `kampo-platform-rg`.
+6. Reinicio del servicio para aplicar la nueva imagen: `az webapp restart --resource-group kampo-platform-rg --name kampo-platform-os`.
+
+La aplicación desplegada es accesible públicamente en:
+
+> `https://kampo-platform-os.azurewebsites.net/swagger-ui/index.html`
+
+Durante el despliegue se habilitó el registro de logs de la aplicación (App Service Logs → File System) y se utilizó Log Stream para diagnosticar en tiempo real incidencias de configuración, entre ellas la interferencia del mecanismo de autenticación básica de Spring Security con el flujo de login JWT, resuelta mediante la deshabilitación explícita de `httpBasic` y `formLogin`, y la sobreescritura del `UserDetailsService` por defecto.
+
+El código fuente completo del proyecto se encuentra versionado en el repositorio:
+
+> `https://github.com/upc-pre-202610-1asi0729-11881-greenspot/kampo-platform.git`
+ 
+---
+
+###### 5.2.3.8. Team Collaboration Insights during Sprint
+
+Durante el Sprint 3, el equipo GreenSpot desarrolló las actividades de diseño e implementación de forma colaborativa a través de GitHub, aplicando GitFlow y Conventional Commits. Cada integrante trabajó en las ramas asignadas según los bounded contexts bajo su liderazgo.
+ 
+---
+
+**Distribución de contribuciones por integrante**
+
+| Integrante | Bounded contexts liderados | Entregable principal |
+|---|---|---|
+| Hurtado Balcázar, Rommel Daniel | Profile & Access, Seguridad JWT transversal, Despliegue en Azure | Bounded context de autenticación/autorización completo, configuración de Spring Security global, backend desplegado y accesible públicamente en Azure App Service |
+| Acuache Lucas, Mathias Joaquín | Organization, Field Operation | Bounded contexts de Organization (Organization, Fundo, Field, Crop) y Field Operation (FieldVisit, Observation) completos en sus seis fases DDD |
+
+---
+
 
 ## 5.3. Validation Interviews
 ##### 5.3.1. Diseño de Entrevistas
