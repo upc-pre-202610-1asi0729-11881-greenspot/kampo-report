@@ -1621,14 +1621,6 @@ Estos archivos representan la estructura de clases, atributos y relaciones de ca
   [Inventory Management Frontend](./docs/ClassDiagrams/InventoryManagement/InventoryManagementFront.puml)
   ![Inventory Management Class Diagram](docs/assets/img/class-diagram/InventoryManagement/InventoryManagementFront.png)
 
-### Monitoring IoT
-- Backend:
-  [Monitoring IoT Backend](./docs/ClassDiagrams/MonitoringIoT/MonitoringIoTBack.puml)
-  ![Monitoring IoT Class Diagram](docs/assets/img/class-diagram/MonitoringIoT/MonitoringIoTBack.png)
-- Frontend:
-  [Monitoring IoT Frontend](./docs/ClassDiagrams/MonitoringIoT/MonitoringIoTFront.puml)
-  ![Monitoring IoT Class Diagram](docs/assets/img/class-diagram/MonitoringIoT/MonitoringIoTFront.png)
-
 ### Organization Management
 - Backend:
   [Organization Management Backend](./docs/ClassDiagrams/OrganizationManagement/OrganizationManagementBack.puml)
