@@ -1667,7 +1667,7 @@ Cada uno de estos diagramas permite entender cómo se estructuran las clases en 
 
 ## 4.8. Database Design
 ##### 4.8.1. Database Diagrams
-![Database-Diagrams](docs/assets/img/class-diagram/DB.jpg)
+![Database-Diagrams](docs/assets/img/class-diagram/DB.png)
 
 ---
 
